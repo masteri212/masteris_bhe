@@ -1,0 +1,22 @@
+{
+  "values": [
+    "masteris_bhe:reactor_core",
+    "masteris_bhe:ring_frame",
+    "masteris_bhe:ring_beam_port",
+    "masteris_bhe:reactor_port",
+    "masteris_bhe:stabilizer_casing",
+    "masteris_bhe:stabilizer_emitter",
+    "masteris_bhe:stabilizer_coil",
+    "masteris_bhe:mass_input_port",
+    "masteris_bhe:alarm_light",
+    "masteris_bhe:bending_laser",
+    "masteris_bhe:lance_emitter",
+    "masteris_bhe:control_console",
+    "masteris_bhe:research_casing",
+    "masteris_bhe:research_core",
+    "masteris_bhe:containment_box",
+    "masteris_bhe:black_hole_bomb",
+    "masteris_bhe:corrupted_stone",
+    "masteris_bhe:unstable_dark_ore"
+  ]
+}

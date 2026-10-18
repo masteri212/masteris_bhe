@@ -1,0 +1,81 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "masteris_bhe:block/reactor_core_cage",
+    "cage": "masteris_bhe:block/reactor_core_cage",
+    "inner": "masteris_bhe:block/reactor_core_inner_formed"
+  },
+  "elements": [
+    {
+      "from": [
+        4,
+        4,
+        4
+      ],
+      "to": [
+        12,
+        12,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#inner"
+        },
+        "south": {
+          "texture": "#inner"
+        },
+        "east": {
+          "texture": "#inner"
+        },
+        "west": {
+          "texture": "#inner"
+        },
+        "up": {
+          "texture": "#inner"
+        },
+        "down": {
+          "texture": "#inner"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#cage",
+          "cullface": "north"
+        },
+        "south": {
+          "texture": "#cage",
+          "cullface": "south"
+        },
+        "east": {
+          "texture": "#cage",
+          "cullface": "east"
+        },
+        "west": {
+          "texture": "#cage",
+          "cullface": "west"
+        },
+        "up": {
+          "texture": "#cage",
+          "cullface": "up"
+        },
+        "down": {
+          "texture": "#cage",
+          "cullface": "down"
+        }
+      }
+    }
+  ]
+}

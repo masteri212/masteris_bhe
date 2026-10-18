@@ -1,0 +1,18 @@
+{
+  "name": "Reactor Ports",
+  "icon": "masteris_bhe:reactor_port",
+  "category": "masteris_bhe:operation",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:reactor_port",
+      "text": "Swap any $(item)Ring Frame$() for a Reactor Port. Ports are the reactor's power connection."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(thing)Before ignition$(): feed RF in to charge the core.$(li)$(thing)While running$(): they push power into any cable or machine touching them.$(li)$(thing)Comparator$(): reads the core's stability, 0 to 15.",
+      "title": "What they do"
+    }
+  ]
+}

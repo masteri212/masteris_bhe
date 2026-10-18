@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "masteris_bhe:block/stabilizer_casing"
+    }
+  }
+}

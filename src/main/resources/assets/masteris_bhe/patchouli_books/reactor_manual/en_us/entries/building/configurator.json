@@ -1,0 +1,18 @@
+{
+  "name": "Configurator",
+  "icon": "masteris_bhe:configurator",
+  "category": "masteris_bhe:building",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:configurator",
+      "text": "Use it on a Reactor Core to check the structure. It lists what's missing and where the first gap is."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(thing)Use$(): check the structure$(li)$(thing)Sneak + use$(): highlight up to 64 missing blocks with particles$(li)$(thing)Sneak + use in creative$(): build everything, fill the stabilizers and charge the core instantly",
+      "title": "Controls"
+    }
+  ]
+}

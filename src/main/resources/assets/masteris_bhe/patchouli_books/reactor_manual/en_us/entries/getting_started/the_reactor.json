@@ -1,0 +1,17 @@
+{
+  "name": "The Reactor",
+  "icon": "masteris_bhe:reactor_core",
+  "category": "masteris_bhe:getting_started",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A $(item)Reactor Core$() floats inside a huge $(l:building/containment_ring)Containment Ring$(), held in place by four $(l:building/stabilizers)Stabilizers$().$(br2)Feed it mass, charge it with RF and ignite it, and it gives back far more power than it takes."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Run it badly and it melts down.$(br2)Every failure has three ways out: a $(good)skillful fix$(), a $(warn)safe but costly fix$(), and a $(danger)timer$() that runs out if you do nothing.$(br2)Read $(l:safety/failures)Failures$() first.",
+      "title": "The catch"
+    }
+  ]
+}

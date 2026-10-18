@@ -1,0 +1,18 @@
+{
+  "name": "Power: Laser Bending",
+  "icon": "masteris_bhe:bending_laser",
+  "category": "masteris_bhe:operation",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:bending_laser",
+      "text": "Place it within $(num)24$() blocks of the core and feed it RF. Use $(thing)Laser +$() to fire it."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The beam bends around the core and comes back stronger: $(num)1.15x$() at low power, up to $(num)1.30x$() at full power.$(br2)The profit comes out of your mass: $(num)1$() mass per $(num)100,000 RF$() fired. Keep the stabilizers fed.",
+      "title": "Gain"
+    }
+  ]
+}

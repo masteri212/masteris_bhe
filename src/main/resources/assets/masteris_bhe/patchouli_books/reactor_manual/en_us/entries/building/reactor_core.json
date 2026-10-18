@@ -1,0 +1,18 @@
+{
+  "name": "Reactor Core",
+  "icon": "masteris_bhe:reactor_core",
+  "category": "masteris_bhe:building",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:reactor_core",
+      "text": "Start here. Everything else is placed relative to the core.$(br2)Leave at least $(num)2 blocks$() of space under it and clear about $(num)37 x 37$() blocks around it."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When the full structure is in place, the core switches to a brighter glow. That means the reactor is $(good)formed$().$(br2)It re-checks the structure every 2 seconds, so breaking a block un-forms it.",
+      "title": "Formed"
+    }
+  ]
+}

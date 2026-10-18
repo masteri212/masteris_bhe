@@ -1,0 +1,13 @@
+{
+  "name": "Research Chamber",
+  "icon": "masteris_bhe:research_core",
+  "category": "masteris_bhe:coming_soon",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:containment_box",
+      "text": "Holds a small, stable black hole.$(br2)In the $(item)Research Chamber$(), recreate each reactor failure on it. Study all six to unlock the venting lance."
+    }
+  ]
+}

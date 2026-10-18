@@ -1,0 +1,17 @@
+{
+  "name": "Shutting Down",
+  "icon": "masteris_bhe:control_console",
+  "category": "masteris_bhe:safety",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Shutdown$() is the safe way to stop. It turns the laser off, realigns the stabilizers, spins the disc down and returns to Offline. You keep all your mass."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(danger)SCRAM$() snaps everything back at once.$(br2)Above $(num)3,600 rpm$() the sudden stop causes a $(l:safety/failures)disc stall$(). Use Shutdown whenever you can.",
+      "title": "SCRAM"
+    }
+  ]
+}

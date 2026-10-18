@@ -1,0 +1,16 @@
+{
+  "name": "Reactor Manual",
+  "landing_text": "Everything you need to build, fuel, run and $(danger)survive$() a dark energy reactor.$(br2)Start with $(l:getting_started/welcome)Welcome$(), and read $(l:safety/failures)Failures$() before your first ignition.$(br2)$(o)Rule one: don't aim the lance at the sun.$()",
+  "subtitle": "Masteri's Black Hole Energy",
+  "use_resource_pack": true,
+  "custom_book_item": "masteris_bhe:reactor_manual",
+  "book_texture": "patchouli:textures/gui/book_purple.png",
+  "show_progress": false,
+  "version": 1,
+  "macros": {
+    "$(danger)": "$(c)$(l)",
+    "$(good)": "$(a)",
+    "$(warn)": "$(6)",
+    "$(num)": "$(b)"
+  }
+}

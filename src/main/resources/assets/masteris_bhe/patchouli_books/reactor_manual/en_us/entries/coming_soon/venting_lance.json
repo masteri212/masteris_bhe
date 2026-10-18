@@ -1,0 +1,13 @@
+{
+  "name": "Venting Lance",
+  "icon": "masteris_bhe:lance_emitter",
+  "category": "masteris_bhe:coming_soon",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:lance_emitter",
+      "text": "An optional emitter above the core. In an emergency it dumps the core's energy into the sky as a beam that $(danger)destroys everything in its path$().$(br2)Unlocked through research."
+    }
+  ]
+}

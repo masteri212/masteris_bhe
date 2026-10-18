@@ -1,0 +1,84 @@
+{
+  "name": "Stabilizers",
+  "icon": "masteris_bhe:stabilizer_emitter",
+  "category": "masteris_bhe:building",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Four $(num)5 x 5$() towers, $(num)7$() blocks tall, centered $(num)16$() blocks from the core on each side. Their bottom layer is level with the bottom of the ring.$(br2)Each one takes $(num)175$() blocks."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Stabilizer",
+      "multiblock": {
+        "mapping": {
+          "C": "masteris_bhe:stabilizer_casing",
+          "K": "masteris_bhe:stabilizer_coil",
+          "M": "masteris_bhe:mass_input_port",
+          "s": "masteris_bhe:stabilizer_emitter[facing=south]",
+          "0": "masteris_bhe:stabilizer_casing"
+        },
+        "pattern": [
+          [
+            "CCCCC",
+            "CCCCC",
+            "CCMCC",
+            "CCCCC",
+            "CCCCC"
+          ],
+          [
+            "KKKKK",
+            "KCCCK",
+            "KCCCK",
+            "KCCCK",
+            "KKKKK"
+          ],
+          [
+            "CCCCC",
+            "CCCCC",
+            "CCCCC",
+            "CCCCC",
+            "CCCCC"
+          ],
+          [
+            "CCCCC",
+            "CCCCC",
+            "CCCCC",
+            "CCCCC",
+            "CCCCC"
+          ],
+          [
+            "CCCCC",
+            "CCCCC",
+            "CCCCC",
+            "CCCCC",
+            "CCsCC"
+          ],
+          [
+            "CCCCC",
+            "CCCCC",
+            "CCCCC",
+            "CCCCC",
+            "CCCCC"
+          ],
+          [
+            "CCCCC",
+            "CCCCC",
+            "CC0CC",
+            "CCCCC",
+            "CCCCC"
+          ]
+        ],
+        "symmetrical": false
+      },
+      "enable_visualize": true,
+      "text": "Shown with the core to the south. The emitter always faces the core."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)Layers 1, 2, 4, 5: $(item)Stabilizer Casing$()$(li)Layer 3: casing, with the $(item)Stabilizer Emitter$() in the middle of the side facing the core$(li)Layer 6: a ring of 16 $(item)Stabilizer Coils$()$(li)Layer 7: casing, with the $(l:operation/mass)Mass Input Port$() in the center",
+      "title": "Layer by layer"
+    }
+  ]
+}

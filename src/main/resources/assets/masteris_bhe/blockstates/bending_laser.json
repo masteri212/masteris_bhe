@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "masteris_bhe:block/bending_laser"
+    },
+    "facing=east": {
+      "model": "masteris_bhe:block/bending_laser",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "masteris_bhe:block/bending_laser",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "masteris_bhe:block/bending_laser",
+      "y": 270
+    }
+  }
+}

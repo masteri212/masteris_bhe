@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "formed=false": {
+      "model": "masteris_bhe:block/reactor_core"
+    },
+    "formed=true": {
+      "model": "masteris_bhe:block/reactor_core_formed"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "Ignition",
+  "icon": "masteris_bhe:reactor_core",
+  "category": "masteris_bhe:operation",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Ignition needs three things:$(li)a $(l:building/full_reactor)formed structure$()$(li)$(num)10,000$() mass in every stabilizer$(li)$(num)50,000,000 RF$() of charge in the core$(br2)Then press $(good)Ignite$() on the $(l:operation/control_console)console$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "If anything is missing, ignition fizzles and the console tells you why. A failed ignition costs nothing.$(br2)On success, the disc lifts and the reactor is $(good)Stable$().",
+      "title": "Fizzles"
+    }
+  ]
+}

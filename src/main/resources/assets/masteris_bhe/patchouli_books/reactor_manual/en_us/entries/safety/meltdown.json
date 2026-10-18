@@ -1,0 +1,28 @@
+{
+  "name": "Meltdown",
+  "icon": "masteris_bhe:black_hole_bomb",
+  "category": "masteris_bhe:safety",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(danger)Pre-meltdown$() lasts $(num)90$() seconds.$(br2)Fix whatever caused it. If stability gets back above 35%, stress is under 90% and the structure is whole, the reactor recovers.",
+      "title": "Pre-meltdown"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(num)120$() seconds. The core pulls in mobs, players and items within $(num)20$() blocks and hurts anything close.$(br2)There is no way back from here yet. $(danger)Get out.$()",
+      "title": "Phase 1"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(num)60$() seconds. The pull reaches $(num)32$() blocks and hits much harder. Then the core $(danger)collapses$().$(br2)Blast radius: 12 blocks plus 1 per 5,000 mass, up to 40.",
+      "title": "Phase 2"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Server owners can turn off block damage and change every number in this book in the server config.",
+      "title": "Config"
+    }
+  ]
+}

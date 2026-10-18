@@ -1,0 +1,23 @@
+{
+  "name": "Welcome",
+  "icon": "masteris_bhe:reactor_manual",
+  "category": "masteris_bhe:getting_started",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This book covers everything in $(thing)Masteri's Black Hole Energy$(): how to build a dark energy reactor, run it for power, and keep it from $(danger)melting down$().$(br2)Click any $(l:building/full_reactor)blue link$() to jump between entries."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Multiblock pages have an $(thing)eye button$(). Press it to project a ghost of the structure into your world, then build over it.$(br2)Lost your copy? Craft a new one.",
+      "title": "Using this book"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:reactor_manual",
+      "text": "Every player gets one on their first join."
+    }
+  ],
+  "priority": true
+}

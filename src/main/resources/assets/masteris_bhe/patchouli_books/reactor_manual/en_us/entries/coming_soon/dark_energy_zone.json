@@ -1,0 +1,13 @@
+{
+  "name": "Dark Energy Zone",
+  "icon": "masteris_bhe:unstable_dark_ore",
+  "category": "masteris_bhe:coming_soon",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:unstable_dark_ore",
+      "text": "A collapse leaves a crater inside a much larger zone that never fades on its own.$(br2)Mine its unstable ore for rare materials, or stabilize it with $(item)Charged Dark Matter Crystals$() to shrink the zone."
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Building",
+  "description": "The core, the containment ring and the stabilizers, block by block.$(br2)Every structure here can be $(thing)visualized$() in your world.",
+  "icon": "masteris_bhe:ring_frame",
+  "sortnum": 1
+}

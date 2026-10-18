@@ -1,0 +1,17 @@
+{
+  "name": "Power: Rotation",
+  "icon": "masteris_bhe:stabilizer_coil",
+  "category": "masteris_bhe:operation",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Use $(thing)Offset +$() to angle the stabilizers. Their beams push the disc sideways and it spins.$(br2)Each degree adds $(num)400 rpm$(). The stabilizers move 1 degree per second, up to $(num)15$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Output grows with the $(thing)square$() of the spin: about $(num)200,000 RF/t$() at 4,000 rpm.$(br2)Above $(num)4,000 rpm$() (offset 10) the ring takes stress. See $(l:safety/failures)Overspin$().$(br2)Rotation burns no mass.",
+      "title": "Output"
+    }
+  ]
+}

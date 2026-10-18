@@ -1,0 +1,18 @@
+{
+  "name": "Control Console",
+  "icon": "masteris_bhe:control_console",
+  "category": "masteris_bhe:operation",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:control_console",
+      "text": "Links to the nearest Reactor Core within $(num)32$() blocks.$(br2)Shows the state, any countdown, stability, ring stress, spin, offset, mass, laser power, stored energy and output."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(good)Ignite$(): start the reactor$(li)$(thing)Shutdown$(): safe stop$(li)$(danger)SCRAM$(): emergency stop$(li)$(thing)Jump$(): restart a stalled disc$(li)$(thing)Offset -/+$(): spin$(li)$(thing)Laser -/+$(): laser power in 10% steps",
+      "title": "Buttons"
+    }
+  ]
+}

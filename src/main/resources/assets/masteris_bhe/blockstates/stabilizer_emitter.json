@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "masteris_bhe:block/stabilizer_emitter"
+    },
+    "facing=east": {
+      "model": "masteris_bhe:block/stabilizer_emitter",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "masteris_bhe:block/stabilizer_emitter",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "masteris_bhe:block/stabilizer_emitter",
+      "y": 270
+    }
+  }
+}
