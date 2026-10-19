@@ -101,7 +101,7 @@ public final class ReactorConfig {
             .defineInRange("dischargeChance", 0.25, 0.0, 1.0);
     public static final ModConfigSpec.IntValue ZONE_CHUNKS_PER_TICK = B.comment("Chunks a dark energy zone loads (or generates) per tick to corrupt its terrain, nearest first,",
                     "so the whole zone is converted, not just where players have been. 0 only converts chunks as players load them.")
-            .defineInRange("chunksLoadedPerTick", 1, 0, 64);
+            .defineInRange("chunksLoadedPerTick", 5, 0, 64);
     public static final ModConfigSpec.BooleanValue CORRUPTED_MOBS = B.comment("Whether hostile mobs spawning in a zone become corrupted (stronger, drop Void Dust).")
             .define("corruptedMobs", true);
     static { B.pop().push("bomb"); }

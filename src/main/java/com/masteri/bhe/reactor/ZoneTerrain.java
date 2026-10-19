@@ -47,7 +47,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public final class ZoneTerrain {
     public static final TagKey<Block> CONVERTIBLE = TagKey.create(Registries.BLOCK,
             ResourceLocation.fromNamespaceAndPath(MasteriBHE.MODID, "zone_convertible"));
-    private static final int CHUNKS_PER_TICK = 4;
+    private static final int CHUNKS_PER_TICK = 8; // ahead of the loader (5 a tick by default), so loaded chunks are done before their ticket runs out
     private static final int DEPTH = 3;
     private static final int CRATER_ORE_BONUS = 5;
     private static final int BLOCK_FLAGS = Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE; // no neighbor updates
