@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "GGG",
+    "RCR"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "C": {
+      "item": "masteris_bhe:stabilizer_casing"
+    }
+  },
+  "result": {
+    "id": "masteris_bhe:stabilizer_console",
+    "count": 1
+  }
+}

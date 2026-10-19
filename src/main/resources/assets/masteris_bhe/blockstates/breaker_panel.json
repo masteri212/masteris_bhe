@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=north,overcharged=false": {
+      "model": "masteris_bhe:block/breaker_panel"
+    },
+    "facing=north,overcharged=true": {
+      "model": "masteris_bhe:block/breaker_panel_on"
+    },
+    "facing=east,overcharged=false": {
+      "model": "masteris_bhe:block/breaker_panel",
+      "y": 90
+    },
+    "facing=east,overcharged=true": {
+      "model": "masteris_bhe:block/breaker_panel_on",
+      "y": 90
+    },
+    "facing=south,overcharged=false": {
+      "model": "masteris_bhe:block/breaker_panel",
+      "y": 180
+    },
+    "facing=south,overcharged=true": {
+      "model": "masteris_bhe:block/breaker_panel_on",
+      "y": 180
+    },
+    "facing=west,overcharged=false": {
+      "model": "masteris_bhe:block/breaker_panel",
+      "y": 270
+    },
+    "facing=west,overcharged=true": {
+      "model": "masteris_bhe:block/breaker_panel_on",
+      "y": 270
+    }
+  }
+}

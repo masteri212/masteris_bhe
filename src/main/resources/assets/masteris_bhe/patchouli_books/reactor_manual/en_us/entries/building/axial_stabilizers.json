@@ -1,0 +1,64 @@
+{
+  "name": "Axial Stabilizers",
+  "icon": "masteris_bhe:axial_emitter",
+  "category": "masteris_bhe:building",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:axial_emitter",
+      "text": "Two small stabilizers hung over the ring, firing down into the black hole. They hold the disc's spin steady enough to $(thing)turn into power$().$(br2)Optional: the reactor runs without them, but its spin makes no RF."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Axial Stabilizer",
+      "multiblock": {
+        "mapping": {
+          "C": "masteris_bhe:stabilizer_casing",
+          "K": "masteris_bhe:stabilizer_coil",
+          "A": "masteris_bhe:axial_emitter",
+          "0": "masteris_bhe:stabilizer_casing"
+        },
+        "pattern": [
+          [
+            "KKK",
+            "KCK",
+            "KKK"
+          ],
+          [
+            "CCC",
+            "C0C",
+            "CCC"
+          ],
+          [
+            "CCC",
+            "CAC",
+            "CCC"
+          ]
+        ],
+        "symmetrical": true
+      },
+      "enable_visualize": true,
+      "text": "A $(num)3 x 3 x 3$() of casing: 8 coils around the top, the Axial Emitter in the middle of the bottom."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Where they go",
+      "text": "One over the $(thing)north-west$() of the ring and one over the $(thing)south-east$(), clear of the laser.$(br2)Each one's center is $(num)11$() blocks west and north (or east and south) of the core and $(num)10$() blocks above it, so the emitter hangs $(num)9$() blocks up. Both must be complete."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "What they do",
+      "text": "Without them spin isn't turned into RF, so it isn't spent either: it climbs until the ring takes $(l:safety/failures)overspin$() stress. The console says $(thing)Spin power offline$() while either is missing.$(br2)With them, they also hold the disc against $(l:operation/rotation)precession$(): set the axial trim on the console to keep the wobble down."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Axial Emitters",
+      "text": "Made from research: a $(item)Disc Stall$(), an $(item)Overspin$() and a $(item)Mass Starvation Recording$(), plus a $(item)Stabilizer Emitter$().$(br2)See the $(l:operation/research)Research Chamber$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:axial_emitter"
+    }
+  ]
+}

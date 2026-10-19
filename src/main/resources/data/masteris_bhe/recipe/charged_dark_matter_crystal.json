@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SVS",
+    "VRV",
+    "SVS"
+  ],
+  "key": {
+    "S": {
+      "item": "masteris_bhe:dark_matter_shard"
+    },
+    "V": {
+      "item": "masteris_bhe:void_dust"
+    },
+    "R": {
+      "item": "minecraft:redstone_block"
+    }
+  },
+  "result": {
+    "id": "masteris_bhe:charged_dark_matter_crystal",
+    "count": 1
+  }
+}

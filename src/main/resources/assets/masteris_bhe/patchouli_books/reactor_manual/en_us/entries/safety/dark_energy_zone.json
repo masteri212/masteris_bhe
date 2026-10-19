@@ -1,0 +1,62 @@
+{
+  "name": "Dark Energy Zone",
+  "icon": "masteris_bhe:unstable_dark_ore",
+  "category": "masteris_bhe:safety",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:unstable_dark_ore",
+      "text": "A collapse leaves a crater inside a much larger $(danger)dark energy zone$(). It never fades on its own.$(br2)It's dangerous, but it's also the only source of several rare materials."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Size and border",
+      "text": "A reactor holding the ignition minimum of mass leaves a zone $(num)500$() blocks in radius. More mass, bigger zone: $(num)4x$() the mass doubles the radius, from $(num)150$() up to $(num)2,000$() blocks.$(br2)Its edge is a black wall you can see from far away. It bursts outward from the crater behind a violet shock front the moment the core collapses."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Inside",
+      "text": "Inside, the world looks like it's seen from within a black hole: the view swirls and bends.$(br2)$(thing)Gravity is weak$(): everything falls at $(num)40%$() speed, jumps higher and takes less fall damage. Mobs float too."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:corrupted_stone",
+      "title": "Corrupted ground",
+      "text": "Bare ground turns to $(item)Corrupted Stone$() a few blocks deep, chunk by chunk as they load. Plants die off.$(br2)Trees, water and anything you built are left alone."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:void_dust",
+      "title": "Corrupted mobs",
+      "text": "Hostile mobs born in the zone are $(danger)corrupted$(): twice the health, harder hits, faster, armored, trailing purple sparks.$(br2)They drop $(item)Void Dust$(), and rarely a $(item)Graviton Core$()."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:dark_matter_shard",
+      "title": "Unstable ore",
+      "text": "Nodes of $(item)Unstable Dark Ore$() dot the corrupted ground, thickest on the crater floor. Mining one gives $(item)Dark Matter Shards$(), but about one in four $(danger)discharges$(): it hurts, but breaks nothing."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:singularity_glass",
+      "title": "The crater",
+      "text": "Once the crater stops falling in, a few glowing $(item)Singularity Glass$() and $(item)Event Horizon Fragments$() are left at the bottom. They never despawn.$(br2)Singularity Glass is what $(l:operation/research)captures$() a black hole."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:charged_dark_matter_crystal",
+      "title": "Closing a zone",
+      "text": "Use a $(item)Charged Dark Matter Crystal$() on an ore node inside the zone. The node turns to stone and the wall glides inward.$(br2)A zone needs $(num)8$() stabilized nodes. After the last one it falls in on itself and is gone."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Config",
+      "text": "Server owners can change the zone's size and limits, the gravity, the node count, the ore and discharge chances, and turn corrupted mobs off.$(br2)With collapse block damage off, the ground is never corrupted."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:charged_dark_matter_crystal"
+    }
+  ]
+}

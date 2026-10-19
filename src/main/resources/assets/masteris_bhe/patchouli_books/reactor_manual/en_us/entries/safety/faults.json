@@ -1,0 +1,37 @@
+{
+  "name": "Ignition and Shutdown Faults",
+  "icon": "masteris_bhe:stabilizer_emitter",
+  "category": "masteris_bhe:safety",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Starting or stopping the reactor can go wrong partway. A fault gives you $(num)2$() minutes before the core goes to $(danger)pre-meltdown$(). The console names the fault and the stabilizers involved.$(br2)Fixing it takes two steps: fix the cause, then press $(good)RESET$() on the console (it replaces Jump while faulted). RESET stays grey until the fix is in."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "What raises the odds",
+      "text": "$(thing)Ignition$(): uneven mass across the stabilizers, the emptiest one having less than 1.5x the minimum, and low stability.$(br2)$(thing)Shutdown$() (and SCRAM): low stability, ring stress, and spinning above the safe band when you start."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stabilizer Desync",
+      "text": "$(thing)Ignition.$() One or two emitters are knocked out of line: their beams wander and miss the core.$(br2)$(good)Fix$(): use the $(l:building/configurator)Configurator$() on each marked emitter to realign it. Then press RESET."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Mass Flash",
+      "text": "$(thing)Ignition.$() The ignition flash burns away most of the mass in one or two stabilizers, leaving them under the minimum.$(br2)$(good)Fix$(): refill them to the ignition minimum. Then press RESET."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Cracked Lens",
+      "text": "$(thing)Shutdown.$() An emitter's lens cracks during spin-down. Its beam sputters and the disc can't brake.$(br2)$(good)Fix$(): open that stabilizer's $(item)Stabilizer Console$() and type $(thing)lens recalibrate$(). Then press RESET."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Singularity Rebound",
+      "text": "$(thing)Shutdown.$() The disc stops, but the black hole won't close while the core holds charge.$(br2)$(good)Fix$(): drain the core's stored RF below $(num)5,000,000$() through the reactor ports. Then press RESET."
+    }
+  ]
+}

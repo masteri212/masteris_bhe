@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "masteris_bhe:item/recording_disc_stall"
+  }
+}

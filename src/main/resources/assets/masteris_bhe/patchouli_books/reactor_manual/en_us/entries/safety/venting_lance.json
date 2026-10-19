@@ -1,0 +1,32 @@
+{
+  "name": "Venting Lance",
+  "icon": "masteris_bhe:lance_emitter",
+  "category": "masteris_bhe:safety",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:lance_emitter",
+      "text": "An optional column over the core. In trouble, it dumps the core's charge into the sky as a beam that $(danger)destroys every block and creature in its path$(), all the way up.$(br2)$(thing)Aim at open sky. Not at the sun.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Building it",
+      "text": "A $(num)3 x 3$() column of $(item)Lance Emitters$(), $(num)12$() tall, centered over the core. Its bottom can be $(num)3$() to $(num)40$() blocks above the core; $(num)9$() (six over the ring) is standard.$(br2)The core finds it on its own. Use the $(l:building/configurator)Configurator$() on the core to check it: it names the first gap. When it's complete, the console shows a $(warn)VENT$() button.$(br2)Lance Emitters are crafted from $(l:operation/research)Recordings$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Venting",
+      "text": "Press $(warn)VENT$(), then $(danger)CONFIRM$() within 5 seconds. The beam fires for 5 seconds.$(br2)The core's charge is dumped, the reactor drops to $(thing)offline$() and $(num)15%$() of the mass burns ($(num)75%$() while the ring is breached). Refuel and re-ignite to run again.$(br2)It fixes a disc stall, a fault or a pre-meltdown."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Emergency vent",
+      "text": "In $(danger)meltdown phase 1$() the vent is the only way out. It fires at full power, burns $(danger)all$() the mass and destroys the lance.$(br2)The reactor survives, but it's empty and the lance must be rebuilt.$(br2)In phase 2 it's too late."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:lance_emitter"
+    }
+  ]
+}

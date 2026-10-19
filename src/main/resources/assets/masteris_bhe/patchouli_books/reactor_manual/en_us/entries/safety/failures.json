@@ -11,12 +11,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Press $(thing)Jump$() while the console shows $(good)NOW!$(). The window opens every 4 seconds.$(br2)Missing it costs 10 seconds and adds backlash. If the timer runs out: $(danger)pre-meltdown$().",
+      "text": "Go round all four stabilizers and throw each $(item)Breaker Panel$() to $(warn)OVERCHARGED$(). Then press $(thing)Jump$() on the control console: the stabilizers kick the disc back into spin and the breakers drop back to normal.$(br2)Pressing Jump too early costs $(num)5$() seconds. If the timer runs out: $(danger)pre-meltdown$().",
       "title": "Recovering a stall"
     },
     {
       "type": "patchouli:text",
-      "text": "Spinning above $(num)4,000 rpm$() builds ring stress. Lower the offset to let it cool.$(br2)At $(num)100%$() the ring fails: $(danger)pre-meltdown$().",
+      "text": "Spinning above $(num)4,000 rpm$() builds ring stress. Set a negative offset to brake the disc (or a positive one if it's spinning backwards), or $(thing)Shut Down$().$(br2)At $(num)100%$() the ring fails: $(danger)pre-meltdown$().",
       "title": "Overspin"
     },
     {

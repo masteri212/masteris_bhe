@@ -3,6 +3,7 @@ package com.masteri.bhe.registry;
 import com.masteri.bhe.MasteriBHE;
 import com.masteri.bhe.block.entity.BendingLaserBlockEntity;
 import com.masteri.bhe.block.entity.ControlConsoleBlockEntity;
+import com.masteri.bhe.block.entity.ResearchCoreBlockEntity;
 import com.masteri.bhe.block.entity.MassInputPortBlockEntity;
 import com.masteri.bhe.block.entity.ReactorCoreBlockEntity;
 import com.masteri.bhe.block.entity.ReactorPortBlockEntity;
@@ -30,6 +31,10 @@ public final class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ControlConsoleBlockEntity>> CONTROL_CONSOLE =
             BLOCK_ENTITIES.register("control_console", () ->
                     BlockEntityType.Builder.of(ControlConsoleBlockEntity::new, ModBlocks.CONTROL_CONSOLE.get()).build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ResearchCoreBlockEntity>> RESEARCH_CORE =
+            BLOCK_ENTITIES.register("research_core", () ->
+                    BlockEntityType.Builder.of(ResearchCoreBlockEntity::new, ModBlocks.RESEARCH_CORE.get()).build(null));
 
     private ModBlockEntities() {}
 }

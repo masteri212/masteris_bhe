@@ -1,0 +1,27 @@
+{
+  "name": "Computers",
+  "icon": "masteris_bhe:reactor_port",
+  "category": "masteris_bhe:operation",
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "With $(thing)CC: Tweaked$() installed, a computer can read and run the reactor.$(br2)Put a wired modem on the $(item)Reactor Core$(), any $(item)Reactor Port$() or the control console's bottom-left block. It shows up as a $(thing)bhe_reactor$() peripheral:$(br)$(thing)local r = peripheral.find(\"bhe_reactor\")$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Reading",
+      "text": "$(thing)getStatus()$() returns everything at once. Or one at a time: getState, getStability, getStress, getRpm, getOffset, getTargetOffset, getLaserPower, getEnergy, getEnergyCapacity, getOutput, getMass, getStabilizerMasses, getTimer, getFault, getFaultSides, isFaultFixed, getBreakers, getResonance, getWobble, getAxialTrim, isFormed, isAxialFormed, isLanceFormed, isVentArmed."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Controlling",
+      "text": "$(thing)ignite, shutdown, scram, jumpStart, reset, vent$() press the console's buttons and return what a player would have been told (nil if nothing). vent() arms the lance; call it again to fire.$(br2)$(thing)setTargetOffset(n), setLaserPower(n), setAxialTrim(n)$() set them directly; false while the reactor can't be adjusted."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Example",
+      "text": "Keep the spin in the resonance band:$(br)$(thing)while true do$(br) local s = r.getStatus()$(br) local d = s.resonance.center - math.abs(s.rpm)$(br) if d > 100 then r.setTargetOffset(2)$(br) elseif d < -100 then r.setTargetOffset(-2)$(br) else r.setTargetOffset(0) end$(br) sleep(1)$(br)end$()"
+    }
+  ]
+}

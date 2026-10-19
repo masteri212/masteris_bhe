@@ -1,0 +1,79 @@
+{
+  "name": "Research Chamber",
+  "icon": "masteris_bhe:research_core",
+  "category": "masteris_bhe:operation",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Recreate the reactor's failures on a small captured black hole to make $(thing)Recordings$(): crafting components you can't get any other way.$(br2)The $(l:safety/venting_lance)Venting Lance$() and the $(l:building/axial_stabilizers)axial stabilizers$() are made from them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:singularity_container",
+      "title": "Capturing a black hole",
+      "text": "Four $(item)Singularity Glass$() (from a collapse crater) make a $(item)Singularity Container$().$(br2)Throw it into a running reactor's black hole: it's flung back out as a $(item)Containment Box$() holding a tiny black hole."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Research Chamber",
+      "multiblock": {
+        "mapping": {
+          "R": "masteris_bhe:research_casing",
+          "B": "masteris_bhe:containment_box",
+          "C": "masteris_bhe:research_core[facing=south]",
+          "0": "masteris_bhe:research_casing"
+        },
+        "pattern": [
+          [
+            "RRR",
+            "RRR",
+            "RRR"
+          ],
+          [
+            "RRR",
+            "RBR",
+            "RCR"
+          ],
+          [
+            "RRR",
+            "R0R",
+            "RRR"
+          ]
+        ],
+        "symmetrical": false
+      },
+      "enable_visualize": true,
+      "text": "A 3x3x3 of $(item)Research Casing$(), the Containment Box in the middle and the $(item)Research Core$() in the middle of the front, facing out."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Experiments",
+      "text": "Use the Research Core and pick a failure. The panel shows a random procedure: do each step in order, with $(thing)30 seconds$() per step.$(br2)Some steps are on the panel: set the $(thing)field$() and press Lock, $(thing)Pulse$() while the resonance lamp is green, $(thing)Vent$(), $(thing)Charge$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Steps in the world",
+      "text": "Others happen around the chamber:$(li)$(thing)Feed$(): use the asked-for item on the Research Core$(li)$(thing)Redstone$(): power the Research Core, or cut the signal$(li)$(thing)Tune$(): use the $(l:building/configurator)Configurator$() on the Containment Box$(br2)Finish the last step and the Recording pops out of the core."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Getting it wrong",
+      "text": "Pressing the wrong control, using the Configurator at the wrong time, running out of time or breaking the chamber $(danger)loses the black hole$(): the containment gives way with a small blast (no block damage) and the box is gone. Capture another to try again.$(br2)$(thing)Abort$() stops safely."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "What the Recordings make",
+      "text": "$(li)$(item)Lance Emitter$() x27: Pre-meltdown, Breach and Meltdown Recordings + 3 obsidian$(li)$(item)Axial Emitter$(): Disc Stall, Overspin and Mass Starvation Recordings + a Stabilizer Emitter"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:singularity_container",
+      "recipe2": "masteris_bhe:research_casing"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:research_core"
+    }
+  ]
+}

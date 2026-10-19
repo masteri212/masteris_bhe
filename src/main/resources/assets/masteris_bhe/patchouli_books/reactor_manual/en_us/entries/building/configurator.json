@@ -2,7 +2,7 @@
   "name": "Configurator",
   "icon": "masteris_bhe:configurator",
   "category": "masteris_bhe:building",
-  "sortnum": 4,
+  "sortnum": 5,
   "pages": [
     {
       "type": "patchouli:spotlight",
@@ -13,6 +13,10 @@
       "type": "patchouli:text",
       "text": "$(li)$(thing)Use$(): check the structure$(li)$(thing)Sneak + use$(): highlight up to 64 missing blocks with particles$(li)$(thing)Sneak + use in creative$(): build everything, fill the stabilizers and charge the core instantly",
       "title": "Controls"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:configurator"
     }
   ]
 }

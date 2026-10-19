@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "masteris_bhe:recording_pre_meltdown"
+    },
+    {
+      "item": "masteris_bhe:recording_breach"
+    },
+    {
+      "item": "masteris_bhe:recording_meltdown"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    }
+  ],
+  "result": {
+    "id": "masteris_bhe:lance_emitter",
+    "count": 27
+  }
+}

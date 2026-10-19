@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "FGF",
+    "GAG",
+    "FGF"
+  ],
+  "key": {
+    "F": {
+      "item": "masteris_bhe:ring_frame"
+    },
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "A": {
+      "item": "minecraft:amethyst_shard"
+    }
+  },
+  "result": {
+    "id": "masteris_bhe:ring_beam_port",
+    "count": 4
+  }
+}

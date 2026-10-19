@@ -46,7 +46,7 @@ authors="Masteri"
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-A mod about Energy generation and Drak Matter Manupilation inspired by jona23's DEM
+A mod about energy generation and dark matter manipulation, inspired by jona23's DEM.
 '''
 
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
@@ -97,3 +97,11 @@ side="BOTH"
 # stop your mod loading on the server for example.
 #[features.${mod_id}]
 #openGLVersion="[3.2,)"
+
+# Optional: CC: Tweaked computers can read and run the reactor (see compat/cc).
+[[dependencies.${mod_id}]]
+modId="computercraft"
+type="optional"
+versionRange="[1.120,)"
+ordering="NONE"
+side="BOTH"

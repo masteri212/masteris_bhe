@@ -1,6 +1,8 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/orientable",
   "textures": {
-    "all": "masteris_bhe:block/research_core"
+    "front": "masteris_bhe:block/research_core",
+    "side": "masteris_bhe:block/research_casing",
+    "top": "masteris_bhe:block/research_casing"
   }
 }

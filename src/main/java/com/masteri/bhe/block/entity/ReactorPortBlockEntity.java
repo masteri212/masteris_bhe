@@ -56,7 +56,7 @@ public class ReactorPortBlockEntity extends BlockEntity {
     }
 
     @Nullable
-    private ReactorCoreBlockEntity core() {
+    public ReactorCoreBlockEntity core() {
         ReactorCoreBlockEntity core = ReactorLocator.coreAt(level, corePos);
         return core != null && core.isFormed() ? core : null;
     }

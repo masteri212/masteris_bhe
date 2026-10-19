@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "masteris_bhe:block/research_core"
+    },
+    "facing=east": {
+      "model": "masteris_bhe:block/research_core",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "masteris_bhe:block/research_core",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "masteris_bhe:block/research_core",
+      "y": 270
     }
   }
 }

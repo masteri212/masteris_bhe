@@ -3,6 +3,9 @@ package com.masteri.bhe.item;
 import com.masteri.bhe.MasteriBHE;
 import com.masteri.bhe.block.entity.ReactorCoreBlockEntity;
 import com.masteri.bhe.multiblock.ReactorStructure;
+import com.masteri.bhe.reactor.ReactorLocator;
+import com.masteri.bhe.reactor.VentingLance;
+import com.masteri.bhe.registry.ModBlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -21,7 +24,7 @@ import java.util.List;
 /**
  * Use on a Reactor Core: check the structure and report what is missing.
  * Sneak + use: highlight missing positions with particles.
- * Sneak + use in creative: build the whole structure (for testing).
+ * Sneak + use in creative: build the whole structure (for testing); once it stands, again for the axial stabilizers.
  */
 public class ConfiguratorItem extends Item {
     private static final int MAX_HIGHLIGHTS = 64;
@@ -36,12 +39,20 @@ public class ConfiguratorItem extends Item {
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
         Player player = context.getPlayer();
+        if (level.getBlockState(pos).is(ModBlocks.STABILIZER_EMITTER.get())) return realign(level, pos, player);
         if (!(level.getBlockEntity(pos) instanceof ReactorCoreBlockEntity core)) return InteractionResult.PASS;
         if (level.isClientSide || player == null) return InteractionResult.SUCCESS;
 
         String key = "message." + MasteriBHE.MODID + ".structure.";
 
         if (player.isShiftKeyDown() && player.isCreative()) {
+            // The axial stabilizers only once the rest of the reactor stands: a second sneak-use adds them.
+            if (ReactorStructure.check(level, pos).complete()) {
+                int placed = ReactorStructure.buildAxial(level, pos);
+                player.displayClientMessage(Component.translatable(key + (placed > 0 ? "built_axial" : "axial_complete"), placed)
+                        .withStyle(ChatFormatting.AQUA), false);
+                return InteractionResult.SUCCESS;
+            }
             int placed = ReactorStructure.build(level, pos);
             core.checkStructure();
             core.fillForTesting();
@@ -52,6 +63,7 @@ public class ConfiguratorItem extends Item {
         ReactorStructure.Result result = core.checkStructure();
         if (result.complete()) {
             player.displayClientMessage(Component.translatable(key + "complete", result.total()).withStyle(ChatFormatting.GREEN), false);
+            reportLance(level, pos, player);
             return InteractionResult.SUCCESS;
         }
 
@@ -72,6 +84,38 @@ public class ConfiguratorItem extends Item {
             }
             player.displayClientMessage(Component.translatable(key + "highlighted", shown).withStyle(ChatFormatting.AQUA), false);
         }
+        return InteractionResult.SUCCESS;
+    }
+
+    /** The Venting Lance's status: linked, incomplete (with the first gap), or not there at all. */
+    private static void reportLance(Level level, BlockPos core, Player player) {
+        String key = "message." + MasteriBHE.MODID + ".lance.";
+        VentingLance.Report report = VentingLance.diagnose(level, core);
+        if (report.none()) {
+            player.displayClientMessage(Component.translatable(key + "none", VentingLance.MIN_BOTTOM, VentingLance.MAX_BOTTOM)
+                    .withStyle(ChatFormatting.GRAY), false);
+        } else if (report.complete()) {
+            player.displayClientMessage(Component.translatable(key + "linked", core.getY() + report.bottom(),
+                    core.getY() + report.bottom() + VentingLance.HEIGHT - 1).withStyle(ChatFormatting.GREEN), false);
+        } else {
+            BlockPos gap = report.firstGap();
+            player.displayClientMessage(Component.translatable(key + "incomplete", report.placed(), VentingLance.BLOCKS,
+                    gap.getX(), gap.getY(), gap.getZ()).withStyle(ChatFormatting.YELLOW), false);
+        }
+    }
+
+    /** On a Stabilizer Emitter: realigns it after a stabilizer desync (an ignition fault). */
+    private static InteractionResult realign(Level level, BlockPos pos, Player player) {
+        if (level.isClientSide || player == null) return InteractionResult.SUCCESS;
+        ReactorCoreBlockEntity core = ReactorLocator.findCore(level, pos, ReactorStructure.STABILIZER_DISTANCE + 4);
+        ReactorCoreBlockEntity.FixResult result = core == null ? ReactorCoreBlockEntity.FixResult.NOT_NEEDED : core.realignEmitter(pos);
+        String key = switch (result) {
+            case FIXED -> "realigned";
+            case ALL_FIXED -> "realigned_all";
+            case NOT_NEEDED -> "not_needed";
+        };
+        player.displayClientMessage(Component.translatable("message." + MasteriBHE.MODID + ".fault." + key)
+                .withStyle(result == ReactorCoreBlockEntity.FixResult.NOT_NEEDED ? ChatFormatting.GRAY : ChatFormatting.GREEN), true);
         return InteractionResult.SUCCESS;
     }
 

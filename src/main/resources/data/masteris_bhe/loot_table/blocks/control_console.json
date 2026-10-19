@@ -13,6 +13,14 @@
       "conditions": [
         {
           "condition": "minecraft:survives_explosion"
+        },
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "masteris_bhe:control_console",
+          "properties": {
+            "column": "0",
+            "row": "0"
+          }
         }
       ]
     }

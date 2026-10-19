@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "masteris_bhe:block/stabilizer_casing",
+    "down": "masteris_bhe:block/stabilizer_emitter_front",
+    "up": "masteris_bhe:block/stabilizer_casing",
+    "north": "masteris_bhe:block/stabilizer_casing",
+    "south": "masteris_bhe:block/stabilizer_casing",
+    "east": "masteris_bhe:block/stabilizer_casing",
+    "west": "masteris_bhe:block/stabilizer_casing"
+  }
+}

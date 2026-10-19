@@ -26,17 +26,37 @@ public class ConsoleScreen extends AbstractContainerScreen<ConsoleMenu> {
         button(ReactorCoreBlockEntity.BUTTON_IGNITE, "ignite", x, y, 54);
         button(ReactorCoreBlockEntity.BUTTON_SHUTDOWN, "shutdown", x + 56, y, 58);
         button(ReactorCoreBlockEntity.BUTTON_SCRAM, "scram", x + 116, y, 52);
-        button(ReactorCoreBlockEntity.BUTTON_JUMP_START, "jump", x + 170, y, 54);
+        jumpButton = button(ReactorCoreBlockEntity.BUTTON_JUMP_START, "jump", x + 170, y, 54);
         y += 22;
         button(ReactorCoreBlockEntity.BUTTON_OFFSET_DOWN, "offset_down", x, y, 54);
         button(ReactorCoreBlockEntity.BUTTON_OFFSET_UP, "offset_up", x + 56, y, 58);
         button(ReactorCoreBlockEntity.BUTTON_LASER_DOWN, "laser_down", x + 116, y, 52);
         button(ReactorCoreBlockEntity.BUTTON_LASER_UP, "laser_up", x + 170, y, 54);
+        ventButton = button(ReactorCoreBlockEntity.BUTTON_VENT, "vent", leftPos + 164, topPos + 114, 68);
+        ventButton.visible = menu.lanceFormed();
     }
 
-    private void button(int id, String key, int x, int y, int width) {
-        addRenderableWidget(Button.builder(Component.translatable("gui.masteris_bhe.button." + key),
+    private Button ventButton, jumpButton;
+
+    private Button button(int id, String key, int x, int y, int width) {
+        return addRenderableWidget(Button.builder(Component.translatable("gui.masteris_bhe.button." + key),
                 b -> minecraft.gameMode.handleInventoryButtonClick(menu.containerId, id)).bounds(x, y, width, 20).build());
+    }
+
+    @Override
+    protected void containerTick() {
+        super.containerTick();
+        // Vent only shows with a lance linked; once armed it asks for the second press.
+        // During a fault the jump-start button is RESET: grey until the cause is fixed, then green.
+        if (menu.state().isFault()) {
+            jumpButton.setMessage(Component.translatable("gui.masteris_bhe.button.reset")
+                    .withStyle(menu.faultFixed() ? net.minecraft.ChatFormatting.GREEN : net.minecraft.ChatFormatting.DARK_GRAY));
+        } else {
+            jumpButton.setMessage(Component.translatable("gui.masteris_bhe.button.jump"));
+        }
+        ventButton.visible = menu.lanceFormed();
+        ventButton.setMessage(Component.translatable(menu.ventArmed() ? "gui.masteris_bhe.button.vent_confirm" : "gui.masteris_bhe.button.vent")
+                .withStyle(menu.ventArmed() ? net.minecraft.ChatFormatting.RED : net.minecraft.ChatFormatting.GOLD));
     }
 
     @Override
@@ -57,6 +77,18 @@ public class ConsoleScreen extends AbstractContainerScreen<ConsoleMenu> {
         }
         if (!menu.formed()) {
             g.drawString(font, Component.translatable("gui.masteris_bhe.not_formed"), 12, 36, 0xFFFF8040, false);
+        } else if (menu.fault() != ReactorCoreBlockEntity.Fault.NONE) {
+            // What went wrong and how to fix it, in one (slightly smaller) line.
+            ReactorCoreBlockEntity.Fault fault = menu.fault();
+            Object arg = fault == ReactorCoreBlockEntity.Fault.SINGULARITY_REBOUND ? "" : sides(menu.faultMask());
+            Component text = menu.faultFixed()
+                    ? Component.translatable("gui.masteris_bhe.fault.fixed")
+                    : Component.translatable("gui.masteris_bhe.fault." + fault.name().toLowerCase(), arg);
+            g.pose().pushPose();
+            g.pose().translate(12, 37, 0);
+            g.pose().scale(0.8F, 0.8F, 1);
+            g.drawString(font, text, 0, 0, menu.faultFixed() ? 0xFF60E080 : 0xFFFFB040, false);
+            g.pose().popPose();
         }
 
         bar(g, 12, 50, "stability", menu.stability(), menu.stability() < 20 ? 0xFFE04040 : menu.stability() < 50 ? 0xFFE0B040 : 0xFF40D080);
@@ -71,11 +103,23 @@ public class ConsoleScreen extends AbstractContainerScreen<ConsoleMenu> {
         line(g, 12, y + 36, Component.translatable("gui.masteris_bhe.output", String.format("%,d", menu.output())));
 
         if (state == ReactorState.DISC_STALL) {
-            boolean open = menu.jumpWindow();
-            g.fill(176, y + 34, 230, y + 46, open ? 0xFF30C060 : 0xFF503030);
-            g.drawCenteredString(font, Component.translatable(open ? "gui.masteris_bhe.window_open" : "gui.masteris_bhe.window_closed"),
-                    203, y + 36, TEXT);
+            // Under the countdown, clear of the VENT button in the bottom right of the panel.
+            int breakers = Integer.bitCount(menu.breakerMask() & 0b1111);
+            g.fill(176, 34, 230, 46, breakers == 4 ? 0xFF30C060 : 0xFF503030);
+            g.drawCenteredString(font, Component.translatable("gui.masteris_bhe.breakers", breakers), 203, 36, TEXT);
         }
+    }
+
+    private static Component sides(int mask) {
+        net.minecraft.network.chat.MutableComponent text = Component.empty();
+        boolean first = true;
+        for (net.minecraft.core.Direction dir : net.minecraft.core.Direction.Plane.HORIZONTAL) {
+            if ((mask & (1 << dir.get2DDataValue())) == 0) continue;
+            if (!first) text.append(", ");
+            text.append(Component.translatable("direction.masteris_bhe." + dir.getName()));
+            first = false;
+        }
+        return text;
     }
 
     private void line(GuiGraphics g, int x, int y, Component text) {

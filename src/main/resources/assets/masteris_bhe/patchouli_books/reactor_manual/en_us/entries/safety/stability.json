@@ -16,6 +16,10 @@
       "title": "Reactor States",
       "border": true,
       "text": "Every fault can be fixed or timed out."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:alarm_light"
     }
   ]
 }

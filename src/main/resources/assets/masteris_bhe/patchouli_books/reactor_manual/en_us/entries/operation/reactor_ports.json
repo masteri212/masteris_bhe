@@ -13,6 +13,10 @@
       "type": "patchouli:text",
       "text": "$(li)$(thing)Before ignition$(): feed RF in to charge the core.$(li)$(thing)While running$(): they push power into any cable or machine touching them.$(li)$(thing)Comparator$(): reads the core's stability, 0 to 15.",
       "title": "What they do"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:reactor_port"
     }
   ]
 }

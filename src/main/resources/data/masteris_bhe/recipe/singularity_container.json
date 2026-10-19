@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " G ",
+    "G G",
+    " G "
+  ],
+  "key": {
+    "G": {
+      "item": "masteris_bhe:singularity_glass"
+    }
+  },
+  "result": {
+    "id": "masteris_bhe:singularity_container",
+    "count": 1
+  }
+}

@@ -1,6 +1,10 @@
 package com.masteri.bhe;
 
+import com.masteri.bhe.compat.cc.CCCompat;
 import com.masteri.bhe.config.ReactorConfig;
+import com.masteri.bhe.network.StabilizerTerminal;
+import com.masteri.bhe.reactor.DarkZones;
+import com.masteri.bhe.registry.ModAttachments;
 import com.masteri.bhe.registry.ModBlockEntities;
 import com.masteri.bhe.registry.ModBlocks;
 import com.masteri.bhe.registry.ModCapabilities;
@@ -10,6 +14,7 @@ import com.masteri.bhe.registry.ModMenus;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import org.slf4j.Logger;
@@ -25,7 +30,11 @@ public class MasteriBHE {
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModCreativeTabs.TABS.register(modEventBus);
         ModMenus.MENUS.register(modEventBus);
+        ModAttachments.ATTACHMENTS.register(modEventBus);
         modEventBus.addListener(ModCapabilities::register);
+        modEventBus.addListener(DarkZones::registerPayloads);
+        modEventBus.addListener(StabilizerTerminal::registerPayloads);
+        if (ModList.get().isLoaded(CCCompat.MOD_ID)) modEventBus.addListener(CCCompat::register); // optional
         modContainer.registerConfig(ModConfig.Type.SERVER, ReactorConfig.SPEC);
         LOGGER.info("Masteri's Black Hole Energy loaded. Don't aim the lance at the sun.");
     }

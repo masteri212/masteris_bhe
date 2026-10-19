@@ -6,12 +6,37 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Use $(thing)Offset +$() to angle the stabilizers. Their beams push the disc sideways and it spins.$(br2)Each degree adds $(num)400 rpm$(). The stabilizers move 1 degree per second, up to $(num)15$()."
+      "text": "Use $(thing)Offset +$() to angle the stabilizers. Their beams push the disc sideways and it spins.$(br2)As long as they're angled, the spin $(thing)keeps climbing$(): each degree adds $(num)10 rpm$() every second, with no top speed. Setting the offset to 0 stops the climb; it doesn't slow the disc.$(br2)$(thing)Offset -$() goes below 0 to push the other way: it brakes the disc, then spins it backwards. Backwards spin works exactly like forwards spin. The stabilizers move 1 degree per second, from $(num)-15$() to $(num)15$()."
     },
     {
       "type": "patchouli:text",
-      "text": "Output grows with the $(thing)square$() of the spin: about $(num)200,000 RF/t$() at 4,000 rpm.$(br2)Above $(num)4,000 rpm$() (offset 10) the ring takes stress. See $(l:safety/failures)Overspin$().$(br2)Rotation burns no mass.",
+      "text": "Output grows with the $(thing)square$() of the spin: about $(num)200,000 RF/t$() at 4,000 rpm.$(br2)The RF is made $(thing)from the spin$(): generating slowly spins the disc down. If the core is full, no spin is used.$(br2)Above $(num)4,000 rpm$() the ring takes stress. See $(l:safety/failures)Overspin$(). Rotation burns no mass.",
       "title": "Output"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Mass and Spin",
+      "text": "$(thing)More mass steadies the spin.$() At the ignition minimum, spin shakes the core normally. Double that mass and spinning costs half the stability and builds ring stress half as fast.$(br2)Run low on mass and the same spin shakes it up to twice as hard."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Resonance",
+      "text": "Spin only turns into power at full strength inside the $(thing)resonance band$(), about $(num)300 rpm$() either side of a target. Outside it, efficiency falls off, down to $(num)20%$().$(br2)The target is about $(num)2,500 rpm$() at the ignition minimum and rises with mass (never past the safe spin). It $(thing)drifts$() on its own, and now and then jumps, so keep correcting with Offset."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Reading the band",
+      "text": "The monitor's $(thing)Resonance$() gauge shows the band in green and your spin as a white line; the number is the efficiency right now.$(br2)Spin that isn't turned into power isn't spent either: above the band it stays on the disc and builds ring stress. Spin also needs both $(l:building/axial_stabilizers)axial stabilizers$() to make any power at all."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Precession",
+      "text": "With the axial stabilizers up, the spinning disc tries to $(thing)lean$() toward the north-west or south-east. It pushes harder the faster it spins and the more uneven the stabilizers' mass, and the way it pushes wanders.$(br2)Counter it with the $(thing)◀ NW / SE ▶$() trim buttons; the $(thing)Wobble$() gauge shows the lean."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Too much wobble",
+      "text": "A gentle lean (the dark green middle of the gauge) is harmless. Past it, the wobble eats into efficiency and stability.$(br2)If it reaches the end of the gauge the disc tips over: a $(l:safety/failures)disc stall$(). A stall levels the disc again, but jolts the resonance band somewhere new."
     }
   ]
 }

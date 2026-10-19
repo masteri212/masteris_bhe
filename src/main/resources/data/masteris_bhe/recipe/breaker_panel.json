@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "LLL",
+    "RCR"
+  ],
+  "key": {
+    "L": {
+      "item": "minecraft:lever"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "C": {
+      "item": "masteris_bhe:stabilizer_casing"
+    }
+  },
+  "result": {
+    "id": "masteris_bhe:breaker_panel",
+    "count": 1
+  }
+}

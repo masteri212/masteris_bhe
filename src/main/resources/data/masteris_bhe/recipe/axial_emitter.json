@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "masteris_bhe:recording_disc_stall"
+    },
+    {
+      "item": "masteris_bhe:recording_overspin"
+    },
+    {
+      "item": "masteris_bhe:recording_starvation"
+    },
+    {
+      "item": "masteris_bhe:stabilizer_emitter"
+    }
+  ],
+  "result": {
+    "id": "masteris_bhe:axial_emitter",
+    "count": 1
+  }
+}

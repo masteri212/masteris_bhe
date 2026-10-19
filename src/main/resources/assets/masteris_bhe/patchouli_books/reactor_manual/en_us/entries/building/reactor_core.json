@@ -13,6 +13,10 @@
       "type": "patchouli:text",
       "text": "When the full structure is in place, the core switches to a brighter glow. That means the reactor is $(good)formed$().$(br2)It re-checks the structure every 2 seconds, so breaking a block un-forms it.",
       "title": "Formed"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:reactor_core"
     }
   ]
 }

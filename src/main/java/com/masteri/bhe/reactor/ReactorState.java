@@ -10,7 +10,11 @@ public enum ReactorState {
     DISC_STALL(ChatFormatting.GOLD),
     PRE_MELTDOWN(ChatFormatting.RED),
     MELTDOWN_1(ChatFormatting.DARK_RED),
-    MELTDOWN_2(ChatFormatting.DARK_PURPLE);
+    MELTDOWN_2(ChatFormatting.DARK_PURPLE),
+    /** Ignition went wrong partway: the black hole is open but not held. Fix the fault or it goes critical. */
+    IGNITION_FAULT(ChatFormatting.GOLD),
+    /** Shutdown went wrong partway: the reactor can't finish going offline until the fault is fixed. */
+    SHUTDOWN_FAULT(ChatFormatting.GOLD);
 
     public final ChatFormatting color;
 
@@ -27,8 +31,12 @@ public enum ReactorState {
         return this == MELTDOWN_1 || this == MELTDOWN_2;
     }
 
+    public boolean isFault() {
+        return this == IGNITION_FAULT || this == SHUTDOWN_FAULT;
+    }
+
     public boolean isAlarm() {
-        return this == DISC_STALL || this == PRE_MELTDOWN || isMeltdown();
+        return this == DISC_STALL || this == PRE_MELTDOWN || isMeltdown() || isFault();
     }
 
     public String translationKey() {

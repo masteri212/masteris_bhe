@@ -1,7 +1,7 @@
 package com.masteri.bhe.menu;
 
 import com.masteri.bhe.block.entity.ReactorCoreBlockEntity;
-import com.masteri.bhe.reactor.ReactorState;
+import com.masteri.bhe.reactor.ReactorReadout;
 import com.masteri.bhe.registry.ModBlocks;
 import com.masteri.bhe.registry.ModMenus;
 import net.minecraft.core.BlockPos;
@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 /** No slots: just synced reactor stats and button clicks (vanilla's container button packet, no custom networking). */
-public class ConsoleMenu extends AbstractContainerMenu {
+public class ConsoleMenu extends AbstractContainerMenu implements ReactorReadout {
     private final ContainerData data;
     private final ContainerLevelAccess access;
     @Nullable private final ReactorCoreBlockEntity core; // server side only
@@ -52,23 +52,9 @@ public class ConsoleMenu extends AbstractContainerMenu {
         return (core == null || !core.isRemoved()) && stillValid(access, player, ModBlocks.CONTROL_CONSOLE.get());
     }
 
-    // ------------------------------------------------------------------ client-side readers
-
-    private int wide(int lo, int hi) {
-        return ((data.get(hi) & 0xFFFF) << 16) | (data.get(lo) & 0xFFFF);
+    /** Client-side readers come from ReactorReadout. */
+    @Override
+    public int get(int slot) {
+        return data.get(slot);
     }
-
-    public ReactorState state() { return ReactorState.byId(data.get(0)); }
-    public double stability() { return data.get(1) / 10.0; }
-    public int rpm() { return data.get(2) & 0xFFFF; }
-    public double stress() { return data.get(3) / 10.0; }
-    public int offset() { return data.get(4); }
-    public int targetOffset() { return data.get(5); }
-    public int laserPower() { return data.get(6); }
-    public int timerSeconds() { return data.get(7) & 0xFFFF; }
-    public int energy() { return wide(8, 9); }
-    public int mass() { return wide(10, 11); }
-    public boolean formed() { return data.get(12) == 1; }
-    public boolean jumpWindow() { return data.get(13) == 1; }
-    public int output() { return wide(14, 15); }
 }

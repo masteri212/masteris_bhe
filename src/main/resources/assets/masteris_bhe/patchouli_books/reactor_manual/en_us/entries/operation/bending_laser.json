@@ -13,6 +13,10 @@
       "type": "patchouli:text",
       "text": "The beam bends around the core and comes back stronger: $(num)1.15x$() at low power, up to $(num)1.30x$() at full power.$(br2)The profit comes out of your mass: $(num)1$() mass per $(num)100,000 RF$() fired. Keep the stabilizers fed.",
       "title": "Gain"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:bending_laser"
     }
   ]
 }

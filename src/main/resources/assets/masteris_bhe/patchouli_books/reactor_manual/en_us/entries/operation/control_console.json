@@ -7,12 +7,21 @@
     {
       "type": "patchouli:spotlight",
       "item": "masteris_bhe:control_console",
-      "text": "Links to the nearest Reactor Core within $(num)32$() blocks.$(br2)Shows the state, any countdown, stability, ring stress, spin, offset, mass, laser power, stored energy and output."
+      "text": "Placing it builds a $(num)4$() wide, $(num)3$() tall monitor wall: one block left of where you place it, two to the right, two up. It needs the room.$(br2)Links to the nearest Reactor Core within $(num)32$() blocks. Breaking any part takes down the whole wall."
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(good)Ignite$(): start the reactor$(li)$(thing)Shutdown$(): safe stop$(li)$(danger)SCRAM$(): emergency stop$(li)$(thing)Jump$(): restart a stalled disc$(li)$(thing)Offset -/+$(): spin$(li)$(thing)Laser -/+$(): laser power in 10% steps",
-      "title": "Buttons"
+      "title": "The screen",
+      "text": "Shows the state, any countdown or fault, stability, ring stress, resonance, wobble, spin, offset, mass, laser power, stored energy and output. During a disc stall it shows a lamp for each stabilizer's breakers.$(br2)$(thing)Use a button on the screen$() to press it; the one you're looking at lights up. Sneak-use opens the old console panel."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Buttons",
+      "text": "$(li)$(good)Ignite$(): start the reactor$(li)$(thing)Shutdown$(): safe stop$(li)$(danger)SCRAM$(): emergency stop$(li)$(thing)Jump$(): restart a stalled disc (RESET during a fault)$(li)$(thing)Offset -/+$(): spin$(li)$(thing)Laser -/+$(): laser power in 10% steps$(li)$(thing)◀ NW / SE ▶$(): axial trim against wobble$(li)$(warn)VENT$(): only with a Venting Lance"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:control_console"
     }
   ]
 }

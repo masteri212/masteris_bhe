@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "masteris_bhe:block/breaker_panel_front",
+    "side": "masteris_bhe:block/stabilizer_casing",
+    "top": "masteris_bhe:block/stabilizer_casing"
+  }
+}

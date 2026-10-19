@@ -29,6 +29,11 @@ sourceSets.main.resources {
 repositories {
     // Add here additional repositories if required by some of the dependencies below.
     maven { name = "BlameJared"; url = "https://maven.blamejared.com" }
+    maven {
+        name = "SquidDev" // CC: Tweaked
+        url = "https://maven.squiddev.cc"
+        content { includeGroup("cc.tweaked") }
+    }
 }
 
 base {
@@ -139,6 +144,11 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
     implementation "vazkii.patchouli:Patchouli:${patchouli_version}"
+
+    // CC: Tweaked, optional: compiled against its API only (see compat/cc), the full mod just for the dev client.
+    compileOnly "cc.tweaked:cc-tweaked-${minecraft_version}-core-api:${cc_tweaked_version}"
+    compileOnly "cc.tweaked:cc-tweaked-${minecraft_version}-forge-api:${cc_tweaked_version}"
+    localRuntime "cc.tweaked:cc-tweaked-${minecraft_version}-forge:${cc_tweaked_version}"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

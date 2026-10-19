@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "CKC",
+    "KRK",
+    "CKC"
+  ],
+  "key": {
+    "C": {
+      "item": "masteris_bhe:stabilizer_casing"
+    },
+    "K": {
+      "item": "minecraft:copper_ingot"
+    },
+    "R": {
+      "item": "minecraft:redstone_block"
+    }
+  },
+  "result": {
+    "id": "masteris_bhe:stabilizer_coil",
+    "count": 4
+  }
+}

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Four $(num)5 x 5$() towers, $(num)7$() blocks tall, centered $(num)16$() blocks from the core on each side. Their bottom layer is level with the bottom of the ring.$(br2)Each one takes $(num)175$() blocks."
+      "text": "Four barrels lying on their side, $(num)5 x 5$() across and $(num)7$() long, each pointing straight at the core. Their centers are $(num)24$() blocks from the core, so the end facing it is $(num)21$() out. Their bottom layer is level with the bottom of the ring.$(br2)Each one takes $(num)175$() blocks.$(br2)Two more, smaller ones hang over the ring: see $(l:building/axial_stabilizers)Axial Stabilizers$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -17,25 +17,24 @@
           "K": "masteris_bhe:stabilizer_coil",
           "M": "masteris_bhe:mass_input_port",
           "s": "masteris_bhe:stabilizer_emitter[facing=south]",
+          "T": "masteris_bhe:stabilizer_console[facing=north]",
+          "P": "masteris_bhe:breaker_panel[facing=north]",
           "0": "masteris_bhe:stabilizer_casing"
         },
         "pattern": [
           [
             "CCCCC",
             "CCCCC",
+            "KKKKK",
             "CCMCC",
             "CCCCC",
+            "CCCCC",
             "CCCCC"
           ],
           [
-            "KKKKK",
-            "KCCCK",
-            "KCCCK",
-            "KCCCK",
-            "KKKKK"
-          ],
-          [
             "CCCCC",
+            "CCCCC",
+            "KCCCK",
             "CCCCC",
             "CCCCC",
             "CCCCC",
@@ -44,19 +43,16 @@
           [
             "CCCCC",
             "CCCCC",
-            "CCCCC",
-            "CCCCC",
-            "CCCCC"
-          ],
-          [
-            "CCCCC",
+            "KCCCK",
             "CCCCC",
             "CCCCC",
             "CCCCC",
             "CCsCC"
           ],
           [
+            "CPCTC",
             "CCCCC",
+            "KCCCK",
             "CCCCC",
             "CCCCC",
             "CCCCC",
@@ -65,7 +61,9 @@
           [
             "CCCCC",
             "CCCCC",
+            "KKKKK",
             "CC0CC",
+            "CCCCC",
             "CCCCC",
             "CCCCC"
           ]
@@ -73,12 +71,39 @@
         "symmetrical": false
       },
       "enable_visualize": true,
-      "text": "Shown with the core to the south. The emitter always faces the core."
+      "text": "Shown with the core to the south. The emitter faces the core; the console and breakers face away from it."
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)Layers 1, 2, 4, 5: $(item)Stabilizer Casing$()$(li)Layer 3: casing, with the $(item)Stabilizer Emitter$() in the middle of the side facing the core$(li)Layer 6: a ring of 16 $(item)Stabilizer Coils$()$(li)Layer 7: casing, with the $(l:operation/mass)Mass Input Port$() in the center",
-      "title": "Layer by layer"
+      "title": "Block by block",
+      "text": "$(li)Casing everywhere else$(li)$(item)Stabilizer Emitter$(): middle of the end facing the core$(li)A band of 16 $(item)Stabilizer Coils$() around the barrel, 2 blocks from the far end$(li)$(l:operation/mass)Mass Input Port$(): top, in the middle$(li)$(item)Stabilizer Console$() and $(item)Breaker Panel$(): on the far end, one row up, either side of the middle (console on the left as you face it)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:stabilizer_console",
+      "title": "Stabilizer Console",
+      "text": "A command line for this stabilizer. Type $(thing)help$() for the commands, $(thing)status$() for its mass, lens and breakers.$(br2)After a cracked lens, $(thing)lens recalibrate$() fixes it."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:breaker_panel",
+      "title": "Breaker Panel",
+      "text": "Use it to throw the breakers between $(good)NORMAL$() and $(warn)OVERCHARGED$().$(br2)A $(l:safety/failures)disc stall$() can only be jump-started once all four are overcharged. They drop back to normal on their own once the disc spins again."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:stabilizer_casing",
+      "recipe2": "masteris_bhe:stabilizer_coil"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:stabilizer_emitter",
+      "recipe2": "masteris_bhe:mass_input_port"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:stabilizer_console",
+      "recipe2": "masteris_bhe:breaker_panel"
     }
   ]
 }
