@@ -163,7 +163,7 @@ public class BlackHoleBombBlockEntity extends BlockEntity {
         level.explode(null, c.x, c.y, c.z, 8F, Level.ExplosionInteraction.NONE); // the bang; the crater is carved below
         Crater.blast(server, pos, radius, ReactorConfig.DESTROY_BLOCKS.get());
         if (ReactorConfig.BOMB_LEAVES_ZONE.get()) {
-            DarkZones.get(server).add(server, pos, DarkZones.radiusForMass(heldMass * 2));
+            DarkZones.get(server).add(server, Crater.floor(server, pos, radius), DarkZones.radiusForMass(heldMass * 2));
             ZoneTerrain.collapse(server, pos, radius);
         }
         broadcast(Component.translatable("message.masteris_bhe.bomb.detonated", pos.getX(), pos.getY(), pos.getZ(), radius)

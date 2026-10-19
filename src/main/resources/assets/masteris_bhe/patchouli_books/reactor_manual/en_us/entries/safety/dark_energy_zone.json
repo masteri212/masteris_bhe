@@ -12,7 +12,7 @@
     {
       "type": "patchouli:text",
       "title": "Size and border",
-      "text": "A reactor holding the ignition minimum of mass leaves a zone $(num)500$() blocks in radius. More mass, bigger zone: $(num)4x$() the mass doubles the radius, from $(num)150$() up to $(num)2,000$() blocks.$(br2)Above the crater it's a dome; below, its black wall goes straight down to the bottom of the world, so it always takes in the ground beneath. It bursts outward from the crater behind a violet shock front the moment the core collapses."
+      "text": "A reactor holding the ignition minimum of mass leaves a zone $(num)500$() blocks in radius. More mass, bigger zone: $(num)4x$() the mass doubles the radius, from $(num)150$() up to $(num)2,000$() blocks.$(br2)It's a sphere centered on the $(thing)bottom of the crater$(), so even when it shrinks it still takes in the crater floor and its ore. Its edge is a black wall you can see from far away. It bursts outward from the crater behind a violet shock front the moment the core collapses."
     },
     {
       "type": "patchouli:text",

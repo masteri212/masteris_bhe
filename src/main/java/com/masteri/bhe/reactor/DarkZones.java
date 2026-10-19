@@ -58,13 +58,12 @@ public final class DarkZones extends SavedData {
     }
 
     /**
-     * How far a point is from a zone's middle, by the zone's shape: a dome over a cylinder. Above the center it's the
-     * straight distance (the dome); below it only the horizontal distance counts, so the zone reaches all the way
-     * down to the bottom of the world however small it gets, and always takes in the ground and its ore.
+     * How far a point is from a zone's middle. A zone is a sphere, centered on the bottom of the crater that made it
+     * (see {@link Crater#floor}), so however small it gets, it still takes in the crater floor, the ground around
+     * it and its ore.
      */
     public static double distance(BlockPos center, double x, double y, double z) {
-        double dx = x - (center.getX() + 0.5), dy = y - (center.getY() + 0.5), dz = z - (center.getZ() + 0.5);
-        return dy >= 0 ? Math.sqrt(dx * dx + dy * dy + dz * dz) : Math.sqrt(dx * dx + dz * dz);
+        return Math.sqrt(center.distToCenterSqr(x, y, z));
     }
 
     /** What stabilizing a node did: the zone shrank to {@code zone}, or (if {@code zone} is null) was removed. */

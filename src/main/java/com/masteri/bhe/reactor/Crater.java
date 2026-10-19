@@ -66,6 +66,11 @@ public final class Crater {
         level.sendParticles(ParticleTypes.FLASH, c.x, c.y, c.z, 1, 0, 0, 0, 0);
     }
 
+    /** The bottom of a crater of {@code radius} blasted at {@code center} (where a dark energy zone is centered). */
+    public static BlockPos floor(ServerLevel level, BlockPos center, int radius) {
+        return new BlockPos(center.getX(), Math.max(level.getMinBuildHeight() + 1, center.getY() - radius), center.getZ());
+    }
+
     /** Whether a crater centered at {@code center} is still being carved. */
     public static boolean isCarving(ServerLevel level, BlockPos center) {
         for (Job job : JOBS) {

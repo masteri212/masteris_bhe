@@ -1462,7 +1462,8 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         lvl.explode(null, c.x, c.y, c.z, 8F, Level.ExplosionInteraction.NONE);
         if (lvl instanceof ServerLevel server) {
             Crater.blast(server, worldPosition, Math.round(radius), destroy);
-            DarkZones.get(server).add(server, worldPosition, DarkZones.radiusForMass(mass));
+            // The zone is centered on the crater's floor, so it takes in the ground (and ore) all round the crater.
+            DarkZones.get(server).add(server, Crater.floor(server, worldPosition, Math.round(radius)), DarkZones.radiusForMass(mass));
             ZoneTerrain.collapse(server, worldPosition, Math.round(radius));
         }
     }

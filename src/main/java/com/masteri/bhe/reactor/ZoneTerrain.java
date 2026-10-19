@@ -173,11 +173,12 @@ public final class ZoneTerrain {
         }
     }
 
+    /** Whether the crater over this zone (same column: the zone sits on its floor) is still being carved. */
     private static boolean waitingForCrater(ServerLevel level, BlockPos center) {
         for (Collapse c : COLLAPSES) {
-            if (c.level == level && c.center.equals(center)) return true;
+            if (c.level == level && c.center.getX() == center.getX() && c.center.getZ() == center.getZ()) return true;
         }
-        return Crater.isCarving(level, center);
+        return false;
     }
 
     // Chunk offsets around a zone's center, nearest first (packed dx << 16 | dz as shorts), and their squared

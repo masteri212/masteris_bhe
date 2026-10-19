@@ -77,18 +77,16 @@ public final class ZoneBorderRenderer {
             pose.pushPose();
             pose.translate(center.x - camera.x, center.y - camera.y, center.z - camera.z);
             Vec3 cameraLocal = camera.subtract(center);
-            // The zone is a dome over a cylinder: below the center its wall goes straight down to the world's bottom.
-            float bottom = (float) (mc.level.getMinBuildHeight() - center.y);
             if (zone.radius() > 0.5F && look.wallAlpha > 0) {
-                renderShell(pose, buffers.getBuffer(wallType), zone.radius(), bottom, cameraLocal, time, look, false);
+                renderSphere(pose, buffers.getBuffer(wallType), zone.radius(), cameraLocal, time, look, false);
             }
             if (look.shell > 0 && zone.radius() > 0.5F) {
-                renderShell(pose, buffers.getBuffer(glowType), zone.radius() * 1.004F, bottom, cameraLocal, time, look, true);
+                renderSphere(pose, buffers.getBuffer(glowType), zone.radius() * 1.004F, cameraLocal, time, look, true);
             }
             if (look.flash > 0) {
                 // A ball of light at the crater: the zone's first moment, or its implosion.
                 Look ball = new Look(0, 0, 0, look.flash, look.flashColor, 0, 0, look.flashColor);
-                renderShell(pose, buffers.getBuffer(glowType), look.flashRadius, Float.NaN, cameraLocal, time, ball, true);
+                renderSphere(pose, buffers.getBuffer(glowType), look.flashRadius, cameraLocal, time, ball, true);
             }
             pose.popPose();
             drew = true;
@@ -127,75 +125,33 @@ public final class ZoneBorderRenderer {
         }
     }
 
-    /**
-     * The zone's surface: a dome (the upper half of a sphere) over a straight wall down to {@code bottom} (local y),
-     * or with {@code bottom} NaN a whole sphere (the flash ball).
-     */
-    private static void renderShell(PoseStack pose, VertexConsumer vc, float radius, float bottom, Vec3 cameraLocal,
-                                    float time, Look look, boolean glow) {
+    private static void renderSphere(PoseStack pose, VertexConsumer vc, float radius, Vec3 cameraLocal, float time,
+                                     Look look, boolean glow) {
         PoseStack.Pose p = pose.last();
-        boolean sphere = Float.isNaN(bottom);
-        double horizontal = Math.sqrt(cameraLocal.x * cameraLocal.x + cameraLocal.z * cameraLocal.z);
-        boolean inside = sphere || cameraLocal.y >= 0
-                ? cameraLocal.lengthSqr() < (double) radius * radius
-                : horizontal < radius && cameraLocal.y > bottom;
-        // The dome (or the whole sphere): latitude from the equator (or the south pole) up to the north pole.
-        int firstStack = sphere ? 0 : STACKS / 2;
-        for (int i = firstStack; i < STACKS; i++) {
+        boolean inside = cameraLocal.lengthSqr() < (double) radius * radius;
+        for (int i = 0; i < STACKS; i++) {
             float lat0 = Mth.PI * i / STACKS - Mth.HALF_PI, lat1 = Mth.PI * (i + 1) / STACKS - Mth.HALF_PI;
             for (int j = 0; j < SLICES; j++) {
                 float lon0 = Mth.TWO_PI * j / SLICES, lon1 = Mth.TWO_PI * (j + 1) / SLICES;
-                quad(p, vc, radius, lat0, lat1, lon0, lon1, Float.NaN, Float.NaN, cameraLocal, inside, time, look, glow);
-            }
-        }
-        if (sphere || bottom >= 0) return;
-        // The wall below, in bands, so the shimmer runs on down it.
-        int bands = Mth.clamp((int) (-bottom / 8), 4, 48);
-        for (int i = 0; i < bands; i++) {
-            float y0 = bottom * i / bands, y1 = bottom * (i + 1) / bands;
-            for (int j = 0; j < SLICES; j++) {
-                float lon0 = Mth.TWO_PI * j / SLICES, lon1 = Mth.TWO_PI * (j + 1) / SLICES;
-                quad(p, vc, radius, 0, 0, lon0, lon1, y0, y1, cameraLocal, inside, time, look, glow);
+                vertex(p, vc, radius, lat0, lon0, cameraLocal, inside, time, look, glow);
+                vertex(p, vc, radius, lat1, lon0, cameraLocal, inside, time, look, glow);
+                vertex(p, vc, radius, lat1, lon1, cameraLocal, inside, time, look, glow);
+                vertex(p, vc, radius, lat0, lon1, cameraLocal, inside, time, look, glow);
+                if (glow) { // the glow render type culls back faces: draw the other winding too
+                    vertex(p, vc, radius, lat0, lon1, cameraLocal, inside, time, look, glow);
+                    vertex(p, vc, radius, lat1, lon1, cameraLocal, inside, time, look, glow);
+                    vertex(p, vc, radius, lat1, lon0, cameraLocal, inside, time, look, glow);
+                    vertex(p, vc, radius, lat0, lon0, cameraLocal, inside, time, look, glow);
+                }
             }
         }
     }
 
-    /** One quad of the surface: on the sphere by latitude, or (with {@code y0}, {@code y1} set) on the wall below. */
-    private static void quad(PoseStack.Pose p, VertexConsumer vc, float radius, float lat0, float lat1, float lon0, float lon1,
-                             float y0, float y1, Vec3 cameraLocal, boolean inside, float time, Look look, boolean glow) {
-        vertex(p, vc, radius, lat0, lon0, y0, cameraLocal, inside, time, look, glow);
-        vertex(p, vc, radius, lat1, lon0, y1, cameraLocal, inside, time, look, glow);
-        vertex(p, vc, radius, lat1, lon1, y1, cameraLocal, inside, time, look, glow);
-        vertex(p, vc, radius, lat0, lon1, y0, cameraLocal, inside, time, look, glow);
-        if (glow) { // the glow render type culls back faces: draw the other winding too
-            vertex(p, vc, radius, lat0, lon1, y0, cameraLocal, inside, time, look, glow);
-            vertex(p, vc, radius, lat1, lon1, y1, cameraLocal, inside, time, look, glow);
-            vertex(p, vc, radius, lat1, lon0, y1, cameraLocal, inside, time, look, glow);
-            vertex(p, vc, radius, lat0, lon0, y0, cameraLocal, inside, time, look, glow);
-        }
-    }
-
-    /** A point on the sphere at {@code lat}, {@code lon}; or, if {@code wallY} is set, on the wall at that height. */
-    private static void vertex(PoseStack.Pose p, VertexConsumer vc, float radius, float lat, float lon, float wallY,
+    private static void vertex(PoseStack.Pose p, VertexConsumer vc, float radius, float lat, float lon,
                                Vec3 cameraLocal, boolean inside, float time, Look look, boolean glow) {
-        float nx, ny, nz, x, y, z;
-        if (Float.isNaN(wallY)) {
-            float c = Mth.cos(lat);
-            nx = c * Mth.cos(lon);
-            ny = Mth.sin(lat);
-            nz = c * Mth.sin(lon);
-            x = nx * radius;
-            y = ny * radius;
-            z = nz * radius;
-        } else {
-            nx = Mth.cos(lon);
-            ny = 0;
-            nz = Mth.sin(lon);
-            x = nx * radius;
-            y = wallY;
-            z = nz * radius;
-            lat = wallY / radius; // keeps the shimmer running on past the equator
-        }
+        float c = Mth.cos(lat);
+        float nx = c * Mth.cos(lon), ny = Mth.sin(lat), nz = c * Mth.sin(lon);
+        float x = nx * radius, y = ny * radius, z = nz * radius;
         // How squarely we're looking at this bit of surface: 1 face-on, 0 edge-on.
         double vx = cameraLocal.x - x, vy = cameraLocal.y - y, vz = cameraLocal.z - z;
         double len = Math.sqrt(vx * vx + vy * vy + vz * vz);
