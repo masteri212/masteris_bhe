@@ -11,6 +11,8 @@ public final class ModCapabilities {
                 (port, side) -> port.getEnergy());
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BENDING_LASER.get(),
                 (laser, side) -> laser.getEnergy());
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BLACK_HOLE_BOMB.get(),
+                (bomb, side) -> bomb.getItemHandler());
     }
 
     private ModCapabilities() {}

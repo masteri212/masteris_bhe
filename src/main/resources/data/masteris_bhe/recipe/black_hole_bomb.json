@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "RGR",
+    "ECE",
+    "RGR"
+  ],
+  "key": {
+    "R": {
+      "item": "masteris_bhe:unstable_dark_residue"
+    },
+    "G": {
+      "item": "masteris_bhe:graviton_core"
+    },
+    "E": {
+      "item": "masteris_bhe:event_horizon_fragment"
+    },
+    "C": {
+      "item": "masteris_bhe:containment_box"
+    }
+  },
+  "result": {
+    "id": "masteris_bhe:black_hole_bomb",
+    "count": 1
+  }
+}

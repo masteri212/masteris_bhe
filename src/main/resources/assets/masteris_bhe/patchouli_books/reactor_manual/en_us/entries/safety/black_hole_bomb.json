@@ -1,0 +1,37 @@
+{
+  "name": "Black Hole Bomb",
+  "icon": "masteris_bhe:black_hole_bomb",
+  "category": "masteris_bhe:safety",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:black_hole_bomb",
+      "text": "A captured black hole, turned into a nuke-level explosive. It goes off bigger than a reactor collapse holding the same mass.$(br2)$(o)Exactly what it sounds like.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Fueling it",
+      "text": "Use any block on it to feed it in: $(num)1$() mass per block, like a stabilizer. Hoppers and pipes work too. Sneak to place blocks against it instead.$(br2)Blast radius: $(num)60$() blocks plus 1 per $(num)5,000$() mass, up to $(num)120$(). Use it empty-handed to read its mass and radius."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Arming",
+      "text": "Light it with $(item)Flint and Steel$() (or a Fire Charge), or give it a $(thing)redstone signal$(). A $(num)30$() second fuse starts, beeping faster as it runs down.$(br2)$(good)Defuse$(): use the $(l:building/configurator)Configurator$() on it.$(br2)$(danger)Breaking or blowing up an armed bomb sets it off at once.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Detonation",
+      "text": "For the last $(num)5$() seconds the black hole breaks out of the casing, swelling and pulling in everything within $(num)24$() blocks.$(br2)Then it collapses like a reactor: a carved crater, its $(l:safety/dark_energy_zone)loot$(), and a $(l:safety/dark_energy_zone)dark energy zone$() around it."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Config",
+      "text": "Server owners can change the fuse, the radius and its cap, and whether it leaves a dark energy zone. With collapse block damage off, it carves no crater."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:black_hole_bomb"
+    }
+  ]
+}

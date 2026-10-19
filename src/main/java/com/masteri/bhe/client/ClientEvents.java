@@ -23,6 +23,7 @@ public final class ClientEvents {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.REACTOR_CORE.get(), ReactorCoreRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.CONTROL_CONSOLE.get(), ConsoleMonitorRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.BLACK_HOLE_BOMB.get(), BlackHoleBombRenderer::new);
     }
 
     @SubscribeEvent

@@ -35,7 +35,7 @@
       "type": "patchouli:spotlight",
       "item": "masteris_bhe:dark_matter_shard",
       "title": "Unstable ore",
-      "text": "Nodes of $(item)Unstable Dark Ore$() dot the corrupted ground, thickest on the crater floor. Mining one gives $(item)Dark Matter Shards$(), but about one in four $(danger)discharges$(): it hurts, but breaks nothing."
+      "text": "Nodes of $(item)Unstable Dark Ore$() dot the corrupted ground, thickest on the crater floor. Mining one gives $(item)Dark Matter Shards$() (sometimes $(item)Unstable Dark Residue$() too), but about one in four $(danger)discharges$(): it hurts, but breaks nothing."
     },
     {
       "type": "patchouli:spotlight",

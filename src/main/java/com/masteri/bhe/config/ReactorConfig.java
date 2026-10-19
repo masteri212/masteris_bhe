@@ -98,6 +98,17 @@ public final class ReactorConfig {
             .defineInRange("dischargeChance", 0.25, 0.0, 1.0);
     public static final ModConfigSpec.BooleanValue CORRUPTED_MOBS = B.comment("Whether hostile mobs spawning in a zone become corrupted (stronger, drop Void Dust).")
             .define("corruptedMobs", true);
+    static { B.pop().push("bomb"); }
+    public static final ModConfigSpec.IntValue BOMB_FUSE_SECONDS = B.comment("Black Hole Bomb fuse, from arming to detonation.")
+            .defineInRange("fuseSeconds", 30, 5, 600);
+    public static final ModConfigSpec.DoubleValue BOMB_BASE_RADIUS = B.comment("Black Hole Bomb blast radius in blocks, before the mass bonus.")
+            .defineInRange("baseRadius", 60.0, 1.0, 200.0);
+    public static final ModConfigSpec.IntValue BOMB_MASS_PER_RADIUS = B.comment("Extra bomb radius: +1 per this much mass fed into it.")
+            .defineInRange("massPerRadius", 5_000, 1, Integer.MAX_VALUE);
+    public static final ModConfigSpec.DoubleValue BOMB_MAX_RADIUS = B.comment("Hard cap on the bomb's blast radius. The crater is carved over a few seconds; huge values take a while.")
+            .defineInRange("maxRadius", 120.0, 1.0, 200.0);
+    public static final ModConfigSpec.BooleanValue BOMB_LEAVES_ZONE = B.comment("Whether a detonation leaves a dark energy zone behind, like a reactor collapse.")
+            .define("leavesZone", true);
     static { B.pop(); }
 
     public static final ModConfigSpec SPEC = B.build();

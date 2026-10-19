@@ -2,6 +2,7 @@ package com.masteri.bhe.registry;
 
 import com.masteri.bhe.MasteriBHE;
 import com.masteri.bhe.block.BendingLaserBlock;
+import com.masteri.bhe.block.BlackHoleBombBlock;
 import com.masteri.bhe.block.BreakerPanelBlock;
 import com.masteri.bhe.block.ControlConsoleBlock;
 import com.masteri.bhe.block.FacingBlock;
@@ -66,8 +67,8 @@ public final class ModBlocks {
             ResearchCoreBlock::new, machine(MapColor.COLOR_CYAN).lightLevel(s -> 6));
     public static final DeferredBlock<Block> CONTAINMENT_BOX = BLOCKS.registerSimpleBlock("containment_box",
             machine(MapColor.NONE).noOcclusion().sound(SoundType.GLASS).lightLevel(s -> 4));
-    // TODO: explosion logic. For now it is a decorative block.
-    public static final DeferredBlock<Block> BLACK_HOLE_BOMB = BLOCKS.registerSimpleBlock("black_hole_bomb", machine(MapColor.COLOR_RED));
+    public static final DeferredBlock<BlackHoleBombBlock> BLACK_HOLE_BOMB = BLOCKS.registerBlock("black_hole_bomb",
+            BlackHoleBombBlock::new, machine(MapColor.COLOR_RED));
 
     // Dark energy zone
     public static final DeferredBlock<Block> CORRUPTED_STONE = BLOCKS.registerSimpleBlock("corrupted_stone",

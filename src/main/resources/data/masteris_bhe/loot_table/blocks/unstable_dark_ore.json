@@ -28,6 +28,25 @@
           ]
         }
       ]
+    },
+    {
+      "rolls": 1,
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:unstable_dark_residue"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.2
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
     }
   ],
   "random_sequence": "masteris_bhe:blocks/unstable_dark_ore"

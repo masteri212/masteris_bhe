@@ -2,6 +2,7 @@ package com.masteri.bhe.registry;
 
 import com.masteri.bhe.MasteriBHE;
 import com.masteri.bhe.block.entity.BendingLaserBlockEntity;
+import com.masteri.bhe.block.entity.BlackHoleBombBlockEntity;
 import com.masteri.bhe.block.entity.ControlConsoleBlockEntity;
 import com.masteri.bhe.block.entity.ResearchCoreBlockEntity;
 import com.masteri.bhe.block.entity.MassInputPortBlockEntity;
@@ -35,6 +36,10 @@ public final class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ResearchCoreBlockEntity>> RESEARCH_CORE =
             BLOCK_ENTITIES.register("research_core", () ->
                     BlockEntityType.Builder.of(ResearchCoreBlockEntity::new, ModBlocks.RESEARCH_CORE.get()).build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlackHoleBombBlockEntity>> BLACK_HOLE_BOMB =
+            BLOCK_ENTITIES.register("black_hole_bomb", () ->
+                    BlockEntityType.Builder.of(BlackHoleBombBlockEntity::new, ModBlocks.BLACK_HOLE_BOMB.get()).build(null));
 
     private ModBlockEntities() {}
 }

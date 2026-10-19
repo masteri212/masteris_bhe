@@ -634,7 +634,7 @@ public class ReactorCoreRenderer implements BlockEntityRenderer<ReactorCoreBlock
 
     // ------------------------------------------------------------------ geometry
 
-    private static void renderSphere(PoseStack pose, VertexConsumer vc, float radius) {
+    static void renderSphere(PoseStack pose, VertexConsumer vc, float radius) {
         PoseStack.Pose p = pose.last();
         int stacks = 12, slices = 20;
         for (int i = 0; i < stacks; i++) {
@@ -693,7 +693,7 @@ public class ReactorCoreRenderer implements BlockEntityRenderer<ReactorCoreBlock
     }
 
     /** Annulus in the XY plane, for the billboarded photon ring. */
-    private static void renderRing(PoseStack pose, VertexConsumer vc, float r0, float r1, float[] color, float alpha, float z) {
+    static void renderRing(PoseStack pose, VertexConsumer vc, float r0, float r1, float[] color, float alpha, float z) {
         PoseStack.Pose p = pose.last();
         int in = argb(alpha, color[0], color[1], color[2]), out = argb(0, color[0], color[1], color[2]);
         for (int s = 0; s < RING_SEGMENTS; s++) {
@@ -802,14 +802,14 @@ public class ReactorCoreRenderer implements BlockEntityRenderer<ReactorCoreBlock
      * looking: billboards turned by the camera's rotation spin as you turn your head. The pose matrix maps to
      * camera-relative space, so the camera is the origin there; its inverse gives the camera in local space.
      */
-    private static void faceCamera(PoseStack pose) {
+    static void faceCamera(PoseStack pose) {
         Vector3f toCamera = new Matrix4f(pose.last().pose()).invert().transformPosition(new Vector3f());
         if (toCamera.lengthSquared() < 1e-6F) return;
         pose.mulPose(new Quaternionf().rotationTo(new Vector3f(0, 0, 1), toCamera.normalize()));
     }
 
     /** A soft glowing dot at {@code at} that always faces the camera: bright in the middle, fading out. */
-    private static void renderFlare(PoseStack pose, VertexConsumer vc, Vector3f at, float size, float[] color, float alpha) {
+    static void renderFlare(PoseStack pose, VertexConsumer vc, Vector3f at, float size, float[] color, float alpha) {
         pose.pushPose();
         pose.translate(at.x, at.y, at.z);
         faceCamera(pose);
