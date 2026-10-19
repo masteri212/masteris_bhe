@@ -36,7 +36,7 @@ public final class DarkZoneShader {
         float best = 0;
         List<DarkZones.ClientZones.View> zones = DarkZones.ClientZones.views();
         for (DarkZones.ClientZones.View zone : zones) {
-            double dist = Math.sqrt(zone.center().distToCenterSqr(camera.x, camera.y, camera.z));
+            double dist = DarkZones.distance(zone.center(), camera.x, camera.y, camera.z); // dome over a cylinder
             if (dist >= zone.radius()) continue;
             double edge = Mth.clamp((zone.radius() - dist) / Math.min(EDGE_FADE, zone.radius() * 0.5), 0, 1);
             double depth = 1 - dist / zone.radius();

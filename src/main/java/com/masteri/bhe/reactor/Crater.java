@@ -11,6 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,6 +35,8 @@ public final class Crater {
     private static final int BLOCKS_PER_TICK = 40_000;
     private static final int BLOCK_FLAGS = Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE; // no neighbor updates
     private static final float MAX_DAMAGE = 60F;
+    /** Ticks to wait for a chunk to load before giving up on it (outside the world border, say). */
+    private static final int MAX_CHUNK_WAIT = 400;
 
     private static final List<Job> JOBS = new ArrayList<>();
     private static final List<Shockwave> SHOCKWAVES = new ArrayList<>();
@@ -115,6 +118,8 @@ public final class Crater {
         final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         // Cursor through the bounding cube, top layer first so things fall into the hole rather than onto it.
         int dy, dx, dz;
+        int age, waited;
+        final java.util.Set<Long> givenUp = new java.util.HashSet<>(); // chunks that never loaded
 
         Job(ServerLevel level, BlockPos center, int radius) {
             this.level = level;
@@ -122,12 +127,26 @@ public final class Crater {
             this.radius = radius;
             dy = radius;
             dx = dz = -radius;
+            loadChunks();
+        }
+
+        /**
+         * Keeps every chunk the crater touches loaded while it's carved, so it comes out whole wherever the players
+         * are (re-requested every few seconds, as the tickets run out on their own).
+         */
+        void loadChunks() {
+            int x0 = (center.getX() - radius) >> 4, x1 = (center.getX() + radius) >> 4;
+            int z0 = (center.getZ() - radius) >> 4, z1 = (center.getZ() + radius) >> 4;
+            for (int cx = x0; cx <= x1; cx++) {
+                for (int cz = z0; cz <= z1; cz++) ChunkTickets.request(level, cx, cz);
+            }
         }
 
         /** Carves the next slice; returns true when the whole sphere is done. */
         boolean run() {
             int budget = BLOCKS_PER_TICK;
             double r2 = (radius + 0.5) * (radius + 0.5);
+            if (++age % 100 == 0) loadChunks();
             while (budget-- > 0) {
                 if (dy < -radius) return true;
                 double d2 = dx * dx + dy * dy + dz * dz;
@@ -135,6 +154,14 @@ public final class Crater {
                 double edge = radius - 2 + 2 * noise(dx, dy, dz);
                 if (d2 <= r2 && d2 <= (edge + 0.5) * (edge + 0.5)) {
                     pos.set(center.getX() + dx, center.getY() + dy, center.getZ() + dz);
+                    if (level.isInWorldBounds(pos) && !level.isLoaded(pos)) {
+                        long chunk = ChunkPos.asLong(pos);
+                        if (!givenUp.contains(chunk)) {
+                            if (++waited < MAX_CHUNK_WAIT) return false; // still loading: carry on from here next tick
+                            givenUp.add(chunk);
+                        }
+                    }
+                    waited = 0;
                     if (level.isInWorldBounds(pos) && level.isLoaded(pos)) {
                         BlockState state = level.getBlockState(pos);
                         if (!state.isAir() && state.getDestroySpeed(level, pos) >= 0) { // bedrock and the like stay

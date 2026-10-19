@@ -39,8 +39,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Corrupts the terrain inside dark energy zones: the exposed natural ground (the {@code zone_convertible} block tag:
  * stone, dirt, sand, gravel...) turns into Corrupted Stone a few blocks deep, with Unstable Dark Ore nodes scattered
  * on top, denser on the crater floor. A 500-block zone is far too big to do at once, and most of it isn't loaded,
- * so it goes a few chunks per tick: the loaded chunks right after the crater is carved, the rest whenever they
- * load. Each converted chunk is marked (a chunk attachment) so it's only done once. Off when the server config
+ * so it goes a few chunks per tick: the loaded chunks right after the crater is carved, then the zone loads (or
+ * generates) the rest itself, nearest first, so all of it is converted (see loadZones). Each converted chunk is marked (a chunk attachment) so it's only done once. Off when the server config
  * disables collapse block damage.
  */
 @EventBusSubscriber(modid = MasteriBHE.MODID)
@@ -111,9 +111,13 @@ public final class ZoneTerrain {
         }
 
         boolean enabled = ReactorConfig.DESTROY_BLOCKS.get();
+        if (enabled) {
+            for (ServerLevel level : server.getAllLevels()) loadZones(level);
+        }
         ChunkRef loaded;
         while ((loaded = LOADED.poll()) != null) {
-            if (enabled && loaded.level.getServer() == server && touchesZone(loaded)) QUEUE.add(loaded);
+            // Just loaded: to the front, so it's converted before its load ticket (if it was ours) runs out.
+            if (enabled && loaded.level.getServer() == server && touchesZone(loaded)) QUEUE.addFirst(loaded);
         }
         if (!enabled) {
             QUEUE.clear();
@@ -123,6 +127,87 @@ public final class ZoneTerrain {
             ChunkRef ref = QUEUE.poll();
             if (ref.level.getServer() == server && convert(ref)) done++;
         }
+    }
+
+    // ------------------------------------------------------------------ loading the whole zone
+
+    /** Chunks looked at per tick that turn out to be loaded already (those cost no load, just a check). */
+    private static final int CHECKS_PER_TICK = 16;
+
+    /**
+     * Works through each zone's chunks, nearest the center first, loading (or generating) the ones that aren't
+     * loaded so they get converted too, a few per tick (see the config). Already loaded ones are queued directly.
+     * A zone whose crater is still being carved waits; the progress is saved with the zone.
+     */
+    private static void loadZones(ServerLevel level) {
+        int loads = ReactorConfig.ZONE_CHUNKS_PER_TICK.get();
+        if (loads <= 0) return;
+        DarkZones data = DarkZones.get(level);
+        if (data.zones().isEmpty()) return;
+        int checks = CHECKS_PER_TICK;
+        for (DarkZones.Zone zone : data.zones()) {
+            if (loads <= 0 || checks <= 0) return;
+            if (waitingForCrater(level, zone.center())) continue;
+            int cursor = data.terrainCursor(zone.center());
+            int reach = (zone.radius() >> 4) + 2; // in chunks
+            int[] offsets = chunkOffsets(reach);
+            int cx = zone.center().getX() >> 4, cz = zone.center().getZ() >> 4;
+            int start = cursor;
+            while (cursor < offsets.length && loads > 0 && checks-- > 0) {
+                int packed = offsets[cursor];
+                int x = cx + (short) (packed >> 16), z = cz + (short) packed;
+                if (chunkDist2[cursor] > reach * reach) {
+                    cursor = Integer.MAX_VALUE; // past the edge: done
+                    break;
+                }
+                cursor++;
+                if (!zone.touchesChunk(x, z)) continue;
+                if (level.hasChunk(x, z)) {
+                    QUEUE.add(new ChunkRef(level, x, z, 0)); // skipped there if it's already converted
+                } else {
+                    ChunkTickets.request(level, x, z); // the load event queues it
+                    loads--;
+                }
+            }
+            if (cursor != start) data.setTerrainCursor(zone.center(), cursor);
+        }
+    }
+
+    private static boolean waitingForCrater(ServerLevel level, BlockPos center) {
+        for (Collapse c : COLLAPSES) {
+            if (c.level == level && c.center.equals(center)) return true;
+        }
+        return Crater.isCarving(level, center);
+    }
+
+    // Chunk offsets around a zone's center, nearest first (packed dx << 16 | dz as shorts), and their squared
+    // distances. Shared by every zone, grown when a bigger zone needs it.
+    private static int[] chunkOffsets = new int[0], chunkDist2 = new int[0];
+    private static int chunkReach = -1;
+
+    private static int[] chunkOffsets(int reach) {
+        if (reach <= chunkReach) return chunkOffsets;
+        int r = Math.min(reach, 4000);
+        long[] keys = new long[(2 * r + 1) * (2 * r + 1)];
+        int n = 0;
+        for (int dx = -r; dx <= r; dx++) {
+            for (int dz = -r; dz <= r; dz++) {
+                long d2 = (long) dx * dx + (long) dz * dz;
+                if (d2 > (long) r * r) continue;
+                keys[n++] = d2 << 32 | ((dx & 0xFFFFL) << 16) | (dz & 0xFFFFL);
+            }
+        }
+        long[] sorted = java.util.Arrays.copyOf(keys, n);
+        java.util.Arrays.sort(sorted);
+        int[] offsets = new int[n], dist2 = new int[n];
+        for (int i = 0; i < n; i++) {
+            offsets[i] = (int) (sorted[i] & 0xFFFFFFFFL);
+            dist2[i] = (int) (sorted[i] >>> 32);
+        }
+        chunkDist2 = dist2;
+        chunkOffsets = offsets;
+        chunkReach = r;
+        return offsets;
     }
 
     private static boolean touchesZone(ChunkRef ref) {

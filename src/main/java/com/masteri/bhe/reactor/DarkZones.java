@@ -45,7 +45,7 @@ public final class DarkZones extends SavedData {
                 Zone::new);
 
         public boolean contains(double x, double y, double z) {
-            return center.distToCenterSqr(x, y, z) <= (double) radius * radius;
+            return distance(center, x, y, z) <= radius;
         }
 
         /** Whether the zone reaches into the 16x16 column of the given chunk (ignoring height). */
@@ -55,6 +55,16 @@ public final class DarkZones extends SavedData {
             long dz = Math.max(0, Math.max(minZ - center.getZ(), center.getZ() - (minZ + 15)));
             return dx * dx + dz * dz <= (long) radius * radius;
         }
+    }
+
+    /**
+     * How far a point is from a zone's middle, by the zone's shape: a dome over a cylinder. Above the center it's the
+     * straight distance (the dome); below it only the horizontal distance counts, so the zone reaches all the way
+     * down to the bottom of the world however small it gets, and always takes in the ground and its ore.
+     */
+    public static double distance(BlockPos center, double x, double y, double z) {
+        double dx = x - (center.getX() + 0.5), dy = y - (center.getY() + 0.5), dz = z - (center.getZ() + 0.5);
+        return dy >= 0 ? Math.sqrt(dx * dx + dy * dy + dz * dz) : Math.sqrt(dx * dx + dz * dz);
     }
 
     /** What stabilizing a node did: the zone shrank to {@code zone}, or (if {@code zone} is null) was removed. */
@@ -78,6 +88,8 @@ public final class DarkZones extends SavedData {
     }
 
     private final List<Zone> zones = new ArrayList<>();
+    /** How far ZoneTerrain's chunk loader has got through each zone, nearest chunk first (by its center). */
+    private final java.util.Map<BlockPos, Integer> terrainCursors = new java.util.HashMap<>();
 
     public static DarkZones get(ServerLevel level) {
         return level.getDataStorage().computeIfAbsent(new Factory<>(DarkZones::new, DarkZones::load), NAME);
@@ -100,8 +112,18 @@ public final class DarkZones extends SavedData {
 
     public void add(ServerLevel level, BlockPos center, int radius) {
         zones.add(new Zone(center.immutable(), radius, ReactorConfig.ZONE_NODES.get()));
+        terrainCursors.remove(center); // a new zone here starts its terrain over
         setDirty();
         sync(level);
+    }
+
+    public int terrainCursor(BlockPos center) {
+        return terrainCursors.getOrDefault(center, 0);
+    }
+
+    public void setTerrainCursor(BlockPos center, int cursor) {
+        terrainCursors.put(center.immutable(), cursor);
+        setDirty();
     }
 
     /** The zone whose center is closest to the point, among those containing it, or null outside every zone. */
@@ -110,7 +132,7 @@ public final class DarkZones extends SavedData {
         Zone best = null;
         for (Zone zone : zones) {
             if (!zone.contains(x, y, z)) continue;
-            if (best == null || zone.center.distToCenterSqr(x, y, z) < best.center.distToCenterSqr(x, y, z)) best = zone;
+            if (best == null || distance(zone.center, x, y, z) < distance(best.center, x, y, z)) best = zone;
         }
         return best;
     }
@@ -198,7 +220,10 @@ public final class DarkZones extends SavedData {
         for (Tag t : tag.getList("Zones", Tag.TAG_COMPOUND)) {
             CompoundTag z = (CompoundTag) t;
             int nodes = z.contains("Nodes") ? z.getInt("Nodes") : ReactorConfig.ZONE_NODES.get();
-            NbtUtils.readBlockPos(z, "Center").ifPresent(c -> data.zones.add(new Zone(c, z.getInt("Radius"), Math.max(1, nodes))));
+            NbtUtils.readBlockPos(z, "Center").ifPresent(c -> {
+                data.zones.add(new Zone(c, z.getInt("Radius"), Math.max(1, nodes)));
+                if (z.contains("TerrainCursor")) data.terrainCursors.put(c, z.getInt("TerrainCursor"));
+            });
         }
         return data;
     }
@@ -211,6 +236,7 @@ public final class DarkZones extends SavedData {
             z.put("Center", NbtUtils.writeBlockPos(zone.center));
             z.putInt("Radius", zone.radius);
             z.putInt("Nodes", zone.nodes);
+            z.putInt("TerrainCursor", terrainCursors.getOrDefault(zone.center, 0));
             list.add(z);
         }
         tag.put("Zones", list);
@@ -235,7 +261,7 @@ public final class DarkZones extends SavedData {
          */
         public record View(BlockPos center, float radius, Phase phase, float progress, long started) {
             public boolean contains(double x, double y, double z) {
-                return center.distToCenterSqr(x, y, z) <= (double) radius * radius;
+                return distance(center, x, y, z) <= radius;
             }
         }
 

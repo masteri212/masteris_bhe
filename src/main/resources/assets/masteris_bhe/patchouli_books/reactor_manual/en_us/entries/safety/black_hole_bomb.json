@@ -12,7 +12,7 @@
     {
       "type": "patchouli:text",
       "title": "Fueling it",
-      "text": "Use any block on it to feed it in: $(num)1$() mass per block, like a stabilizer. Hoppers and pipes work too. Sneak to place blocks against it instead.$(br2)Blast radius: $(num)60$() blocks plus 1 per $(num)5,000$() mass, up to $(num)120$(). Use it empty-handed to read its mass and radius."
+      "text": "Use any block on it to feed it in: $(num)1$() mass per block, like a stabilizer. Hoppers and pipes work too. Sneak to place blocks against it instead.$(br2)Blast radius: $(num)60$() blocks plus 1 per $(num)25$() mass ($(num)100$() at 1,000 mass), up to $(num)150$(). Use it empty-handed to read its mass and radius."
     },
     {
       "type": "patchouli:text",

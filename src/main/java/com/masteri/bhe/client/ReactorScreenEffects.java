@@ -91,7 +91,7 @@ public final class ReactorScreenEffects {
         Vec3 camera = event.getCamera().getPosition();
         float shake = 0;
         for (DarkZones.ClientZones.View zone : DarkZones.ClientZones.views()) {
-            double dist = Math.sqrt(zone.center().distToCenterSqr(camera.x, camera.y, camera.z));
+            double dist = DarkZones.distance(zone.center(), camera.x, camera.y, camera.z);
             double reach = Math.max(zone.radius(), 200) + 200;
             if (dist > reach) continue;
             float near = (float) (1 - dist / reach);

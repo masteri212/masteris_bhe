@@ -12,7 +12,7 @@
     {
       "type": "patchouli:text",
       "title": "Size and border",
-      "text": "A reactor holding the ignition minimum of mass leaves a zone $(num)500$() blocks in radius. More mass, bigger zone: $(num)4x$() the mass doubles the radius, from $(num)150$() up to $(num)2,000$() blocks.$(br2)Its edge is a black wall you can see from far away. It bursts outward from the crater behind a violet shock front the moment the core collapses."
+      "text": "A reactor holding the ignition minimum of mass leaves a zone $(num)500$() blocks in radius. More mass, bigger zone: $(num)4x$() the mass doubles the radius, from $(num)150$() up to $(num)2,000$() blocks.$(br2)Above the crater it's a dome; below, its black wall goes straight down to the bottom of the world, so it always takes in the ground beneath. It bursts outward from the crater behind a violet shock front the moment the core collapses."
     },
     {
       "type": "patchouli:text",
@@ -23,7 +23,7 @@
       "type": "patchouli:spotlight",
       "item": "masteris_bhe:corrupted_stone",
       "title": "Corrupted ground",
-      "text": "Bare ground turns to $(item)Corrupted Stone$() a few blocks deep, chunk by chunk as they load. Plants die off.$(br2)Trees, water and anything you built are left alone."
+      "text": "Bare ground turns to $(item)Corrupted Stone$() a few blocks deep, chunk by chunk, outward from the crater. The zone loads its own chunks, so all of it turns, even where nobody goes. Plants die off.$(br2)Trees, water and anything you built are left alone."
     },
     {
       "type": "patchouli:spotlight",
