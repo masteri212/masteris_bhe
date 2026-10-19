@@ -74,11 +74,11 @@ public final class ZoneTerrain {
     /** Queues the zone's currently loaded chunks for conversion, nearest the center first. */
     public static void queueLoadedChunks(ServerLevel level, DarkZones.Zone zone, int craterRadius) {
         if (!ReactorConfig.DESTROY_BLOCKS.get()) return;
-        int cx = zone.center().getX() >> 4, cz = zone.center().getZ() >> 4, r = (zone.radius() >> 4) + 1;
+        int cx = zone.center().getX() >> 4, cz = zone.center().getZ() >> 4, r = (zone.falloutRadius() >> 4) + 1;
         List<ChunkRef> refs = new ArrayList<>();
         for (int dx = -r; dx <= r; dx++) {
             for (int dz = -r; dz <= r; dz++) {
-                if (zone.touchesChunk(cx + dx, cz + dz) && level.hasChunk(cx + dx, cz + dz)) {
+                if (zone.falloutTouchesChunk(cx + dx, cz + dz) && level.hasChunk(cx + dx, cz + dz)) {
                     refs.add(new ChunkRef(level, cx + dx, cz + dz, craterRadius));
                 }
             }
@@ -149,7 +149,7 @@ public final class ZoneTerrain {
             if (loads <= 0 || checks <= 0) return;
             if (waitingForCrater(level, zone.center())) continue;
             int cursor = data.terrainCursor(zone.center());
-            int reach = (zone.radius() >> 4) + 2; // in chunks
+            int reach = (zone.falloutRadius() >> 4) + 2; // in chunks: only the fallout is converted
             int[] offsets = chunkOffsets(reach);
             int cx = zone.center().getX() >> 4, cz = zone.center().getZ() >> 4;
             int start = cursor;
@@ -161,7 +161,7 @@ public final class ZoneTerrain {
                     break;
                 }
                 cursor++;
-                if (!zone.touchesChunk(x, z)) continue;
+                if (!zone.falloutTouchesChunk(x, z)) continue;
                 if (level.hasChunk(x, z)) {
                     QUEUE.add(new ChunkRef(level, x, z, 0)); // skipped there if it's already converted
                 } else {
@@ -213,7 +213,7 @@ public final class ZoneTerrain {
 
     private static boolean touchesZone(ChunkRef ref) {
         for (DarkZones.Zone zone : DarkZones.get(ref.level).zones()) {
-            if (zone.touchesChunk(ref.x, ref.z)) return true;
+            if (zone.falloutTouchesChunk(ref.x, ref.z)) return true;
         }
         return false;
     }
@@ -237,7 +237,7 @@ public final class ZoneTerrain {
                 int x = chunk.getPos().getMinBlockX() + lx, z = chunk.getPos().getMinBlockZ() + lz;
                 int top = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, lx, lz);
                 DarkZones.Zone zone = zones.at(x + 0.5, top + 0.5, z + 0.5);
-                if (zone == null) continue;
+                if (zone == null || !zone.inFallout(x + 0.5, top + 0.5, z + 0.5)) continue; // past it: just low gravity
                 int dx = x - zone.center().getX(), dz = z - zone.center().getZ();
                 boolean crater = ref.craterRadius > 0 && dx * dx + dz * dz <= crater2;
                 boolean placeOre = random.nextDouble() < (crater ? oreChance * CRATER_ORE_BONUS : oreChance);

@@ -94,7 +94,7 @@ public final class ZoneEffects {
         Mob mob = event.getEntity();
         // getLevel() is a WorldGenRegion during chunk generation; zones are only read on the real level.
         if (!(mob instanceof Enemy) || !(event.getLevel() instanceof ServerLevel level) || !ReactorConfig.CORRUPTED_MOBS.get()) return;
-        if (DarkZones.inZone(level, event.getX(), event.getY(), event.getZ())) corrupt(mob);
+        if (DarkZones.inFallout(level, event.getX(), event.getY(), event.getZ())) corrupt(mob); // only near the crater
     }
 
     /** Marks the mob as corrupted (saved with it) and makes it tougher: 2x health, +50% damage, faster, some armor. */

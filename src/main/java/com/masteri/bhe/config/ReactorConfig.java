@@ -88,6 +88,9 @@ public final class ReactorConfig {
             .defineInRange("zoneMinRadius", 150, 16, 10_000);
     public static final ModConfigSpec.IntValue ZONE_MAX_RADIUS = B.comment("Largest zone a collapse can leave, however much mass it held.")
             .defineInRange("zoneMaxRadius", 2000, 16, 30_000);
+    public static final ModConfigSpec.IntValue ZONE_FALLOUT_RADIUS = B.comment("How far a zone's fallout reaches from its center: corrupted ground, ore nodes and corrupted mobs.",
+                    "Past it the zone is only low gravity (and the view inside a black hole). A zone smaller than this is all fallout.")
+            .defineInRange("falloutRadius", 500, 16, 30_000);
     public static final ModConfigSpec.IntValue ZONE_NODES = B.comment("Ore nodes that must be stabilized to remove a new zone. Each one shrinks it; the last one removes it.")
             .defineInRange("stabilizationNodes", 8, 1, 1000);
     public static final ModConfigSpec.DoubleValue ZONE_GRAVITY = B.comment("Gravity multiplier for mobs and players inside a zone.")

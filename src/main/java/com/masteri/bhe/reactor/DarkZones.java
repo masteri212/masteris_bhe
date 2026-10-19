@@ -50,10 +50,31 @@ public final class DarkZones extends SavedData {
 
         /** Whether the zone reaches into the 16x16 column of the given chunk (ignoring height). */
         public boolean touchesChunk(int chunkX, int chunkZ) {
+            return touchesChunk(chunkX, chunkZ, radius);
+        }
+
+        /**
+         * How far the zone's fallout reaches: corrupted ground, ore nodes and corrupted mobs. It's capped (the config's
+         * fallout radius) while the zone itself, its low gravity, goes on scaling with the collapse's mass.
+         */
+        public int falloutRadius() {
+            return Math.min(radius, ReactorConfig.ZONE_FALLOUT_RADIUS.get());
+        }
+
+        public boolean inFallout(double x, double y, double z) {
+            return distance(center, x, y, z) <= falloutRadius();
+        }
+
+        /** Whether the fallout reaches into the 16x16 column of the given chunk (ignoring height). */
+        public boolean falloutTouchesChunk(int chunkX, int chunkZ) {
+            return touchesChunk(chunkX, chunkZ, falloutRadius());
+        }
+
+        private boolean touchesChunk(int chunkX, int chunkZ, int reach) {
             int minX = chunkX << 4, minZ = chunkZ << 4;
             long dx = Math.max(0, Math.max(minX - center.getX(), center.getX() - (minX + 15)));
             long dz = Math.max(0, Math.max(minZ - center.getZ(), center.getZ() - (minZ + 15)));
-            return dx * dx + dz * dz <= (long) radius * radius;
+            return dx * dx + dz * dz <= (long) reach * reach;
         }
     }
 
@@ -139,6 +160,16 @@ public final class DarkZones extends SavedData {
     @Nullable
     public Zone at(BlockPos pos) {
         return at(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+    }
+
+    /** Whether the point is inside any zone's fallout (see {@link Zone#falloutRadius}). Cheap when there are none. */
+    public static boolean inFallout(ServerLevel level, double x, double y, double z) {
+        DarkZones data = get(level);
+        if (data.zones.isEmpty()) return false;
+        for (Zone zone : data.zones) {
+            if (zone.inFallout(x, y, z)) return true;
+        }
+        return false;
     }
 
     /** Whether the point is inside any zone in this level. Cheap when there are none. */

@@ -20,16 +20,21 @@
       "text": "Inside, the world looks like it's seen from within a black hole: the view swirls and bends.$(br2)$(thing)Gravity is weak$(): everything falls at $(num)40%$() speed, jumps higher and takes less fall damage. Mobs float too."
     },
     {
+      "type": "patchouli:text",
+      "title": "Fallout",
+      "text": "The $(thing)fallout$() is the part within $(num)500$() blocks of the crater: corrupted ground, ore nodes and corrupted mobs.$(br2)A big collapse's zone reaches much further than that, but beyond the fallout it's only low gravity and the warped view. A zone smaller than $(num)500$() is fallout all the way to its wall."
+    },
+    {
       "type": "patchouli:spotlight",
       "item": "masteris_bhe:corrupted_stone",
       "title": "Corrupted ground",
-      "text": "Bare ground turns to $(item)Corrupted Stone$() a few blocks deep, chunk by chunk, outward from the crater. The zone loads its own chunks, so all of it turns, even where nobody goes. Plants die off.$(br2)Trees, water and anything you built are left alone."
+      "text": "Bare ground turns to $(item)Corrupted Stone$() a few blocks deep, outward from the crater to $(num)500$() blocks. The zone loads its own chunks, so all of it turns. Plants die off.$(br2)Trees, water and anything you built are left alone."
     },
     {
       "type": "patchouli:spotlight",
       "item": "masteris_bhe:void_dust",
       "title": "Corrupted mobs",
-      "text": "Hostile mobs born in the zone are $(danger)corrupted$(): twice the health, harder hits, faster, armored, trailing purple sparks.$(br2)They drop $(item)Void Dust$(), and rarely a $(item)Graviton Core$()."
+      "text": "Hostile mobs born within $(num)500$() blocks of the crater are $(danger)corrupted$(): twice the health, harder hits, faster, armored, trailing purple sparks.$(br2)They drop $(item)Void Dust$(), and rarely a $(item)Graviton Core$()."
     },
     {
       "type": "patchouli:spotlight",
