@@ -47,4 +47,14 @@ public interface ReactorReadout {
     default int wobble() { return (short) get(24); }
     /** -10..10: the axial trim, negative pushing toward the north-west. */
     default int axialTrim() { return (short) get(25); }
+    /** How many failures (or a shutdown) are waiting underneath the current one. */
+    default int pendingCount() { return get(26); }
+    /** The one that comes back next. */
+    default ReactorState pendingState() { return ReactorState.byId(get(27)); }
+    default ReactorCoreBlockEntity.Fault pendingFault() {
+        ReactorCoreBlockEntity.Fault[] all = ReactorCoreBlockEntity.Fault.values();
+        int i = get(28);
+        return i >= 0 && i < all.length ? all[i] : ReactorCoreBlockEntity.Fault.NONE;
+    }
+    default int pendingFaultMask() { return get(29); }
 }

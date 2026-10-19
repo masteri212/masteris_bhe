@@ -28,6 +28,11 @@
       "type": "patchouli:text",
       "text": "Breaking any part of the structure while the reactor runs sends it straight to $(danger)pre-meltdown$().$(br2)Put the block back fast.",
       "title": "Containment Breach"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "One on top of another",
+      "text": "Failures stack. If a new one hits while you're dealing with another (a breach during a fault, a stall during pre-meltdown), the first is $(thing)put on hold$(), its timer paused, and comes back exactly as it was once the new one is handled. The console shows what's waiting: $(thing)Then: ...$()$(br2)A failure that runs out of time stays underneath with half its time back. Only a vent or a meltdown clears them all."
     }
   ]
 }

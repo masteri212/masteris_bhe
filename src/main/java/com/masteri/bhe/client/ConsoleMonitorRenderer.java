@@ -104,6 +104,17 @@ public class ConsoleMonitorRenderer implements BlockEntityRenderer<ControlConsol
             line = r.faultFixed() ? Component.translatable("gui.masteris_bhe.fault.fixed")
                     : Component.translatable("gui.masteris_bhe.fault." + fault.name().toLowerCase(), arg);
             if (r.faultFixed()) color = 0xFF60E080;
+        } else if (r.pendingCount() > 0) {
+            // What comes back once this is dealt with (failures stack: see ReactorCoreBlockEntity.Suspended).
+            ReactorCoreBlockEntity.Fault waiting = r.pendingFault();
+            Component what = waiting != ReactorCoreBlockEntity.Fault.NONE
+                    ? Component.translatable("gui.masteris_bhe.fault." + waiting.name().toLowerCase(),
+                            waiting == ReactorCoreBlockEntity.Fault.SINGULARITY_REBOUND ? "" : ReactorCoreBlockEntity.sideNames(r.pendingFaultMask()))
+                    : Component.translatable(r.pendingState().translationKey());
+            line = r.pendingCount() > 1
+                    ? Component.translatable("gui.masteris_bhe.monitor.pending_more", what, r.pendingCount() - 1)
+                    : Component.translatable("gui.masteris_bhe.monitor.pending", what);
+            color = 0xFFFF9050;
         } else if (r.state() == ReactorState.DISC_STALL) {
             line = Component.translatable("gui.masteris_bhe.monitor.stall_hint");
         } else if (!r.axialFormed()) {

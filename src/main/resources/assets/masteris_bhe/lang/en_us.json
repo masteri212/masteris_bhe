@@ -252,5 +252,8 @@
   "message.masteris_bhe.bomb.countdown": "BLACK HOLE BOMB: %s",
   "message.masteris_bhe.bomb.detonated": "A black hole bomb went off at %s, %s, %s (radius %s).",
   "message.masteris_bhe.bomb.status": "Black Hole Bomb: %s mass, blast radius %s. Arm it with Flint and Steel or redstone.",
-  "message.masteris_bhe.bomb.status_armed": "ARMED: %s mass, radius %s, %s s left. Defuse it with the Configurator."
+  "message.masteris_bhe.bomb.status_armed": "ARMED: %s mass, radius %s, %s s left. Defuse it with the Configurator.",
+  "message.masteris_bhe.reactor.resumed": "That's handled, but the earlier problem is back: %s",
+  "gui.masteris_bhe.monitor.pending": "Then: %s",
+  "gui.masteris_bhe.monitor.pending_more": "Then: %s (+%s more)"
 }

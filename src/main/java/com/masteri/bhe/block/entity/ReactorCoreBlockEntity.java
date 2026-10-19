@@ -68,7 +68,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
     public static final int BUTTON_IGNITE = 0, BUTTON_SHUTDOWN = 1, BUTTON_SCRAM = 2, BUTTON_OFFSET_DOWN = 3,
             BUTTON_OFFSET_UP = 4, BUTTON_LASER_DOWN = 5, BUTTON_LASER_UP = 6, BUTTON_JUMP_START = 7, BUTTON_VENT = 8,
             BUTTON_TRIM_NW = 9, BUTTON_TRIM_SE = 10;
-    public static final int DATA_SIZE = 26;
+    public static final int DATA_SIZE = 30;
 
     private static final int RECHECK_INTERVAL = 40;
     private static final double MIN_SPIN_SHAKE = 0.2, MAX_SPIN_SHAKE = 2.0;
@@ -212,6 +212,10 @@ public class ReactorCoreBlockEntity extends BlockEntity {
                 case 23 -> (int) Math.round(lastEfficiency * 100);
                 case 24 -> (int) Math.round(wobble);
                 case 25 -> axialTrim;
+                case 26 -> suspended.size();
+                case 27 -> suspended.isEmpty() ? 0 : suspended.peek().state().ordinal();
+                case 28 -> suspended.isEmpty() ? 0 : suspended.peek().fault().ordinal();
+                case 29 -> suspended.isEmpty() ? 0 : suspended.peek().faultMask();
                 default -> 0;
             };
         }
@@ -525,7 +529,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
                     breachSeq++;
                     breached = true;
                     breachEffects();
-                    enterState(ReactorState.PRE_MELTDOWN, ReactorConfig.PRE_MELTDOWN_SECONDS.get() * 20);
+                    escalate(ReactorState.PRE_MELTDOWN, ReactorConfig.PRE_MELTDOWN_SECONDS.get() * 20);
                 }
                 if (state == ReactorState.OFFLINE) setFormed(false);
             }
@@ -571,7 +575,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
             case DISC_STALL -> {
                 rpm = 0;
                 stability = Math.max(0, stability - 0.02);
-                if (--stateTimer <= 0) enterState(ReactorState.PRE_MELTDOWN, ReactorConfig.PRE_MELTDOWN_SECONDS.get() * 20);
+                if (--stateTimer <= 0) escalateTimedOut(ReactorState.PRE_MELTDOWN, ReactorConfig.PRE_MELTDOWN_SECONDS.get() * 20);
             }
             case PRE_MELTDOWN -> {
                 runReactor();
@@ -582,7 +586,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
                         && ReactorStructure.check(level, worldPosition).complete();
                 if (recovered) {
                     broadcast(Component.translatable("message.masteris_bhe.reactor.recovered").withStyle(ChatFormatting.GREEN));
-                    enterState(ReactorState.WARNING, 0);
+                    if (!resumeSuspended()) enterState(ReactorState.WARNING, 0);
                 } else if (--stateTimer <= 0) {
                     enterState(ReactorState.MELTDOWN_1, ReactorConfig.MELTDOWN_1_SECONDS.get() * 20);
                 }
@@ -771,7 +775,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         energy.generate((long) (ReactorConfig.RF_PER_RPM_SQUARED.get() * rpm * rpm * 200));
         rpm = 0;
         stability = Math.max(0, stability - 15);
-        enterState(ReactorState.DISC_STALL, ReactorConfig.STALL_SECONDS.get() * 20);
+        escalate(ReactorState.DISC_STALL, ReactorConfig.STALL_SECONDS.get() * 20);
         playSound(SoundEvents.ANVIL_LAND, 0.5F);
         broadcast(Component.translatable("message.masteris_bhe.reactor.disc_stall").withStyle(ChatFormatting.GOLD));
     }
@@ -805,8 +809,86 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         }
     }
 
+    // ------------------------------------------------------------------ stacked failures
+
+    /**
+     * A failure (or a shutdown) that a newer failure interrupted. It waits underneath, paused, and comes back as it
+     * was, same stabilizers, same fix, same time left, once the newer one is dealt with. A meltdown, a vent or going
+     * offline clears them all.
+     */
+    private record Suspended(ReactorState state, int timer, int duration, Fault fault, int faultMask, boolean faultFixed,
+                             Fault pendingFault, int shutdownTicks) {}
+
+    private final java.util.ArrayDeque<Suspended> suspended = new java.util.ArrayDeque<>();
+
+    /** Whether this state, interrupted, should come back afterwards: a failure in progress, or a shutdown. */
+    private static boolean resumable(ReactorState state) {
+        return state == ReactorState.DISC_STALL || state.isFault() || state == ReactorState.SHUTTING_DOWN
+                || state == ReactorState.PRE_MELTDOWN;
+    }
+
+    private void suspendCurrent(int timer) {
+        suspended.push(new Suspended(state, timer, stateDuration, fault, faultMask, faultFixed, pendingFault, shutdownTicks));
+    }
+
+    /** A new failure on top of whatever is going on: anything in progress is put on hold underneath, not forgotten. */
+    private void escalate(ReactorState next, int timer) {
+        if (resumable(state) && state != next) suspendCurrent(stateTimer);
+        enterState(next, timer);
+    }
+
+    /**
+     * The current failure ran out of time and gets worse. It isn't cleared by that: it waits underneath with half
+     * its time back. And if a pre-meltdown was already waiting underneath, that same countdown picks up again
+     * rather than a fresh one starting.
+     */
+    private void escalateTimedOut(ReactorState next, int timer) {
+        Suspended earlier = null;
+        if (next == ReactorState.PRE_MELTDOWN) {
+            for (Suspended s : suspended) {
+                if (s.state() == ReactorState.PRE_MELTDOWN) {
+                    earlier = s;
+                    break;
+                }
+            }
+            if (earlier != null) suspended.remove(earlier);
+        }
+        if (state == ReactorState.DISC_STALL || state.isFault()) suspendCurrent(Math.max(15 * 20, stateDuration / 2));
+        if (earlier != null) restore(earlier);
+        else enterState(next, timer);
+    }
+
+    /** The current failure is dealt with: the one it interrupted, if any, comes back. Returns false if there was none. */
+    private boolean resumeSuspended() {
+        Suspended s = suspended.poll();
+        if (s == null) return false;
+        restore(s);
+        Component what = s.fault() != Fault.NONE
+                ? Component.translatable("gui.masteris_bhe.fault." + s.fault().name().toLowerCase(),
+                        s.fault() == Fault.SINGULARITY_REBOUND ? "" : sideNames(s.faultMask()))
+                : Component.translatable(s.state().translationKey());
+        broadcast(Component.translatable("message.masteris_bhe.reactor.resumed", what).withStyle(ChatFormatting.GOLD));
+        playSound(SoundEvents.NOTE_BLOCK_BIT.value(), 0.8F);
+        return true;
+    }
+
+    private void restore(Suspended s) {
+        java.util.List<Suspended> keep = new java.util.ArrayList<>(suspended); // enterState must not clear the rest
+        enterState(s.state(), s.timer());
+        suspended.clear();
+        suspended.addAll(keep);
+        stateDuration = s.duration();
+        fault = s.fault();
+        faultMask = s.faultMask();
+        faultFixed = s.faultFixed();
+        pendingFault = s.pendingFault();
+        shutdownTicks = s.shutdownTicks();
+        setChanged();
+    }
+
     private void enterState(ReactorState next, int timer) {
         state = next;
+        if (next.isMeltdown() || next == ReactorState.OFFLINE) suspended.clear(); // past all that, or all over
         if (next == ReactorState.OFFLINE) {
             wobble = 0; // the disc stops: it settles level
             releaseTornBlocks(); // vented or shut down: nothing holds them up any more
@@ -929,7 +1011,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
             offset = targetOffset;
             rpm = 600 * Integer.signum(offset); // restarts in whichever direction the stabilizers point
             stability = Math.min(100, stability + 10);
-            enterState(ReactorState.WARNING, 0);
+            if (!resumeSuspended()) enterState(ReactorState.WARNING, 0);
             resetBreakers();
             playSound(SoundEvents.BEACON_POWER_SELECT, 1.2F);
             tell(player, "jump.success", ChatFormatting.GREEN);
@@ -1199,7 +1281,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
             default -> true;
         };
         markFixed(fixed);
-        if (--stateTimer <= 0) enterState(ReactorState.PRE_MELTDOWN, ReactorConfig.PRE_MELTDOWN_SECONDS.get() * 20);
+        if (--stateTimer <= 0) escalateTimedOut(ReactorState.PRE_MELTDOWN, ReactorConfig.PRE_MELTDOWN_SECONDS.get() * 20);
     }
 
     private void tickShutdownFault() {
@@ -1207,7 +1289,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         // With a lens out the stabilizers can't brake: the disc coasts. A rebound holds the disc still.
         if (fault != Fault.CRACKED_LENS) rpm = 0;
         markFixed(fault == Fault.CRACKED_LENS ? faultMask == 0 : energy.getEnergyStored() <= ReactorConfig.REBOUND_DRAIN_RF.get());
-        if (--stateTimer <= 0) enterState(ReactorState.PRE_MELTDOWN, ReactorConfig.PRE_MELTDOWN_SECONDS.get() * 20);
+        if (--stateTimer <= 0) escalateTimedOut(ReactorState.PRE_MELTDOWN, ReactorConfig.PRE_MELTDOWN_SECONDS.get() * 20);
     }
 
     /** The fix is in (or, for mass and charge, slipped back out): tell the crew to press RESET. */
@@ -2138,6 +2220,20 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         tag.putDouble("Wobble", wobble);
         tag.putDouble("Precession", precession);
         tag.putInt("AxialTrim", axialTrim);
+        net.minecraft.nbt.ListTag stack = new net.minecraft.nbt.ListTag();
+        for (Suspended s : suspended) {
+            CompoundTag t = new CompoundTag();
+            t.putString("State", s.state().name());
+            t.putInt("Timer", s.timer());
+            t.putInt("Duration", s.duration());
+            t.putString("Fault", s.fault().name());
+            t.putInt("FaultMask", s.faultMask());
+            t.putBoolean("FaultFixed", s.faultFixed());
+            t.putString("PendingFault", s.pendingFault().name());
+            t.putInt("ShutdownTicks", s.shutdownTicks());
+            stack.add(t);
+        }
+        tag.put("Suspended", stack);
         tag.putDouble("Stress", stress);
         tag.putDouble("MassDebt", massDebt);
         tag.putInt("Offset", offset);
@@ -2178,6 +2274,20 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         wobble = tag.getDouble("Wobble");
         precession = tag.getDouble("Precession");
         axialTrim = Mth.clamp(tag.getInt("AxialTrim"), -MAX_TRIM, MAX_TRIM);
+        if (tag.contains("Suspended")) {
+            suspended.clear();
+            for (net.minecraft.nbt.Tag raw : tag.getList("Suspended", net.minecraft.nbt.Tag.TAG_COMPOUND)) {
+                CompoundTag t = (CompoundTag) raw;
+                ReactorState st;
+                try {
+                    st = ReactorState.valueOf(t.getString("State"));
+                } catch (IllegalArgumentException e) {
+                    continue;
+                }
+                suspended.add(new Suspended(st, t.getInt("Timer"), t.getInt("Duration"), faultOf(t.getString("Fault")),
+                        t.getInt("FaultMask"), t.getBoolean("FaultFixed"), faultOf(t.getString("PendingFault")), t.getInt("ShutdownTicks")));
+            }
+        }
         stress = tag.getDouble("Stress");
         massDebt = tag.getDouble("MassDebt");
         offset = tag.getInt("Offset");
