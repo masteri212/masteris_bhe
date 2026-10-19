@@ -1,6 +1,8 @@
 package com.masteri.bhe.compat.sable;
 
+import com.masteri.bhe.config.ReactorConfig;
 import com.masteri.bhe.reactor.BlockContents;
+import com.masteri.bhe.reactor.DarkZones;
 import com.masteri.bhe.reactor.SubLevelPull;
 import dev.ryanhcode.sable.api.physics.force.ForceGroup;
 import dev.ryanhcode.sable.api.physics.force.ForceGroups;
@@ -11,6 +13,7 @@ import dev.ryanhcode.sable.companion.math.BoundingBox3dc;
 import dev.ryanhcode.sable.companion.math.BoundingBox3ic;
 import dev.ryanhcode.sable.companion.math.Pose3d;
 import dev.ryanhcode.sable.neoforge.event.ForgeSablePrePhysicsTickEvent;
+import dev.ryanhcode.sable.physics.config.dimension_physics.DimensionPhysicsData;
 import dev.ryanhcode.sable.sublevel.ServerSubLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -31,7 +34,8 @@ import java.util.PriorityQueue;
 /**
  * Sable support (only loaded when Sable is installed, see MasteriBHE). A running reactor's black hole pulls Sable's
  * sub-levels (moving block structures, like Create: Aeronautics ships) toward it, and tears their blocks off one by
- * one, nearest first, just like the ground; the torn blocks fly in and become mass.
+ * one, nearest first, just like the ground; the torn blocks fly in and become mass. Inside a dark energy zone they
+ * get the zone's low gravity too.
  *
  * The pull is a force, so it's applied on Sable's physics tick (several per game tick). A sub-level's blocks live in
  * its plot, a region far out in the same level, so tearing one off is an ordinary setBlock there.
@@ -43,6 +47,7 @@ public final class SableCompat {
     /** Positions looked at per tear, at most (a big ship is only scanned around the part within reach). */
     private static final int MAX_SCAN = 65_536;
     private static final ResourceLocation FORCE_GROUP = ResourceLocation.fromNamespaceAndPath("sable", "magnetic_force");
+    private static final ResourceLocation LEVITATION = ResourceLocation.fromNamespaceAndPath("sable", "levitation");
 
     private record Source(ServerLevel level, Vec3 center, double reach, double strength, long tick) {}
 
@@ -60,11 +65,13 @@ public final class SableCompat {
         ServerLevel level = event.getPhysicsSystem().getLevel();
         long now = level.getGameTime();
         SOURCES.removeIf(s -> now - s.tick > 2);
-        if (SOURCES.isEmpty()) return;
+        DarkZones zones = DarkZones.get(level);
+        if (SOURCES.isEmpty() && zones.zones().isEmpty()) return;
         ServerSubLevelContainer container = SubLevelContainer.getContainer(level);
         if (container == null) return;
         ForceGroup group = ForceGroups.REGISTRY.get(FORCE_GROUP);
-        if (group == null) return;
+        ForceGroup levitation = ForceGroups.REGISTRY.get(LEVITATION);
+        if (group == null || levitation == null) return;
         double timeStep = event.getTimeStep();
         for (ServerSubLevel sub : container.getAllSubLevels()) {
             if (sub.isRemoved()) continue;
@@ -72,6 +79,7 @@ public final class SableCompat {
             if (mass == null || mass.isInvalid()) continue;
             Pose3d pose = sub.logicalPose();
             Vector3d com = pose.transformPosition(mass.getCenterOfMass(), new Vector3d());
+            if (zones.at(com.x, com.y, com.z) != null) lighten(level, sub, pose, mass, com, levitation, timeStep);
             for (Source source : SOURCES) {
                 if (source.level != level) continue;
                 Vector3d toHole = new Vector3d(source.center.x - com.x, source.center.y - com.y, source.center.z - com.z);
@@ -87,6 +95,20 @@ public final class SableCompat {
                 sub.getOrCreateQueuedForceGroup(group).applyAndRecordPointForce(new Vector3d(mass.getCenterOfMass()), local);
             }
         }
+    }
+
+    /**
+     * Inside a dark energy zone a sub-level is as light as everything else there: an upward push at its center of
+     * mass cancels part of Sable's gravity, so it ends up at the zone's gravity multiplier (0.4 by default).
+     */
+    private static void lighten(ServerLevel level, ServerSubLevel sub, Pose3d pose, MassData mass, Vector3d com,
+                                ForceGroup levitation, double timeStep) {
+        double cancel = 1 - ReactorConfig.ZONE_GRAVITY.get();
+        if (cancel <= 0) return;
+        Vector3d gravity = DimensionPhysicsData.getGravity(level, com, new Vector3d());
+        Vector3d impulse = gravity.mul(-cancel * mass.getMass() * timeStep);
+        Vector3d local = pose.transformNormalInverse(impulse, new Vector3d());
+        sub.getOrCreateQueuedForceGroup(levitation).applyAndRecordPointForce(new Vector3d(mass.getCenterOfMass()), local);
     }
 
     private static final class Hook implements SubLevelPull.Hook {

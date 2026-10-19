@@ -17,7 +17,7 @@
     {
       "type": "patchouli:text",
       "title": "Inside",
-      "text": "Inside, the world looks like it's seen from within a black hole: the view swirls and bends.$(br2)$(thing)Gravity is weak$(): everything falls at $(num)40%$() speed, jumps higher and takes less fall damage. Mobs float too."
+      "text": "Inside, the world looks like it's seen from within a black hole: the view swirls and bends.$(br2)$(thing)Gravity is weak$(): everything falls at $(num)40%$() speed, jumps higher and takes less fall damage. Mobs float too, and so do $(thing)Sable$() contraptions."
     },
     {
       "type": "patchouli:text",
