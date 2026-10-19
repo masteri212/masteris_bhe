@@ -1,14 +1,16 @@
 package com.masteri.bhe.block.entity;
 
 import com.masteri.bhe.block.BreakerPanelBlock;
-import com.masteri.bhe.block.ControlConsoleBlock;
 import com.masteri.bhe.block.ReactorCoreBlock;
 import com.masteri.bhe.config.ReactorConfig;
 import com.masteri.bhe.multiblock.ReactorStructure;
+import com.masteri.bhe.reactor.BlockContents;
 import com.masteri.bhe.reactor.Crater;
 import com.masteri.bhe.reactor.DarkZones;
 import com.masteri.bhe.reactor.EmergencyVent;
 import com.masteri.bhe.reactor.ZoneTerrain;
+import net.minecraft.world.entity.EntityType;
+import com.masteri.bhe.reactor.SubLevelPull;
 import net.minecraft.world.item.ItemStack;
 import com.masteri.bhe.registry.ModBlocks;
 import com.masteri.bhe.registry.ModItems;
@@ -1590,6 +1592,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         double pullScale = massScale(MIN_PULL_SCALE, MAX_PULL_SCALE);
         AABB zone = new AABB(worldPosition).inflate(radius);
         if (preview == null && ReactorConfig.PULL_BLOCKS.get()) tearBlocks(pullScale);
+        if (preview == null && SubLevelPull.hook != null) pullSubLevels(server, center, radius, pullScale);
         int inFlight = 0;
         for (Entity e : level.getEntitiesOfClass(Entity.class, zone,
                 e -> e.isAlive() && (e instanceof ItemEntity || e instanceof LivingEntity || e instanceof FallingBlockEntity))) {
@@ -1674,7 +1677,8 @@ public class ReactorCoreBlockEntity extends BlockEntity {
     /**
      * Sweeps the sphere of influence (see {@link #pullReach}) a slice per tick and tears loose a few exposed blocks
      * it finds, more with more mass and more in a failure. They fly in as falling blocks, so the ground under the core
-     * is slowly eaten into a bowl. Never block entities, liquids or unbreakable blocks. Until a meltdown the reactor's own
+     * is slowly eaten into a bowl. Never liquids, unbreakable blocks or this mod's machines (see BlockContents); a block
+     * with storage takes its contents in with it. Until a meltdown the reactor's own
      * blocks are spared, so a breach can still be repaired, and the lance until phase 2 (phase 1's emergency vent needs it); outside the ring it also needs the
      * config's block destruction to be on.
      */
@@ -1722,15 +1726,15 @@ public class ReactorCoreBlockEntity extends BlockEntity {
             BlockPos pos = worldPosition.offset(offset);
             if (!level.isLoaded(pos)) continue;
             BlockState block = level.getBlockState(pos);
-            if (block.isAir() || block.getDestroySpeed(level, pos) < 0 || level.getBlockEntity(pos) != null
-                    || block.getBlock() instanceof ControlConsoleBlock // the whole console wall stays, not just its origin
-                    || !block.getFluidState().isEmpty() || !exposed(pos)) continue;
+            if (!BlockContents.edible(level, pos, block) || !exposed(pos)) continue;
             if (sightChecks-- <= 0) {
                 scanIndex--; // out of checks for this tick: look at this one again next tick
                 break;
             }
             if (shielded(pos, center, hole, spareStructure || slowStructure, spareLance)) continue; // behind something the black hole can't take
+            BlockContents.Taken taken = level instanceof ServerLevel server ? BlockContents.take(server, pos) : BlockContents.Taken.NONE;
             FallingBlockEntity falling = FallingBlockEntity.fall(level, pos, block);
+            BlockContents.attach(falling, taken);
             falling.getPersistentData().putBoolean(TORN, true);
             falling.noPhysics = true;
             falling.setNoGravity(true);
@@ -1823,10 +1827,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
             last = at.immutable();
             BlockState block = level.getBlockState(at);
             if (block.isAir()) continue;
-            if (!block.getFluidState().isEmpty() || block.getDestroySpeed(level, at) < 0 || level.getBlockEntity(at) != null
-                    || block.getBlock() instanceof ControlConsoleBlock) {
-                return true;
-            }
+            if (!BlockContents.edible(level, at, block)) return true;
             BlockPos offset = at.subtract(worldPosition);
             if ((spareStructure && structureOffsets().contains(offset)) || (spareLance && isLanceOffset(offset))) return true;
         }
@@ -1868,6 +1869,44 @@ public class ReactorCoreBlockEntity extends BlockEntity {
             server.sendParticles(ParticleTypes.EXPLOSION_EMITTER, c.x, c.y, c.z, 2, 1, 1, 1, 0);
             server.sendParticles(ParticleTypes.END_ROD, c.x, c.y, c.z, 150, 1, 1, 1, 1.2);
         }
+    }
+
+    /**
+     * Moving block structures from physics mods (Sable's sub-levels) are pulled in too, and torn apart a few blocks
+     * at a time, nearest first, by the same rules as the ground. The torn blocks fly in like any other.
+     */
+    private void pullSubLevels(ServerLevel server, Vec3 center, double reach, double pullScale) {
+        SubLevelPull.Hook hook = SubLevelPull.hook;
+        if (hook == null) return;
+        hook.pull(server, center, reach, pullScale);
+        if (!ReactorConfig.PULL_BLOCKS.get() || ticks % 4 != 0) return;
+        // Beyond the ring, only with block destruction on (as for the ground).
+        double tearReach = pullEscaped() && !ReactorConfig.DESTROY_BLOCKS.get() ? ReactorStructure.RING_INNER_RADIUS : reach;
+        int budget = (int) Math.max(1, Math.round(MAX_TORN_PER_TICK * pullScale / 2)) * 4;
+        budget = Math.min(budget, ReactorConfig.MAX_BLOCKS_IN_FLIGHT.get() - blocksInFlight);
+        for (SubLevelPull.Torn torn : hook.tear(server, center, tearReach, budget)) {
+            spawnTornBlock(server, torn.at(), torn.state(), torn.taken(), center);
+        }
+    }
+
+    /** A torn block in flight toward the black hole, where there's no block to make it from (it came off a structure). */
+    private void spawnTornBlock(ServerLevel server, Vec3 at, BlockState state, BlockContents.Taken taken, Vec3 center) {
+        FallingBlockEntity falling = EntityType.FALLING_BLOCK.create(server);
+        if (falling == null) return;
+        // FallingBlockEntity has no public way to set its block other than loading it.
+        CompoundTag tag = falling.saveWithoutId(new CompoundTag());
+        tag.put("BlockState", NbtUtils.writeBlockState(state));
+        falling.load(tag);
+        falling.setPos(at.x, at.y - 0.5, at.z);
+        BlockContents.attach(falling, taken);
+        falling.getPersistentData().putBoolean(TORN, true);
+        falling.noPhysics = true;
+        falling.setNoGravity(true);
+        falling.dropItem = false;
+        falling.time = 1;
+        falling.setDeltaMovement(center.subtract(at).normalize().scale(0.15));
+        server.addFreshEntity(falling);
+        server.sendParticles(ParticleTypes.REVERSE_PORTAL, at.x, at.y, at.z, 6, 0.3, 0.3, 0.3, 0.02);
     }
 
     /** Persistent-data tag on the blocks the black hole tore loose, so they can be let go again. */
@@ -1929,7 +1968,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
             mass = item.getItem().getCount();
             item.discard();
         } else if (e instanceof FallingBlockEntity falling) {
-            mass = 1; // every block is 1 mass, whatever it is
+            mass = BlockContents.massOf(falling); // every block is 1 mass, plus 1 per item it carried in
             falling.discard();
         } else if (e instanceof LivingEntity living) {
             mass = Math.max(1, (long) Math.ceil(living.getMaxHealth() / 2)); // 1 heart = 1 mass

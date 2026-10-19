@@ -105,3 +105,11 @@ type="optional"
 versionRange="[1.120,)"
 ordering="NONE"
 side="BOTH"
+
+# Optional: Sable sub-levels (moving block structures) are pulled in and eaten by the black hole (see compat/sable).
+[[dependencies.${mod_id}]]
+modId="sable"
+type="optional"
+versionRange="[2.0.6,)"
+ordering="NONE"
+side="BOTH"

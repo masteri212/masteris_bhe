@@ -13,6 +13,16 @@
       "type": "patchouli:text",
       "text": "Each stabilizer needs at least $(num)10,000$() mass before ignition. There is $(thing)no maximum$().$(br2)More mass runs longer, but makes a bigger crater if it all goes wrong.$(br2)A comparator shows how close a port is to the ignition minimum.",
       "title": "How much?"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Moving structures",
+      "text": "With $(thing)Sable$() installed (Create: Aeronautics and the like), moving structures aren't safe either. Any that drift into the black hole's reach are reeled in, harder the closer they get, and torn apart a block at a time, nearest first, just like the ground.$(br2)They're worth the same as the ground: see Storage."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Storage",
+      "text": "Chests, barrels, furnaces and anything else that stores items go in too, contents and all: $(num)1$() mass for the block plus $(num)1$() per item inside. A full chest is worth $(num)1,729$().$(br2)This mod's own machines (the laser, consoles, research core, the bomb) are never torn off.$(br2)If a vent lets a torn block fall instead, it lands with its contents back in it."
     }
   ]
 }
