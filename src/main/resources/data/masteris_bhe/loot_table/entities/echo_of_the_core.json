@@ -1,0 +1,66 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_disc_stall"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_overspin"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_starvation"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_pre_meltdown"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_breach"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_meltdown"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:event_horizon_fragment",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:graviton_core"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "masteris_bhe:entities/echo_of_the_core"
+}

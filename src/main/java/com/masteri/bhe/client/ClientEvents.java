@@ -26,11 +26,15 @@ public final class ClientEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.CONTROL_CONSOLE.get(), ConsoleMonitorRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.BLACK_HOLE_BOMB.get(), BlackHoleBombRenderer::new);
         event.registerEntityRenderer(ModEntities.DRIFTER.get(), DrifterRenderer::new);
+        event.registerEntityRenderer(ModEntities.LENSING_STALKER.get(), StalkerRenderer::new);
+        event.registerEntityRenderer(ModEntities.ECHO_OF_THE_CORE.get(), EchoRenderer::new);
     }
 
     @SubscribeEvent
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(DrifterModel.LAYER, DrifterModel::createBodyLayer);
+        event.registerLayerDefinition(StalkerModel.LAYER, StalkerModel::createBodyLayer);
+        event.registerLayerDefinition(EchoModel.LAYER, EchoModel::createBodyLayer);
     }
 
     @SubscribeEvent

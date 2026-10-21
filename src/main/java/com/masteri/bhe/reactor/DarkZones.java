@@ -110,6 +110,8 @@ public final class DarkZones extends SavedData {
     private final List<Zone> zones = new ArrayList<>();
     /** How far ZoneTerrain's chunk loader has got through each zone, nearest chunk first (by its center). */
     private final java.util.Map<BlockPos, Integer> terrainCursors = new java.util.HashMap<>();
+    /** When each zone's Echo of the Core may rise again (game time), by its center. */
+    private final java.util.Map<BlockPos, Long> echoReadyAt = new java.util.HashMap<>();
 
     public static DarkZones get(ServerLevel level) {
         return level.getDataStorage().computeIfAbsent(new Factory<>(DarkZones::new, DarkZones::load), NAME);
@@ -135,6 +137,15 @@ public final class DarkZones extends SavedData {
         terrainCursors.remove(center); // a new zone here starts its terrain over
         setDirty();
         sync(level);
+    }
+
+    public long echoReadyAt(BlockPos center) {
+        return echoReadyAt.getOrDefault(center, 0L);
+    }
+
+    public void setEchoReadyAt(BlockPos center, long gameTime) {
+        echoReadyAt.put(center.immutable(), gameTime);
+        setDirty();
     }
 
     public int terrainCursor(BlockPos center) {
@@ -253,6 +264,7 @@ public final class DarkZones extends SavedData {
             NbtUtils.readBlockPos(z, "Center").ifPresent(c -> {
                 data.zones.add(new Zone(c, z.getInt("Radius"), Math.max(1, nodes)));
                 if (z.contains("TerrainCursor")) data.terrainCursors.put(c, z.getInt("TerrainCursor"));
+                if (z.contains("EchoReadyAt")) data.echoReadyAt.put(c, z.getLong("EchoReadyAt"));
             });
         }
         return data;
@@ -267,6 +279,7 @@ public final class DarkZones extends SavedData {
             z.putInt("Radius", zone.radius);
             z.putInt("Nodes", zone.nodes);
             z.putInt("TerrainCursor", terrainCursors.getOrDefault(zone.center, 0));
+            z.putLong("EchoReadyAt", echoReadyAt.getOrDefault(zone.center, 0L));
             list.add(z);
         }
         tag.put("Zones", list);

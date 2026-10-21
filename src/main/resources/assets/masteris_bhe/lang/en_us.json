@@ -257,5 +257,13 @@
   "gui.masteris_bhe.monitor.pending": "Then: %s",
   "gui.masteris_bhe.monitor.pending_more": "Then: %s (+%s more)",
   "entity.masteris_bhe.drifter": "Drifter",
-  "item.masteris_bhe.drifter_spawn_egg": "Drifter Spawn Egg"
+  "item.masteris_bhe.drifter_spawn_egg": "Drifter Spawn Egg",
+  "entity.masteris_bhe.lensing_stalker": "Lensing Stalker",
+  "item.masteris_bhe.lensing_stalker_spawn_egg": "Lensing Stalker Spawn Egg",
+  "entity.masteris_bhe.echo_of_the_core": "Echo of the Core",
+  "item.masteris_bhe.echo_of_the_core_spawn_egg": "Echo of the Core Spawn Egg",
+  "message.masteris_bhe.echo.risen": "The Echo of the Core rises from the crater.",
+  "message.masteris_bhe.echo.defeated": "The Echo of the Core fades.",
+  "message.masteris_bhe.echo.defeated_zone": "The Echo of the Core fades, and the zone gives way: it shrinks to %s blocks, %s node(s) left.",
+  "message.masteris_bhe.echo.defeated_cleared": "The Echo of the Core fades, and the dark energy zone goes with it."
 }

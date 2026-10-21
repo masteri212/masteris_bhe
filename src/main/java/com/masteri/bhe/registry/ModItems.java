@@ -56,6 +56,10 @@ public final class ModItems {
     // Mobs
     public static final DeferredItem<DeferredSpawnEggItem> DRIFTER_SPAWN_EGG = ITEMS.registerItem("drifter_spawn_egg",
             props -> new DeferredSpawnEggItem(ModEntities.DRIFTER, 0x1A1030, 0xA060FF, props), new Item.Properties());
+    public static final DeferredItem<DeferredSpawnEggItem> LENSING_STALKER_SPAWN_EGG = ITEMS.registerItem("lensing_stalker_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.LENSING_STALKER, 0x0B0812, 0xD8C8FF, props), new Item.Properties());
+    public static final DeferredItem<DeferredSpawnEggItem> ECHO_OF_THE_CORE_SPAWN_EGG = ITEMS.registerItem("echo_of_the_core_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.ECHO_OF_THE_CORE, 0x10142A, 0xFFC060, props), new Item.Properties());
 
     // Debug (creative only)
     public static final DeferredItem<DebugReactorItem> DEBUG_REACTOR_FRAME = debug("debug_reactor_frame", DebugReactorItem.Mode.FRAME);

@@ -104,6 +104,10 @@ public final class ReactorConfig {
             .defineInRange("chunksLoadedPerTick", 5, 0, 64);
     public static final ModConfigSpec.IntValue ZONE_DRIFTERS = B.comment("Drifters (floating dark matter jellyfish) spawned around each player inside a zone, at most. 0 turns them off.")
             .defineInRange("driftersPerPlayer", 4, 0, 32);
+    public static final ModConfigSpec.IntValue ZONE_STALKERS = B.comment("Lensing Stalkers spawned around each player inside a zone's fallout, at most. 0 turns them off.")
+            .defineInRange("stalkersPerPlayer", 2, 0, 16);
+    public static final ModConfigSpec.IntValue ECHO_COOLDOWN_MINUTES = B.comment("Minutes before a zone's Echo of the Core can rise again after it last did. 0 turns the Echo off.")
+            .defineInRange("echoCooldownMinutes", 20, 0, 100_000);
     public static final ModConfigSpec.BooleanValue CORRUPTED_MOBS = B.comment("Whether hostile mobs spawning in a zone become corrupted (stronger, drop Void Dust).")
             .define("corruptedMobs", true);
     static { B.pop().push("bomb"); }

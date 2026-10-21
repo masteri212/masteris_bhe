@@ -854,7 +854,7 @@ public class ReactorCoreRenderer implements BlockEntityRenderer<ReactorCoreBlock
         }
     }
 
-    private static void beamPlane(PoseStack.Pose p, VertexConsumer vc, Vector3f a, Vector3f b, Vector3f axis, float width, int color) {
+    static void beamPlane(PoseStack.Pose p, VertexConsumer vc, Vector3f a, Vector3f b, Vector3f axis, float width, int color) {
         float hx = axis.x * width / 2, hy = axis.y * width / 2, hz = axis.z * width / 2;
         int edge = color & 0x00FFFFFF;
         // Bright center line, transparent edges, both windings.
@@ -878,7 +878,7 @@ public class ReactorCoreRenderer implements BlockEntityRenderer<ReactorCoreBlock
         return new float[] {Mth.lerp(t, a[0], b[0]), Mth.lerp(t, a[1], b[1]), Mth.lerp(t, a[2], b[2])};
     }
 
-    private static int argb(float a, float r, float g, float b) {
+    static int argb(float a, float r, float g, float b) {
         return ((int) (Mth.clamp(a, 0, 1) * 255) << 24) | ((int) (r * 255) << 16) | ((int) (g * 255) << 8) | (int) (b * 255);
     }
 

@@ -44,6 +44,23 @@
     },
     {
       "type": "patchouli:spotlight",
+      "item": "masteris_bhe:lensing_stalker_spawn_egg",
+      "title": "Lensing Stalkers",
+      "text": "Tall shapes that bend light, in the fallout. While anyone looks their way they $(thing)can't move$(); look away and they rush you.$(br2)Straight on you can barely see one: watch the edges of your view."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:echo_of_the_core_spawn_egg",
+      "title": "Echo of the Core",
+      "text": "Go down to the crater floor and the ghost of the reactor rises to meet you. It replays its failures: a $(thing)shockwave$() (jump it), a $(thing)pull$() and a $(thing)beam$() (step out of its red line)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Beating the Echo",
+      "text": "It hits harder below half health.$(br2)Beaten, it drops a random $(l:operation/research)Recording$(), an $(item)Event Horizon Fragment$() and a $(item)Graviton Core$(), and the zone gives way: it counts as one $(thing)stabilized node$().$(br2)It can rise again $(num)20$() minutes after it last did."
+    },
+    {
+      "type": "patchouli:spotlight",
       "item": "masteris_bhe:dark_matter_shard",
       "title": "Unstable ore",
       "text": "Nodes of $(item)Unstable Dark Ore$() dot the corrupted ground, thickest on the crater floor. Mining one gives $(item)Dark Matter Shards$() (sometimes $(item)Unstable Dark Residue$() too), but about one in four $(danger)discharges$(): it hurts, but breaks nothing."
