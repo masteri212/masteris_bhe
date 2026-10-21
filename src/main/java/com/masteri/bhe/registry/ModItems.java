@@ -6,6 +6,7 @@ import com.masteri.bhe.item.DarkMatterCrystalItem;
 import com.masteri.bhe.item.DebugReactorItem;
 import com.masteri.bhe.item.ManualItem;
 import net.minecraft.world.item.Item;
+import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.minecraft.world.item.Rarity;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -51,6 +52,10 @@ public final class ModItems {
     private static DeferredItem<Item> recording(String failure) {
         return ITEMS.registerSimpleItem("recording_" + failure, new Item.Properties().rarity(Rarity.UNCOMMON));
     }
+
+    // Mobs
+    public static final DeferredItem<DeferredSpawnEggItem> DRIFTER_SPAWN_EGG = ITEMS.registerItem("drifter_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.DRIFTER, 0x1A1030, 0xA060FF, props), new Item.Properties());
 
     // Debug (creative only)
     public static final DeferredItem<DebugReactorItem> DEBUG_REACTOR_FRAME = debug("debug_reactor_frame", DebugReactorItem.Mode.FRAME);

@@ -10,6 +10,7 @@ import com.masteri.bhe.registry.ModBlockEntities;
 import com.masteri.bhe.registry.ModBlocks;
 import com.masteri.bhe.registry.ModCapabilities;
 import com.masteri.bhe.registry.ModCreativeTabs;
+import com.masteri.bhe.registry.ModEntities;
 import com.masteri.bhe.registry.ModItems;
 import com.masteri.bhe.registry.ModMenus;
 import com.mojang.logging.LogUtils;
@@ -32,6 +33,8 @@ public class MasteriBHE {
         ModCreativeTabs.TABS.register(modEventBus);
         ModMenus.MENUS.register(modEventBus);
         ModAttachments.ATTACHMENTS.register(modEventBus);
+        ModEntities.ENTITY_TYPES.register(modEventBus);
+        modEventBus.addListener(ModEntities::registerAttributes);
         modEventBus.addListener(ModCapabilities::register);
         modEventBus.addListener(DarkZones::registerPayloads);
         modEventBus.addListener(StabilizerTerminal::registerPayloads);

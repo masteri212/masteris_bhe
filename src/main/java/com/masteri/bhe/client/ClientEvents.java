@@ -2,6 +2,7 @@ package com.masteri.bhe.client;
 
 import com.masteri.bhe.MasteriBHE;
 import com.masteri.bhe.registry.ModBlockEntities;
+import com.masteri.bhe.registry.ModEntities;
 import com.masteri.bhe.registry.ModMenus;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -24,6 +25,12 @@ public final class ClientEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.REACTOR_CORE.get(), ReactorCoreRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.CONTROL_CONSOLE.get(), ConsoleMonitorRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.BLACK_HOLE_BOMB.get(), BlackHoleBombRenderer::new);
+        event.registerEntityRenderer(ModEntities.DRIFTER.get(), DrifterRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(DrifterModel.LAYER, DrifterModel::createBodyLayer);
     }
 
     @SubscribeEvent

@@ -255,5 +255,7 @@
   "message.masteris_bhe.bomb.status_armed": "ARMED: %s mass, radius %s, %s s left. Defuse it with the Configurator.",
   "message.masteris_bhe.reactor.resumed": "That's handled, but the earlier problem is back: %s",
   "gui.masteris_bhe.monitor.pending": "Then: %s",
-  "gui.masteris_bhe.monitor.pending_more": "Then: %s (+%s more)"
+  "gui.masteris_bhe.monitor.pending_more": "Then: %s (+%s more)",
+  "entity.masteris_bhe.drifter": "Drifter",
+  "item.masteris_bhe.drifter_spawn_egg": "Drifter Spawn Egg"
 }

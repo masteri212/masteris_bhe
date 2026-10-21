@@ -102,6 +102,8 @@ public final class ReactorConfig {
     public static final ModConfigSpec.IntValue ZONE_CHUNKS_PER_TICK = B.comment("Chunks a dark energy zone loads (or generates) per tick to corrupt its terrain, nearest first,",
                     "so the whole zone is converted, not just where players have been. 0 only converts chunks as players load them.")
             .defineInRange("chunksLoadedPerTick", 5, 0, 64);
+    public static final ModConfigSpec.IntValue ZONE_DRIFTERS = B.comment("Drifters (floating dark matter jellyfish) spawned around each player inside a zone, at most. 0 turns them off.")
+            .defineInRange("driftersPerPlayer", 4, 0, 32);
     public static final ModConfigSpec.BooleanValue CORRUPTED_MOBS = B.comment("Whether hostile mobs spawning in a zone become corrupted (stronger, drop Void Dust).")
             .define("corruptedMobs", true);
     static { B.pop().push("bomb"); }
