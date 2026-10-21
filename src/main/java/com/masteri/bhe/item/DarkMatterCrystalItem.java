@@ -1,6 +1,7 @@
 package com.masteri.bhe.item;
 
 import com.masteri.bhe.MasteriBHE;
+import com.masteri.bhe.config.ReactorConfig;
 import com.masteri.bhe.reactor.DarkZones;
 import com.masteri.bhe.registry.ModBlocks;
 import net.minecraft.ChatFormatting;
@@ -40,6 +41,13 @@ public class DarkMatterCrystalItem extends Item {
         if (!(level instanceof ServerLevel server)) return InteractionResult.SUCCESS;
 
         String key = "message." + MasteriBHE.MODID + ".zone.";
+        // The last node is the Echo of the Core's: beating it is how a zone ends (unless the Echo is turned off).
+        DarkZones.Zone zone = DarkZones.get(server).at(pos);
+        if (zone != null && zone.nodes() <= 1 && ReactorConfig.ECHO_COOLDOWN_MINUTES.get() > 0) {
+            if (player != null) player.displayClientMessage(Component.translatable(key + "last_node").withStyle(ChatFormatting.DARK_PURPLE), false);
+            level.playSound(null, pos, SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS, 1F, 0.5F);
+            return InteractionResult.FAIL;
+        }
         DarkZones.Stabilized result = DarkZones.get(server).stabilize(server, pos);
         if (result == null) {
             if (player != null) player.displayClientMessage(Component.translatable(key + "not_in_zone").withStyle(ChatFormatting.RED), true);
@@ -57,6 +65,9 @@ public class DarkMatterCrystalItem extends Item {
                 ? Component.translatable(key + "cleared").withStyle(ChatFormatting.AQUA)
                 : Component.translatable(key + "stabilized", result.zone().radius(), result.zone().nodes()).withStyle(ChatFormatting.LIGHT_PURPLE);
         if (player != null) player.displayClientMessage(message, false);
+        if (player != null && result.zone() != null && result.zone().nodes() == 1 && ReactorConfig.ECHO_COOLDOWN_MINUTES.get() > 0) {
+            player.displayClientMessage(Component.translatable(key + "echo_awaits").withStyle(ChatFormatting.DARK_PURPLE), false);
+        }
         if (result.zone() == null) {
             level.playSound(null, pos, SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS, 2F, 0.6F);
         }

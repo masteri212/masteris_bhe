@@ -28,7 +28,8 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
  * <ul>
  *     <li>Drifters, floating anywhere in the zone.</li>
  *     <li>Lensing Stalkers, on the ground in the fallout (never right next to you).</li>
- *     <li>The Echo of the Core, rising from the crater floor when someone comes near it, then not again for a while.</li>
+ *     <li>The Echo of the Core, rising from the crater floor when someone comes near it once the zone is down to its
+ *     last node (it is that node: see EchoOfTheCoreEntity), then not again for a while.</li>
  * </ul>
  */
 @EventBusSubscriber(modid = MasteriBHE.MODID)
@@ -89,7 +90,7 @@ public final class ZoneMobSpawner {
 
     private static void spawnEcho(ServerLevel level, ServerPlayer player, DarkZones zones, DarkZones.Zone zone) {
         int minutes = ReactorConfig.ECHO_COOLDOWN_MINUTES.get();
-        if (minutes <= 0) return;
+        if (minutes <= 0 || zone.nodes() > 1) return; // the final fight: only once every other node is stabilized
         Vec3 floor = Vec3.atCenterOf(zone.center());
         if (player.position().distanceTo(floor) > ECHO_TRIGGER) return;
         if (level.getGameTime() < zones.echoReadyAt(zone.center())) return;

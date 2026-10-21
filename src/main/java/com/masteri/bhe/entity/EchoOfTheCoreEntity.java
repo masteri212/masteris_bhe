@@ -48,7 +48,8 @@ import java.util.UUID;
  *     <li>Meltdown: its black hole swells and drags everyone near toward it, hurting those it reaches.</li>
  *     <li>Stabilizer beam: a warning line toward a player, then a beam down it (step aside).</li>
  * </ul>
- * Below half health it attacks faster. Beating it stabilizes one of the zone's nodes (the zone shrinks).
+ * Below half health it attacks faster. It's the zone's final fight: it only rises once the zone is down to its last
+ * node, it is that node (no crystal stabilizes it), and beating it removes the zone. Until then it can't be hurt.
  */
 public class EchoOfTheCoreEntity extends Monster {
     public enum Attack { NONE, SHOCKWAVE, PULL, BEAM }
@@ -274,6 +275,36 @@ public class EchoOfTheCoreEntity extends Monster {
             Vec3 p = from.add(dir.scale(d));
             level.sendParticles(ParticleTypes.END_ROD, p.x, p.y, p.z, 1, 0.1, 0.1, 0.1, 0.02);
         }
+    }
+
+    // ------------------------------------------------------------------ the shield
+
+    /**
+     * How many of its zone's other nodes still need stabilizing before it can be hurt (0 once it's down to the last
+     * one, or outside any zone).
+     */
+    public int shieldingNodes() {
+        if (!(level() instanceof ServerLevel server)) return 0;
+        DarkZones.Zone zone = DarkZones.get(server).at(home != null ? home : blockPosition());
+        return zone == null ? 0 : Math.max(0, zone.nodes() - 1);
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if (!level().isClientSide && !source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            int left = shieldingNodes();
+            if (left > 0) {
+                if (source.getEntity() instanceof Player player) {
+                    player.displayClientMessage(Component.translatable("message.masteris_bhe.echo.shielded", left)
+                            .withStyle(ChatFormatting.LIGHT_PURPLE), true);
+                }
+                Vec3 c = core();
+                ((ServerLevel) level()).sendParticles(ParticleTypes.ENCHANTED_HIT, c.x, c.y, c.z, 12, 1, 1, 1, 0.2);
+                level().playSound(null, blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.HOSTILE, 1.5F, 0.6F);
+                return false;
+            }
+        }
+        return super.hurt(source, amount);
     }
 
     // ------------------------------------------------------------------ death: the zone gives a little

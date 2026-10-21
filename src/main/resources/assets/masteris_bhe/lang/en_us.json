@@ -265,5 +265,8 @@
   "message.masteris_bhe.echo.risen": "The Echo of the Core rises from the crater.",
   "message.masteris_bhe.echo.defeated": "The Echo of the Core fades.",
   "message.masteris_bhe.echo.defeated_zone": "The Echo of the Core fades, and the zone gives way: it shrinks to %s blocks, %s node(s) left.",
-  "message.masteris_bhe.echo.defeated_cleared": "The Echo of the Core fades, and the dark energy zone goes with it."
+  "message.masteris_bhe.echo.defeated_cleared": "The Echo of the Core fades, and the dark energy zone goes with it.",
+  "message.masteris_bhe.zone.last_node": "This is the zone's last node, and it's bound to the Echo of the Core. Go down to the crater floor and defeat it.",
+  "message.masteris_bhe.zone.echo_awaits": "Only one node is left. The Echo of the Core waits at the bottom of the crater.",
+  "message.masteris_bhe.echo.shielded": "The zone shields the Echo: stabilize %s more node(s) first."
 }
