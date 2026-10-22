@@ -50,7 +50,8 @@ public final class ReactorConfig {
     public static final ModConfigSpec.DoubleValue PRECESSION_STRENGTH = B.comment("How hard the disc's precession pushes it to wobble (countered with the axial trim). 0 turns wobble off.")
             .defineInRange("precessionStrength", 1.0, 0.0, 10.0);
     static { B.pop().push("failures"); }
-    public static final ModConfigSpec.IntValue STALL_SECONDS = B.defineInRange("discStallSeconds", 60, 5, 3600);
+    public static final ModConfigSpec.IntValue STALL_SECONDS = B.comment("Time to jump-start a stalled disc (overcharge every stabilizer's breakers, then JUMP) before the reactor goes to pre-meltdown.")
+            .defineInRange("discStallSeconds", 60, 5, 3600);
     public static final ModConfigSpec.DoubleValue FAULT_BASE_CHANCE = B.comment("Chance of an ignition or shutdown fault on a perfectly steady reactor.",
                     "Instability raises it (see the manual): uneven or barely-enough mass for ignition; low stability, ring stress and overspin for shutdown.")
             .defineInRange("faultBaseChance", 0.05, 0.0, 1.0);
@@ -62,9 +63,12 @@ public final class ReactorConfig {
             .defineInRange("breachVentMassFraction", 0.75, 0.0, 1.0);
     public static final ModConfigSpec.IntValue REBOUND_DRAIN_RF = B.comment("Singularity rebound: drain the core's charge below this to let it close.")
             .defineInRange("reboundDrainRf", 5_000_000, 0, Integer.MAX_VALUE);
-    public static final ModConfigSpec.IntValue PRE_MELTDOWN_SECONDS = B.defineInRange("preMeltdownSeconds", 90, 5, 3600);
-    public static final ModConfigSpec.IntValue MELTDOWN_1_SECONDS = B.defineInRange("meltdownPhase1Seconds", 120, 5, 3600);
-    public static final ModConfigSpec.IntValue MELTDOWN_2_SECONDS = B.defineInRange("meltdownPhase2Seconds", 60, 5, 3600);
+    public static final ModConfigSpec.IntValue PRE_MELTDOWN_SECONDS = B.comment("Pre-meltdown countdown: time to bring stability, stress and the structure back before meltdown starts.")
+            .defineInRange("preMeltdownSeconds", 90, 5, 3600);
+    public static final ModConfigSpec.IntValue MELTDOWN_1_SECONDS = B.comment("Meltdown phase 1: the core pulls things in and starts eating the reactor. Only the emergency vent saves it.")
+            .defineInRange("meltdownPhase1Seconds", 120, 5, 3600);
+    public static final ModConfigSpec.IntValue MELTDOWN_2_SECONDS = B.comment("Meltdown phase 2: a stronger, wider pull, then the core collapses.")
+            .defineInRange("meltdownPhase2Seconds", 60, 5, 3600);
     static { B.pop().push("collapse"); }
     public static final ModConfigSpec.BooleanValue PULL_BLOCKS = B.comment("Whether a running reactor's black hole tears loose blocks in its sphere of influence (just inside",
                     "the ring, down into the ground too) and swallows them as mass, 1 per block. In a failure the sphere grows",
@@ -72,7 +76,8 @@ public final class ReactorConfig {
             .define("pullBlocks", true);
     public static final ModConfigSpec.IntValue MAX_BLOCKS_IN_FLIGHT = B.comment("Most torn-loose blocks flying into the black hole at once (each is an entity; lower it if it lags).")
             .defineInRange("maxBlocksInFlight", 300, 0, 5000);
-    public static final ModConfigSpec.BooleanValue DESTROY_BLOCKS = B.comment("Whether a reactor collapse destroys blocks.")
+    public static final ModConfigSpec.BooleanValue DESTROY_BLOCKS = B.comment("Whether a reactor collapse destroys blocks. Off: no crater (from a collapse or a Black Hole Bomb),",
+                    "no block eaten past the ring in a failure, and a dark energy zone never corrupts the ground.")
             .define("destroyBlocks", true);
     public static final ModConfigSpec.DoubleValue BASE_RADIUS = B.comment("Collapse blast radius in blocks, before the mass bonus.")
             .defineInRange("baseExplosionRadius", 50.0, 1.0, 200.0);
