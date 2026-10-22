@@ -57,7 +57,7 @@
     {
       "type": "patchouli:text",
       "title": "Beating the Echo",
-      "text": "Before the last node it can't be hurt. It hits harder below half health.$(br2)Beaten, it drops a random $(l:operation/research)Recording$(), an $(item)Event Horizon Fragment$() and a $(item)Graviton Core$(), and the zone falls in on itself and is gone.$(br2)It doesn't leave: if you fall, it's still waiting when you come back."
+      "text": "Before the last node it can't be hurt. It hits harder below half health.$(br2)Beaten, it drops a random $(l:operation/research)Recording$(), an $(item)Event Horizon Fragment$() and a $(item)Graviton Core$(), and the zone falls in on itself and is gone.$(br2)It doesn't leave: run too far from the crater and it drifts back to wait for you there."
     },
     {
       "type": "patchouli:spotlight",
@@ -76,11 +76,6 @@
       "item": "masteris_bhe:charged_dark_matter_crystal",
       "title": "Closing a zone",
       "text": "Use a $(item)Charged Dark Matter Crystal$() on an ore node inside the zone: the node turns to stone and the wall glides inward.$(br2)A zone has $(num)8$() nodes. The $(danger)last one$() won't take a crystal: it's the Echo of the Core's."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Config",
-      "text": "Server owners can change the zone's size and limits, the gravity, the node count, the ore and discharge chances, and turn corrupted mobs off.$(br2)With collapse block damage off, the ground is never corrupted."
     },
     {
       "type": "patchouli:crafting",

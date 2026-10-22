@@ -57,6 +57,8 @@ public class EchoOfTheCoreEntity extends Monster {
     public static final int SHOCKWAVE_TICKS = 28, PULL_TICKS = 70, BEAM_CHARGE = 30, BEAM_FIRE = 10;
     public static final float SHOCKWAVE_SPEED = 0.7F;
     private static final double PULL_RANGE = 22, LEASH = 28;
+    /** How far from its home a player can be and still be fought. Past this it gives up and goes home. */
+    private static final double ARENA = 64;
 
     private static final EntityDataAccessor<Integer> ATTACK = SynchedEntityData.defineId(EchoOfTheCoreEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData.defineId(EchoOfTheCoreEntity.class, EntityDataSerializers.INT);
@@ -100,7 +102,11 @@ public class EchoOfTheCoreEntity extends Monster {
     protected void registerGoals() {
         goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 32));
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, false, false, this::inArena));
+    }
+
+    private boolean inArena(LivingEntity entity) {
+        return home == null || entity.distanceToSqr(Vec3.atCenterOf(home)) <= ARENA * ARENA;
     }
 
     @Override
@@ -144,6 +150,17 @@ public class EchoOfTheCoreEntity extends Monster {
         super.customServerAiStep();
         bossBar.setProgress(getHealth() / getMaxHealth());
         if (home == null) home = blockPosition();
+        // A target that left the arena is let go: it drifts back home and waits.
+        LivingEntity target = getTarget();
+        if (target != null && (!target.isAlive() || !inArena(target))) {
+            setTarget(null);
+            if (getAttack() != Attack.NONE) endAttack();
+        }
+        // Knocked or carried far off (it can't fly there itself): back home at once.
+        if (distanceToSqr(Vec3.atCenterOf(home)) > (LEASH * 2) * (LEASH * 2)) {
+            moveTo(home.getX() + 0.5, home.getY() + 4, home.getZ() + 0.5, getYRot(), getXRot());
+            setDeltaMovement(Vec3.ZERO);
+        }
         hover();
         Attack attack = getAttack();
         if (attack == Attack.NONE) {
@@ -368,6 +385,17 @@ public class EchoOfTheCoreEntity extends Monster {
 
     @Override
     public boolean removeWhenFarAway(double distance) {
+        return false;
+    }
+
+    /** It is the zone's last node: it must never just vanish, not even on Peaceful. */
+    @Override
+    public boolean requiresCustomPersistence() {
+        return true;
+    }
+
+    @Override
+    protected boolean shouldDespawnInPeaceful() {
         return false;
     }
 

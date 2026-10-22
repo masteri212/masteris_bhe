@@ -25,11 +25,6 @@
       "text": "For the last $(num)5$() seconds the black hole breaks out of the casing, swelling and pulling in everything within $(num)24$() blocks.$(br2)Then it collapses like a reactor: a carved crater, its $(l:safety/dark_energy_zone)loot$(), and a $(l:safety/dark_energy_zone)dark energy zone$() around it."
     },
     {
-      "type": "patchouli:text",
-      "title": "Config",
-      "text": "Server owners can change the fuse, the radius and its cap, and whether it leaves a dark energy zone. With collapse block damage off, it carves no crater."
-    },
-    {
       "type": "patchouli:crafting",
       "recipe": "masteris_bhe:black_hole_bomb"
     }
