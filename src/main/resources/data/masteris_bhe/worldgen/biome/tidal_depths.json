@@ -1,0 +1,69 @@
+{
+  "has_precipitation": false,
+  "temperature": 0.5,
+  "downfall": 0.0,
+  "effects": {
+    "fog_color": 1312266,
+    "sky_color": 0,
+    "water_color": 3809134,
+    "water_fog_color": 1181736,
+    "ambient_sound": "minecraft:ambient.basalt_deltas.loop",
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    },
+    "particle": {
+      "options": {
+        "type": "minecraft:reverse_portal"
+      },
+      "probability": 0.006
+    }
+  },
+  "spawners": {
+    "monster": [
+      {
+        "type": "masteris_bhe:spaghettifier",
+        "weight": 5,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "creature": [],
+    "ambient": [
+      {
+        "type": "masteris_bhe:hawking_wisp",
+        "weight": 6,
+        "minCount": 1,
+        "maxCount": 3
+      }
+    ],
+    "axolotls": [],
+    "underground_water_creature": [],
+    "water_creature": [],
+    "water_ambient": [],
+    "misc": []
+  },
+  "spawn_costs": {},
+  "carvers": {},
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "masteris_bhe:neutronium_ore"
+    ],
+    [
+      "masteris_bhe:mass_shards_scattered",
+      "masteris_bhe:graviton_well",
+      "masteris_bhe:frozen_mob"
+    ],
+    [],
+    [],
+    []
+  ]
+}

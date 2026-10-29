@@ -4,6 +4,8 @@ import com.masteri.bhe.MasteriBHE;
 import com.masteri.bhe.item.ConfiguratorItem;
 import com.masteri.bhe.item.DarkMatterCrystalItem;
 import com.masteri.bhe.item.DebugReactorItem;
+import com.masteri.bhe.item.EscapeRecordingItem;
+import com.masteri.bhe.item.SingularityLureItem;
 import com.masteri.bhe.item.ManualItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
@@ -53,6 +55,23 @@ public final class ModItems {
         return ITEMS.registerSimpleItem("recording_" + failure, new Item.Properties().rarity(Rarity.UNCOMMON));
     }
 
+    // Event Horizon
+    public static final DeferredItem<Item> RAW_NEUTRONIUM = ITEMS.registerSimpleItem("raw_neutronium");
+    public static final DeferredItem<Item> NEUTRONIUM_INGOT = ITEMS.registerSimpleItem("neutronium_ingot",
+            new Item.Properties().rarity(Rarity.UNCOMMON));
+    public static final DeferredItem<Item> MASS_SHARD = ITEMS.registerSimpleItem("mass_shard");
+    public static final DeferredItem<Item> HAWKING_MOTE = ITEMS.registerSimpleItem("hawking_mote");
+    public static final DeferredItem<Item> RECORDING_SPAGHETTIFICATION = recording("spaghettification");
+    public static final DeferredItem<Item> RECORDING_HAWKING = recording("hawking_radiation");
+    /** Played inside the Event Horizon, it takes you back out. */
+    public static final DeferredItem<EscapeRecordingItem> ESCAPE_RECORDING = ITEMS.registerItem("escape_recording",
+            EscapeRecordingItem::new, new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON));
+    /** Used deep in the Event Horizon, it calls up the Singularity. */
+    public static final DeferredItem<SingularityLureItem> SINGULARITY_LURE = ITEMS.registerItem("singularity_lure",
+            SingularityLureItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.EPIC));
+    public static final DeferredItem<Item> SINGULARITY_HEART = ITEMS.registerSimpleItem("singularity_heart",
+            new Item.Properties().rarity(Rarity.EPIC).fireResistant());
+
     // Mobs
     public static final DeferredItem<DeferredSpawnEggItem> DRIFTER_SPAWN_EGG = ITEMS.registerItem("drifter_spawn_egg",
             props -> new DeferredSpawnEggItem(ModEntities.DRIFTER, 0x1A1030, 0xA060FF, props), new Item.Properties());
@@ -60,6 +79,13 @@ public final class ModItems {
             props -> new DeferredSpawnEggItem(ModEntities.LENSING_STALKER, 0x0B0812, 0xD8C8FF, props), new Item.Properties());
     public static final DeferredItem<DeferredSpawnEggItem> ECHO_OF_THE_CORE_SPAWN_EGG = ITEMS.registerItem("echo_of_the_core_spawn_egg",
             props -> new DeferredSpawnEggItem(ModEntities.ECHO_OF_THE_CORE, 0x10142A, 0xFFC060, props), new Item.Properties());
+
+    public static final DeferredItem<DeferredSpawnEggItem> SPAGHETTIFIER_SPAWN_EGG = ITEMS.registerItem("spaghettifier_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.SPAGHETTIFIER, 0x2A0E1E, 0xFF7A3A, props), new Item.Properties());
+    public static final DeferredItem<DeferredSpawnEggItem> HAWKING_WISP_SPAWN_EGG = ITEMS.registerItem("hawking_wisp_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.HAWKING_WISP, 0xBFEFFF, 0xFFFFFF, props), new Item.Properties());
+    public static final DeferredItem<DeferredSpawnEggItem> SINGULARITY_SPAWN_EGG = ITEMS.registerItem("singularity_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.SINGULARITY, 0x000000, 0xFFB050, props), new Item.Properties());
 
     // Debug (creative only)
     public static final DeferredItem<DebugReactorItem> DEBUG_REACTOR_FRAME = debug("debug_reactor_frame", DebugReactorItem.Mode.FRAME);

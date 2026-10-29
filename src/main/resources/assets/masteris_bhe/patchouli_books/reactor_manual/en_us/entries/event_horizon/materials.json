@@ -1,0 +1,50 @@
+{
+  "name": "Materials",
+  "icon": "masteris_bhe:neutronium_ingot",
+  "category": "masteris_bhe:event_horizon",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:raw_neutronium",
+      "text": "Matter crushed so dense that a handful outweighs a mountain. $(item)Neutronium Ore$() is found in the Tidal Depths (diamond pickaxe). Smelt the raw Neutronium into ingots.",
+      "title": "Neutronium"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Neutronium as mass",
+      "text": "Fed to a stabilizer, a bomb or a Horizon Gate, or thrown into a black hole, Neutronium is worth far more than a block:$(li)Ingot: $(num)200$() mass$(li)Raw: $(num)100$() mass$(li)Block: $(num)1,800$() mass$(br2)A $(item)Block of Neutronium$() is so heavy nothing holds it up: it falls like sand and hits like an anvil."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:neutronium_block"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:mass_shard",
+      "text": "$(item)Mass Shard Clusters$() grow on the islands, on top, underneath and on the sides. Each cluster gives a few $(item)Mass Shards$(), worth $(num)16$() mass each.",
+      "title": "Mass Shards"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:graviton_well",
+      "text": "Small gravity sinks on the islands: they pull in everything within $(num)7$() blocks, players too. Mine one for its $(item)Graviton Core$().",
+      "title": "Graviton Wells"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:hawking_cell",
+      "text": "A speck of black hole slowly evaporating. It makes $(num)256$() RF/t on its own, forever, and pushes it into machines and cables next to it.$(br2)Made from $(item)Hawking Motes$() (see $(l:event_horizon/creatures)Creatures$()).",
+      "title": "Hawking Cell"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:hawking_cell"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Frozen Mobs",
+      "text": "Things from the overworld, caught mid-fall when the black hole swallowed them: cows, villagers, zombies, hanging in the air near the islands.$(br2)They don't move until you hit one. Then it falls, and if it was hostile, it remembers."
+    }
+  ]
+}

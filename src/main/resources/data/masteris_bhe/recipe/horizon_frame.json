@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "RDR",
+    "DSD",
+    "RDR"
+  ],
+  "key": {
+    "R": {
+      "item": "masteris_bhe:ring_frame"
+    },
+    "D": {
+      "item": "masteris_bhe:void_dust"
+    },
+    "S": {
+      "item": "masteris_bhe:dark_matter_shard"
+    }
+  },
+  "result": {
+    "id": "masteris_bhe:horizon_frame",
+    "count": 4
+  }
+}

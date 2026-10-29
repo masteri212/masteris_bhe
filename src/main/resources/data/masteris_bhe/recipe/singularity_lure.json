@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "NSN",
+    "RFR",
+    "NHN"
+  ],
+  "key": {
+    "N": {
+      "item": "masteris_bhe:neutronium_ingot"
+    },
+    "S": {
+      "item": "masteris_bhe:recording_spaghettification"
+    },
+    "H": {
+      "item": "masteris_bhe:recording_hawking_radiation"
+    },
+    "R": {
+      "item": "masteris_bhe:unstable_dark_residue"
+    },
+    "F": {
+      "item": "masteris_bhe:event_horizon_fragment"
+    }
+  },
+  "result": {
+    "id": "masteris_bhe:singularity_lure",
+    "count": 1
+  }
+}

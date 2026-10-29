@@ -126,6 +126,30 @@ public final class ReactorConfig {
             .defineInRange("maxRadius", 150.0, 1.0, 200.0);
     public static final ModConfigSpec.BooleanValue BOMB_LEAVES_ZONE = B.comment("Whether a detonation leaves a dark energy zone behind, like a reactor collapse.")
             .define("leavesZone", true);
+    static { B.pop().push("event_horizon"); }
+    public static final ModConfigSpec.IntValue GATE_MASS_PER_TRIP = B.comment("Mass a Horizon Ring burns for each player it sends into the Event Horizon. Coming back out is free.")
+            .defineInRange("gateMassPerTrip", 1000, 0, Integer.MAX_VALUE);
+    public static final ModConfigSpec.IntValue GATE_OPEN_SECONDS = B.comment("How long a Horizon Ring stays open once it opens (anyone can step through while it is).")
+            .defineInRange("gateOpenSeconds", 30, 5, 3600);
+    public static final ModConfigSpec.DoubleValue HORIZON_GRAVITY_TOP = B.comment("Gravity multiplier at the top of the Event Horizon (it rises smoothly toward the bottom).")
+            .defineInRange("gravityTop", 0.2, 0.0, 4.0);
+    public static final ModConfigSpec.DoubleValue HORIZON_GRAVITY_BOTTOM = B.comment("Gravity multiplier just above the singularity, at the bottom of the Event Horizon.")
+            .defineInRange("gravityBottom", 1.8, 0.0, 4.0);
+    public static final ModConfigSpec.DoubleValue TIME_DILATION = B.comment("How much faster time runs in the deepest part of the Event Horizon: furnaces and random ticks",
+                    "(crops, saplings...) near players. 1 turns it off. It starts below y 150 and is strongest at y 60.")
+            .defineInRange("timeDilation", 4.0, 1.0, 16.0);
+    public static final ModConfigSpec.IntValue SPAGHETTIFICATION_Y = B.comment("Below this height the singularity drags everything down and tears it apart.")
+            .defineInRange("spaghettificationY", 40, -64, 320);
+    public static final ModConfigSpec.IntValue HAWKING_CELL_RF = B.comment("RF/t a Hawking Cell makes.")
+            .defineInRange("hawkingCellRf", 256, 0, 1_000_000);
+    public static final ModConfigSpec.IntValue NEUTRONIUM_MASS = B.comment("Mass one Neutronium Ingot is worth when fed to a stabilizer, bomb or gate (a block is 9x, raw Neutronium half).")
+            .defineInRange("neutroniumMass", 200, 1, 1_000_000);
+    public static final ModConfigSpec.IntValue MASS_SHARD_MASS = B.comment("Mass one Mass Shard is worth.")
+            .defineInRange("massShardMass", 16, 1, 1_000_000);
+    public static final ModConfigSpec.IntValue SINGULARITY_HEART_MASS = B.comment("Mass a Singularity Heart is worth.")
+            .defineInRange("singularityHeartMass", 10_000, 1, Integer.MAX_VALUE);
+    public static final ModConfigSpec.IntValue SINGULARITY_COLLAPSE = B.comment("How much unstable matter the Singularity has to swallow before it collapses (see the manual for what each item is worth).")
+            .defineInRange("singularityCollapse", 2500, 1, 1_000_000);
     static { B.pop(); }
 
     public static final ModConfigSpec SPEC = B.build();

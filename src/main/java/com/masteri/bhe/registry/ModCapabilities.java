@@ -13,6 +13,10 @@ public final class ModCapabilities {
                 (laser, side) -> laser.getEnergy());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BLACK_HOLE_BOMB.get(),
                 (bomb, side) -> bomb.getItemHandler());
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.HORIZON_GATE.get(),
+                (gate, side) -> gate.getItemHandler());
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.HAWKING_CELL.get(),
+                (cell, side) -> cell.getEnergy());
     }
 
     private ModCapabilities() {}

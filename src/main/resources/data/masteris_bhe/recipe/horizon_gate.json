@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GFG",
+    "CBC",
+    "GRG"
+  ],
+  "key": {
+    "G": {
+      "item": "masteris_bhe:singularity_glass"
+    },
+    "F": {
+      "item": "masteris_bhe:event_horizon_fragment"
+    },
+    "C": {
+      "item": "masteris_bhe:graviton_core"
+    },
+    "B": {
+      "item": "masteris_bhe:containment_box"
+    },
+    "R": {
+      "item": "masteris_bhe:ring_frame"
+    }
+  },
+  "result": {
+    "id": "masteris_bhe:horizon_gate",
+    "count": 1
+  }
+}

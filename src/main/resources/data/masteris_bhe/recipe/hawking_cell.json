@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "NMN",
+    "MHM",
+    "NMN"
+  ],
+  "key": {
+    "N": {
+      "item": "masteris_bhe:neutronium_ingot"
+    },
+    "M": {
+      "item": "masteris_bhe:hawking_mote"
+    },
+    "H": {
+      "item": "masteris_bhe:recording_hawking_radiation"
+    }
+  },
+  "result": {
+    "id": "masteris_bhe:hawking_cell",
+    "count": 1
+  }
+}

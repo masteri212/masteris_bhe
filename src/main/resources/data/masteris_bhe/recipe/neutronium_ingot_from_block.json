@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "masteris_bhe:neutronium_block"
+    }
+  ],
+  "result": {
+    "id": "masteris_bhe:neutronium_ingot",
+    "count": 9
+  }
+}

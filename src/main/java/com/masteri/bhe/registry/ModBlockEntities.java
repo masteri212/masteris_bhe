@@ -4,6 +4,9 @@ import com.masteri.bhe.MasteriBHE;
 import com.masteri.bhe.block.entity.BendingLaserBlockEntity;
 import com.masteri.bhe.block.entity.BlackHoleBombBlockEntity;
 import com.masteri.bhe.block.entity.ControlConsoleBlockEntity;
+import com.masteri.bhe.block.entity.GravitonWellBlockEntity;
+import com.masteri.bhe.block.entity.HawkingCellBlockEntity;
+import com.masteri.bhe.block.entity.HorizonGateBlockEntity;
 import com.masteri.bhe.block.entity.ResearchCoreBlockEntity;
 import com.masteri.bhe.block.entity.MassInputPortBlockEntity;
 import com.masteri.bhe.block.entity.ReactorCoreBlockEntity;
@@ -40,6 +43,16 @@ public final class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlackHoleBombBlockEntity>> BLACK_HOLE_BOMB =
             BLOCK_ENTITIES.register("black_hole_bomb", () ->
                     BlockEntityType.Builder.of(BlackHoleBombBlockEntity::new, ModBlocks.BLACK_HOLE_BOMB.get()).build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<HorizonGateBlockEntity>> HORIZON_GATE =
+            BLOCK_ENTITIES.register("horizon_gate", () ->
+                    BlockEntityType.Builder.of(HorizonGateBlockEntity::new, ModBlocks.HORIZON_GATE.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GravitonWellBlockEntity>> GRAVITON_WELL =
+            BLOCK_ENTITIES.register("graviton_well", () ->
+                    BlockEntityType.Builder.of(GravitonWellBlockEntity::new, ModBlocks.GRAVITON_WELL.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<HawkingCellBlockEntity>> HAWKING_CELL =
+            BLOCK_ENTITIES.register("hawking_cell", () ->
+                    BlockEntityType.Builder.of(HawkingCellBlockEntity::new, ModBlocks.HAWKING_CELL.get()).build(null));
 
     private ModBlockEntities() {}
 }

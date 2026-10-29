@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "NNN",
+    "NNN",
+    "NNN"
+  ],
+  "key": {
+    "N": {
+      "item": "masteris_bhe:neutronium_ingot"
+    }
+  },
+  "result": {
+    "id": "masteris_bhe:neutronium_block",
+    "count": 1
+  }
+}

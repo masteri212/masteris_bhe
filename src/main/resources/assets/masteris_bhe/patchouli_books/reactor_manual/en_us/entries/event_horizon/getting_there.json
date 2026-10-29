@@ -1,0 +1,84 @@
+{
+  "name": "Getting There",
+  "icon": "masteris_bhe:horizon_gate",
+  "category": "masteris_bhe:event_horizon",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:horizon_gate",
+      "text": "A captured black hole, held at the base of a great ring. Charge it and the ring tears open into the $(thing)Event Horizon$(): the world inside a black hole."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Horizon Ring",
+      "multiblock": {
+        "mapping": {
+          "F": "masteris_bhe:horizon_frame",
+          "0": "masteris_bhe:horizon_gate"
+        },
+        "pattern": [
+          [
+            "__FFFFF__"
+          ],
+          [
+            "_F     F_"
+          ],
+          [
+            "F       F"
+          ],
+          [
+            "F       F"
+          ],
+          [
+            "F       F"
+          ],
+          [
+            "F       F"
+          ],
+          [
+            "F       F"
+          ],
+          [
+            "_F     F_"
+          ],
+          [
+            "__FF0FF__"
+          ]
+        ],
+        "symmetrical": false
+      },
+      "enable_visualize": true,
+      "text": "23 $(item)Horizon Frames$() standing in a circle, the $(item)Horizon Gate$() in the middle of the bottom. It can face either way. Keep the inside open."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Charging",
+      "text": "Use blocks on the gate to feed it mass, like a bomb: $(num)1$() mass per block, and far more for $(l:event_horizon/materials)Neutronium$(). Hoppers and pipes work too.$(br2)Each player who goes through burns $(num)1,000$() mass."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Opening",
+      "text": "Use the gate empty-handed, or give it a $(thing)redstone pulse$(). The frames light up one by one round the ring as it spins up, then it $(danger)bursts open$(): $(danger)don't stand right in front of it$(), the blast throws you back.$(br2)It stays open for $(num)30$() seconds. $(thing)Walk into it$() to go through."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Arriving",
+      "text": "You land on a platform of Corrupted Stone high in the Event Horizon, straight \"below\" the ring you used (same x and z), facing a Horizon Ring of its own.$(br2)Every trip through the same ring lands on the same platform."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Getting back",
+      "text": "Inside, Horizon Rings open for free. Open one and walk through to come out in front of the ring you went in by.$(br2)An $(item)Escape Recording$() does the same from anywhere inside: hold it for two seconds.$(br2)Beds and respawn anchors don't work in there. $(danger)Die$() and you wake up back home."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:horizon_gate",
+      "recipe2": "masteris_bhe:horizon_frame"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:escape_recording"
+    }
+  ]
+}

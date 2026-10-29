@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=up": {
+      "model": "masteris_bhe:block/mass_shard_cluster"
+    },
+    "facing=down": {
+      "model": "masteris_bhe:block/mass_shard_cluster",
+      "x": 180
+    },
+    "facing=north": {
+      "model": "masteris_bhe:block/mass_shard_cluster",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "masteris_bhe:block/mass_shard_cluster",
+      "x": 90,
+      "y": 180
+    },
+    "facing=east": {
+      "model": "masteris_bhe:block/mass_shard_cluster",
+      "x": 90,
+      "y": 90
+    },
+    "facing=west": {
+      "model": "masteris_bhe:block/mass_shard_cluster",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

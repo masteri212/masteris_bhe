@@ -1,0 +1,30 @@
+{
+  "name": "Creatures",
+  "icon": "masteris_bhe:spaghettifier_spawn_egg",
+  "category": "masteris_bhe:event_horizon",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:spaghettifier_spawn_egg",
+      "text": "Long eels of stretched matter, in the drift and the depths. They circle, then lunge. When one bites it $(danger)grabs on$() and drags you down toward the singularity.$(br2)$(good)Hit it$() to make it let go.",
+      "title": "Spaghettifiers"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Spaghettifier drops",
+      "text": "Mass Shards, and sometimes a $(item)Recording: Spaghettification$()."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:hawking_wisp_spawn_egg",
+      "text": "Sparks of Hawking radiation drifting everywhere above the line. Harmless. They $(thing)evaporate$() over a few minutes, shrinking and dimming until they're gone.$(br2)Catch one early for more $(item)Hawking Motes$(). Sometimes it leaves a $(item)Recording: Hawking Radiation$().",
+      "title": "Hawking Wisps"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Drifters",
+      "text": "The $(l:safety/dark_energy_zone)Drifters$() of the dark energy zones drift through the upper layers too."
+    }
+  ]
+}

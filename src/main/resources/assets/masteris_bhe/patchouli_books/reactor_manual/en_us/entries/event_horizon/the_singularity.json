@@ -1,0 +1,39 @@
+{
+  "name": "The Singularity",
+  "icon": "masteris_bhe:singularity_heart",
+  "category": "masteris_bhe:event_horizon",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:singularity_lure",
+      "text": "Use a $(item)Singularity Lure$() in the Tidal Depths (below y 150) and the $(thing)Singularity$() rises out of the dark in front of you.",
+      "title": "Calling it"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "masteris_bhe:singularity_lure"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Fighting it",
+      "text": "$(danger)Weapons pass straight through it.$() The only way to beat it is to feed it $(thing)unstable matter$() until it can't hold itself together. Throw items in: it pulls them to itself. Its bar shows how close it is to collapsing.$(br2)Anything else it swallows does nothing."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "What it eats",
+      "text": "How much each item counts (it needs $(num)2,500$()):$(li)Block of Neutronium: $(num)540$()$(li)Event Horizon Fragment: $(num)200$()$(li)Charged Crystal: $(num)80$()$(li)Neutronium Ingot: $(num)60$()$(li)Raw Neutronium: $(num)30$()$(li)Unstable Residue: $(num)25$()$(li)Hawking Mote: $(num)15$()$(li)Dark Matter Shard: $(num)10$()$(li)Mass Shard: $(num)8$()$(li)Void Dust: $(num)2$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Its attacks",
+      "text": "It pulls on everything, and $(danger)touching it burns$().$(li)$(thing)Rifts$(): red rings open where you stand, then snap shut. Move.$(li)$(thing)Tide$(): it pulls much harder for a few seconds.$(li)$(thing)Hawking burst$(): a flare gathers, then hits everyone it can see. Get behind a spire.$(li)It spawns $(thing)Spaghettifiers$().$(br2)Past half-fed it's unstable: faster and harder."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:singularity_heart",
+      "text": "It drops a $(item)Singularity Heart$(), worth $(num)10,000$() mass (a whole stabilizer's ignition minimum in one item), plus Neutronium, Event Horizon Fragments and both Event Horizon Recordings.",
+      "title": "Rewards"
+    }
+  ]
+}

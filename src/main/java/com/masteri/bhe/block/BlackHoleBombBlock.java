@@ -58,7 +58,7 @@ public class BlackHoleBombBlock extends Block implements EntityBlock {
         }
         if (MassInputPortBlockEntity.isMass(stack)) {
             if (!level.isClientSide) {
-                bomb.addMass(stack.getCount());
+                bomb.addMass(com.masteri.bhe.reactor.MassValues.of(stack));
                 if (!player.getAbilities().instabuild) stack.setCount(0);
                 level.playSound(null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.6F, 0.5F);
                 status(player, bomb);

@@ -6,15 +6,21 @@ import com.masteri.bhe.block.BlackHoleBombBlock;
 import com.masteri.bhe.block.BreakerPanelBlock;
 import com.masteri.bhe.block.ControlConsoleBlock;
 import com.masteri.bhe.block.FacingBlock;
+import com.masteri.bhe.block.GravitonWellBlock;
+import com.masteri.bhe.block.HawkingCellBlock;
+import com.masteri.bhe.block.HorizonGateBlock;
+import com.masteri.bhe.block.NeutroniumBlock;
 import com.masteri.bhe.block.MassInputPortBlock;
 import com.masteri.bhe.block.ReactorPortBlock;
 import com.masteri.bhe.block.ReactorCoreBlock;
 import com.masteri.bhe.block.ResearchCoreBlock;
 import com.masteri.bhe.block.StabilizerConsoleBlock;
+import net.minecraft.world.level.block.AmethystClusterBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -75,6 +81,29 @@ public final class ModBlocks {
             BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).strength(2.0F, 6.0F).requiresCorrectToolForDrops());
     public static final DeferredBlock<Block> UNSTABLE_DARK_ORE = BLOCKS.registerSimpleBlock("unstable_dark_ore",
             BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).strength(4.0F, 6.0F).requiresCorrectToolForDrops().lightLevel(s -> 4));
+
+    // Event Horizon
+    /** The base of a Horizon Ring: burns mass to open the ring into the Event Horizon (in there, opens it back out). */
+    public static final DeferredBlock<HorizonGateBlock> HORIZON_GATE = BLOCKS.registerBlock("horizon_gate",
+            HorizonGateBlock::new, machine(MapColor.COLOR_BLACK).lightLevel(s -> 10));
+    /** The 23 blocks of a Horizon Ring around the gate (see HorizonRing). */
+    public static final DeferredBlock<Block> HORIZON_FRAME = BLOCKS.registerSimpleBlock("horizon_frame",
+            machine(MapColor.COLOR_BLACK).lightLevel(s -> 4));
+    public static final DeferredBlock<Block> NEUTRONIUM_ORE = BLOCKS.registerSimpleBlock("neutronium_ore",
+            BlockBehaviour.Properties.of().mapColor(MapColor.DEEPSLATE).strength(6.0F, 12.0F).requiresCorrectToolForDrops()
+                    .sound(SoundType.DEEPSLATE).lightLevel(s -> 3));
+    public static final DeferredBlock<NeutroniumBlock> NEUTRONIUM_BLOCK = BLOCKS.registerBlock("neutronium_block",
+            NeutroniumBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE).strength(8.0F, 1200.0F)
+                    .requiresCorrectToolForDrops().sound(SoundType.NETHERITE_BLOCK));
+    public static final DeferredBlock<AmethystClusterBlock> MASS_SHARD_CLUSTER = BLOCKS.registerBlock("mass_shard_cluster",
+            props -> new AmethystClusterBlock(7, 3, props), BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_MAGENTA)
+                    .noOcclusion().strength(1.5F).sound(SoundType.AMETHYST_CLUSTER).lightLevel(s -> 5)
+                    .pushReaction(PushReaction.DESTROY).requiresCorrectToolForDrops());
+    public static final DeferredBlock<GravitonWellBlock> GRAVITON_WELL = BLOCKS.registerBlock("graviton_well",
+            GravitonWellBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(4.0F, 6.0F)
+                    .requiresCorrectToolForDrops().sound(SoundType.DEEPSLATE).lightLevel(s -> 7));
+    public static final DeferredBlock<HawkingCellBlock> HAWKING_CELL = BLOCKS.registerBlock("hawking_cell",
+            HawkingCellBlock::new, machine(MapColor.COLOR_LIGHT_BLUE).lightLevel(s -> 12));
 
     private ModBlocks() {}
 }

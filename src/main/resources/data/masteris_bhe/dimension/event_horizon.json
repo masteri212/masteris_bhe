@@ -1,0 +1,102 @@
+{
+  "type": "masteris_bhe:event_horizon",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "masteris_bhe:event_horizon",
+    "biome_source": {
+      "type": "minecraft:multi_noise",
+      "biomes": [
+        {
+          "biome": "masteris_bhe:tidal_depths",
+          "parameters": {
+            "temperature": [
+              -1.0,
+              1.0
+            ],
+            "humidity": [
+              -1.0,
+              1.0
+            ],
+            "continentalness": [
+              -1.0,
+              1.0
+            ],
+            "erosion": [
+              -1.0,
+              1.0
+            ],
+            "weirdness": [
+              -1.0,
+              1.0
+            ],
+            "depth": [
+              0.328,
+              2.0
+            ],
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "masteris_bhe:debris_drift",
+          "parameters": {
+            "temperature": [
+              -1.0,
+              1.0
+            ],
+            "humidity": [
+              -1.0,
+              1.0
+            ],
+            "continentalness": [
+              -1.0,
+              1.0
+            ],
+            "erosion": [
+              -1.0,
+              1.0
+            ],
+            "weirdness": [
+              -1.0,
+              1.0
+            ],
+            "depth": [
+              -0.531,
+              0.328
+            ],
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "masteris_bhe:horizon_shallows",
+          "parameters": {
+            "temperature": [
+              -1.0,
+              1.0
+            ],
+            "humidity": [
+              -1.0,
+              1.0
+            ],
+            "continentalness": [
+              -1.0,
+              1.0
+            ],
+            "erosion": [
+              -1.0,
+              1.0
+            ],
+            "weirdness": [
+              -1.0,
+              1.0
+            ],
+            "depth": [
+              -2.0,
+              -0.531
+            ],
+            "offset": 0.0
+          }
+        }
+      ]
+    }
+  }
+}

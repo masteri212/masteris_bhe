@@ -57,7 +57,7 @@ public class BlackHoleBombBlockEntity extends BlockEntity {
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
             if (!MassInputPortBlockEntity.isMass(stack)) return stack;
-            if (!simulate) addMass(stack.getCount());
+            if (!simulate) addMass(com.masteri.bhe.reactor.MassValues.of(stack));
             return ItemStack.EMPTY;
         }
     };

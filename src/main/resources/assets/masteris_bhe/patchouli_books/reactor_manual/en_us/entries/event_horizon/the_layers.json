@@ -1,0 +1,33 @@
+{
+  "name": "The Layers",
+  "icon": "masteris_bhe:corrupted_stone",
+  "category": "masteris_bhe:event_horizon",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Inside a black hole",
+      "text": "There's no ground. Islands of debris hang over a bottomless dark, under a sky with one thing in it: a $(thing)huge black hole$(), its glowing disc almost edge-on, the stars bent into a ring around it.$(br2)It's dark: bring light."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Top to bottom",
+      "text": "$(thing)Horizon Shallows$() (above about y 260): scattered rubble, pale calcite. Gravity is almost gone.$(br2)$(thing)Debris Drift$() (y 150 to 260): the big islands, with whole patches of torn-off overworld, grass and trees and all.$(br2)$(thing)Tidal Depths$() (y 40 to 150): dark deepslate islands and tall, thin spires stretched toward the bottom. $(item)Neutronium$() is found here."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Gravity",
+      "text": "Gravity changes with height: about a $(num)fifth$() of normal at the top, rising steadily the deeper you go to nearly $(num)twice$() normal at the bottom.$(br2)Falls hurt more down there, and jumps get short. Build upward to be safe."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Time",
+      "text": "Time runs faster in the deep. Below y 150, furnaces cook faster and crops, saplings and anything else that grows on its own grow faster, up to $(num)4x$() from y 60 down.$(br2)It only runs fast near players."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "The bottom",
+      "text": "Below y 40 is the $(danger)spaghettification line$(). Past it the singularity drags you down harder and harder and stretches you apart. Nothing that falls in comes back."
+    }
+  ]
+}

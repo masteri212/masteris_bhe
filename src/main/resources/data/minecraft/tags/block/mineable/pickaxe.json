@@ -20,6 +20,13 @@
     "masteris_bhe:containment_box",
     "masteris_bhe:black_hole_bomb",
     "masteris_bhe:corrupted_stone",
-    "masteris_bhe:unstable_dark_ore"
+    "masteris_bhe:unstable_dark_ore",
+    "masteris_bhe:horizon_gate",
+    "masteris_bhe:neutronium_ore",
+    "masteris_bhe:neutronium_block",
+    "masteris_bhe:mass_shard_cluster",
+    "masteris_bhe:graviton_well",
+    "masteris_bhe:hawking_cell",
+    "masteris_bhe:horizon_frame"
   ]
 }

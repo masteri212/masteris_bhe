@@ -5,6 +5,7 @@ import com.masteri.bhe.block.ReactorCoreBlock;
 import com.masteri.bhe.config.ReactorConfig;
 import com.masteri.bhe.multiblock.ReactorStructure;
 import com.masteri.bhe.reactor.BlockContents;
+import com.masteri.bhe.reactor.MassValues;
 import com.masteri.bhe.reactor.Crater;
 import com.masteri.bhe.reactor.DarkZones;
 import com.masteri.bhe.reactor.EmergencyVent;
@@ -2047,10 +2048,11 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         }
         long mass;
         if (e instanceof ItemEntity item) {
-            mass = item.getItem().getCount();
+            // Every item at least 1; the Event Horizon's dense materials far more (MassValues).
+            mass = Math.max(1, MassValues.per(item.getItem().getItem())) * item.getItem().getCount();
             item.discard();
         } else if (e instanceof FallingBlockEntity falling) {
-            mass = BlockContents.massOf(falling); // every block is 1 mass, plus 1 per item it carried in
+            mass = BlockContents.massOf(falling); // every block is 1 mass (Neutronium more), plus 1 per item it carried in
             falling.discard();
         } else if (e instanceof LivingEntity living) {
             mass = Math.max(1, (long) Math.ceil(living.getMaxHealth() / 2)); // 1 heart = 1 mass

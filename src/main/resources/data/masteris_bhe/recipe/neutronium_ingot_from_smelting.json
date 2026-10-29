@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": {
+    "item": "masteris_bhe:raw_neutronium"
+  },
+  "result": {
+    "id": "masteris_bhe:neutronium_ingot"
+  },
+  "experience": 1.0,
+  "cookingtime": 200
+}

@@ -1,10 +1,10 @@
 package com.masteri.bhe.block.entity;
 
+import com.masteri.bhe.reactor.MassValues;
 import com.masteri.bhe.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,7 +23,7 @@ public class MassInputPortBlockEntity extends BlockEntity {
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
             if (!isMass(stack)) return stack;
-            if (!simulate) addMass(stack.getCount());
+            if (!simulate) addMass(MassValues.of(stack));
             return ItemStack.EMPTY;
         }
     };
@@ -32,9 +32,9 @@ public class MassInputPortBlockEntity extends BlockEntity {
         super(ModBlockEntities.MASS_INPUT_PORT.get(), pos, state);
     }
 
-    /** Every block counts as 1 mass, whatever it is. */
+    /** Every block counts as 1 mass, whatever it is; the Event Horizon's dense materials far more (MassValues). */
     public static boolean isMass(ItemStack stack) {
-        return !stack.isEmpty() && stack.getItem() instanceof BlockItem;
+        return MassValues.isMass(stack);
     }
 
     public IItemHandler getItemHandler() {

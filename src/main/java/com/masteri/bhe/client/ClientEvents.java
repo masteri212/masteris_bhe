@@ -9,7 +9,9 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 
 @EventBusSubscriber(modid = MasteriBHE.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -28,6 +30,10 @@ public final class ClientEvents {
         event.registerEntityRenderer(ModEntities.DRIFTER.get(), DrifterRenderer::new);
         event.registerEntityRenderer(ModEntities.LENSING_STALKER.get(), StalkerRenderer::new);
         event.registerEntityRenderer(ModEntities.ECHO_OF_THE_CORE.get(), EchoRenderer::new);
+        event.registerEntityRenderer(ModEntities.SPAGHETTIFIER.get(), SpaghettifierRenderer::new);
+        event.registerEntityRenderer(ModEntities.HAWKING_WISP.get(), HawkingWispRenderer::new);
+        event.registerEntityRenderer(ModEntities.SINGULARITY.get(), SingularityRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.HORIZON_GATE.get(), HorizonGateRenderer::new);
     }
 
     @SubscribeEvent
@@ -35,6 +41,13 @@ public final class ClientEvents {
         event.registerLayerDefinition(DrifterModel.LAYER, DrifterModel::createBodyLayer);
         event.registerLayerDefinition(StalkerModel.LAYER, StalkerModel::createBodyLayer);
         event.registerLayerDefinition(EchoModel.LAYER, EchoModel::createBodyLayer);
+        event.registerLayerDefinition(SpaghettifierModel.LAYER, SpaghettifierModel::createBodyLayer);
+    }
+
+    /** The Event Horizon's sky (its dimension type names these effects). */
+    @SubscribeEvent
+    public static void registerDimensionEffects(RegisterDimensionSpecialEffectsEvent event) {
+        event.register(ResourceLocation.fromNamespaceAndPath(MasteriBHE.MODID, "event_horizon"), new EventHorizonEffects());
     }
 
     @SubscribeEvent
