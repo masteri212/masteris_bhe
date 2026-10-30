@@ -1,6 +1,9 @@
 package com.masteri.bhe.entity;
 
+import com.masteri.bhe.registry.ModBlocks;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -26,6 +29,9 @@ public class LightEchoEntity extends Entity {
     /** Where its player was, one entry per tick: x, y, z, yaw, pitch. A ring buffer as long as the delay (config). */
     private double[][] past;
     private int recorded;
+    /** The trap core that made it; it fades when that block is gone. */
+    @Nullable
+    private BlockPos core;
     /** Client: how far it has walked, for the leg swing. */
     public float walked, walkedBefore;
 
@@ -37,6 +43,10 @@ public class LightEchoEntity extends Entity {
 
     public void setOwner(UUID owner) {
         entityData.set(OWNER, Optional.of(owner));
+    }
+
+    public void setCore(BlockPos core) {
+        this.core = core.immutable();
     }
 
     @Nullable
@@ -66,7 +76,8 @@ public class LightEchoEntity extends Entity {
         }
         UUID id = getOwner();
         Player owner = id == null ? null : level().getPlayerByUUID(id);
-        if (owner == null || owner.isSpectator()) {
+        boolean coreGone = core == null || !level().isLoaded(core) || !level().getBlockState(core).is(ModBlocks.TRAP_CORE.get());
+        if (owner == null || owner.isSpectator() || coreGone) {
             discard();
             return;
         }
@@ -99,11 +110,13 @@ public class LightEchoEntity extends Entity {
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         if (tag.hasUUID("Owner")) setOwner(tag.getUUID("Owner"));
+        NbtUtils.readBlockPos(tag, "Core").ifPresent(this::setCore);
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
         UUID owner = getOwner();
         if (owner != null) tag.putUUID("Owner", owner);
+        if (core != null) tag.put("Core", NbtUtils.writeBlockPos(core));
     }
 }

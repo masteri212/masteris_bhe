@@ -74,6 +74,7 @@ public class TrapCoreBlockEntity extends BlockEntity {
             LightEchoEntity echo = ModEntities.LIGHT_ECHO.get().create(server);
             if (echo == null) continue;
             echo.setOwner(player.getUUID());
+            echo.setCore(worldPosition);
             echo.moveTo(player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot());
             server.addFreshEntity(echo);
             echoes.put(player.getUUID(), echo.getId());
