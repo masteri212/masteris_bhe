@@ -95,6 +95,8 @@ public class ReactorCoreBlockEntity extends BlockEntity {
     private int axialTrim;
     private double lastEfficiency = 1;
     public static final int MAX_TRIM = 10;
+    /** How long the alarm keeps going into meltdown phase 2. */
+    private static final int ALARM_PHASE_2_TICKS = 200;
     private int offset, targetOffset, laserPower, stateTimer, stateDuration, lastOutput, ticks;
     private long totalMass;
 
@@ -608,9 +610,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
 
         failureEffects();
 
-        if (ticks % 40 == 0 && state.isAlarm()) {
-            playSound(state.isMeltdown() ? ModSounds.REACTOR_ALARM_MELTDOWN.get() : ModSounds.REACTOR_ALARM.get(), 1.0F);
-        }
+        soundAlarm();
         if (ticks % 20 == 0) {
             for (BlockPos port : reactorPorts) {
                 level.updateNeighbourForOutputSignal(port, level.getBlockState(port).getBlock());
@@ -1518,9 +1518,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         // Loop the timer so the whole phase (and the phase 2 implosion) plays again and again.
         if (stateDuration > 0 && --stateTimer <= 0) enterState(state, stateDuration);
         failureEffects();
-        if (ticks % 40 == 0 && state.isAlarm()) {
-            playSound(state.isMeltdown() ? ModSounds.REACTOR_ALARM_MELTDOWN.get() : ModSounds.REACTOR_ALARM.get(), 1.0F);
-        }
+        soundAlarm();
         return true;
     }
 
@@ -1662,6 +1660,13 @@ public class ReactorCoreBlockEntity extends BlockEntity {
     }
 
     /** A sound from the core that carries further: volume above 1 widens its range (16 blocks per 1). */
+    /** The alarm, every two seconds while the reactor is failing. It falls silent 10 s into meltdown phase 2. */
+    private void soundAlarm() {
+        if (ticks % 40 != 0 || !state.isAlarm()) return;
+        if (state == ReactorState.MELTDOWN_2 && stateDuration - stateTimer >= ALARM_PHASE_2_TICKS) return;
+        playSound(state.isMeltdown() ? ModSounds.REACTOR_ALARM_MELTDOWN.get() : ModSounds.REACTOR_ALARM.get(), 1.0F);
+    }
+
     private void loudSound(net.minecraft.sounds.SoundEvent sound, float volume, float pitch) {
         if (level != null) level.playSound(null, worldPosition, sound, SoundSource.BLOCKS, volume, pitch);
     }

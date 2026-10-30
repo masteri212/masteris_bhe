@@ -126,7 +126,7 @@ The jar ends up in `build/libs/`. To try it in a development client or server:
 - `src/main/resources/`: assets, loot tables, recipes, worldgen and the manual
 - `tools/`: Python generators (run from the project root)
   - `tools/textures/`: pixel-art block and item textures
-  - `tools/models/`: mob textures and Blockbench models
+  - `tools/models/`: mob textures and Blockbench models; `blocks.py` makes the reactor parts' block models
   - `tools/sounds/reactor.py`: the reactor's sounds (needs numpy and ffmpeg)
   - `tools/worldgen/event_horizon.py`: the Event Horizon's terrain, biomes, features, ruin placement and ruin loot
 
