@@ -41,3 +41,6 @@ repo/
 
 ### Python ###
 __pycache__/
+
+### Local generator scripts ###
+tools/

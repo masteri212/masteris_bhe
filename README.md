@@ -97,9 +97,6 @@ so a datapack changes it, under `data/masteris_bhe/`:
 - `loot_table/chests/`: what the ruins' chests hold
 - `recipe/`: every recipe
 
-`tools/worldgen/event_horizon.py` generates all of these; editing it and re-running it is the easiest way to make
-bigger changes.
-
 ## Building from source
 
 You need JDK 21.
@@ -124,11 +121,6 @@ The jar ends up in `build/libs/`. To try it in a development client or server:
   - `client`: renderers, models, the sky and screen effects
   - `compat`: CC: Tweaked and Sable (only loaded when those mods are present)
 - `src/main/resources/`: assets, loot tables, recipes, worldgen and the manual
-- `tools/`: Python generators (run from the project root)
-  - `tools/textures/`: pixel-art block and item textures
-  - `tools/models/`: mob textures and Blockbench models; `blocks.py` makes the reactor parts' block models
-  - `tools/sounds/reactor.py`: the reactor's sounds (needs numpy and ffmpeg)
-  - `tools/worldgen/event_horizon.py`: the Event Horizon's terrain, biomes, features, ruin placement and ruin loot
 
 ## Credits
 
