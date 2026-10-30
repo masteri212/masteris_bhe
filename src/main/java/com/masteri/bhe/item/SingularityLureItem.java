@@ -40,6 +40,10 @@ public class SingularityLureItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!(level instanceof ServerLevel server) || !(player instanceof ServerPlayer)) return InteractionResultHolder.success(stack);
+        if (!com.masteri.bhe.config.ReactorConfig.LURE_ENABLED.get()) {
+            player.displayClientMessage(Component.translatable(EventHorizon.key("lure_disabled")).withStyle(ChatFormatting.GRAY), true);
+            return InteractionResultHolder.fail(stack);
+        }
         if (!EventHorizon.isHorizon(level) || player.getY() > EventHorizon.DEEP_START) {
             player.displayClientMessage(Component.translatable(EventHorizon.key("lure_too_high")).withStyle(ChatFormatting.GRAY), true);
             return InteractionResultHolder.fail(stack);

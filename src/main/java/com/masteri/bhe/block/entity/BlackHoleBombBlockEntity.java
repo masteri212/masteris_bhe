@@ -94,6 +94,11 @@ public class BlackHoleBombBlockEntity extends BlockEntity {
 
     public void arm() {
         if (armed || level == null) return;
+        if (!ReactorConfig.BOMB_ENABLED.get()) {
+            broadcast(Component.translatable("message.masteris_bhe.bomb.disabled").withStyle(ChatFormatting.GRAY), 16);
+            sound(SoundEvents.FIRE_EXTINGUISH, 0.6F, 1F);
+            return;
+        }
         armed = true;
         fuseTotal = fuse = ReactorConfig.BOMB_FUSE_SECONDS.get() * 20;
         sound(SoundEvents.TNT_PRIMED, 0.5F, 1.5F);

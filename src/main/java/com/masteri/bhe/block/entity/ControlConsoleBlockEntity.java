@@ -27,7 +27,9 @@ import java.util.Arrays;
  * here and sends them to the clients so the monitor can draw them (no menu needs to be open).
  */
 public class ControlConsoleBlockEntity extends BlockEntity {
-    public static final int LINK_RADIUS = 32;
+    private static int linkRadius() {
+        return com.masteri.bhe.config.ReactorConfig.CONSOLE_LINK_RADIUS.get();
+    }
     private static final int SYNC_INTERVAL = 4, RELINK_INTERVAL = 40;
 
     @Nullable private BlockPos corePos;
@@ -44,7 +46,7 @@ public class ControlConsoleBlockEntity extends BlockEntity {
     private ReactorCoreBlockEntity core(boolean search) {
         ReactorCoreBlockEntity core = ReactorLocator.coreAt(level, corePos);
         if (core == null && search && level != null) {
-            core = ReactorLocator.findCore(level, worldPosition, LINK_RADIUS);
+            core = ReactorLocator.findCore(level, worldPosition, linkRadius());
             corePos = core == null ? null : core.getBlockPos();
             setChanged();
         }
@@ -90,7 +92,7 @@ public class ControlConsoleBlockEntity extends BlockEntity {
     public void press(Player player, int button) {
         ReactorCoreBlockEntity core = core(true);
         if (core == null) {
-            player.displayClientMessage(Component.translatable("message.masteris_bhe.console.no_core", LINK_RADIUS)
+            player.displayClientMessage(Component.translatable("message.masteris_bhe.console.no_core", linkRadius())
                     .withStyle(ChatFormatting.RED), true);
             return;
         }
@@ -102,7 +104,7 @@ public class ControlConsoleBlockEntity extends BlockEntity {
     public void open(Player player) {
         ReactorCoreBlockEntity core = core(true);
         if (core == null) {
-            player.displayClientMessage(Component.translatable("message.masteris_bhe.console.no_core", LINK_RADIUS)
+            player.displayClientMessage(Component.translatable("message.masteris_bhe.console.no_core", linkRadius())
                     .withStyle(ChatFormatting.RED), true);
             return;
         }

@@ -12,7 +12,6 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
 
 /** Stores RF from cables; the linked core pulls it as laser input according to the console's laser power. */
 public class BendingLaserBlockEntity extends BlockEntity {
-    public static final int LINK_RADIUS = 24;
     private static final int CAPACITY = 4_000_000;
 
     private final Buffer buffer = new Buffer();
@@ -36,7 +35,7 @@ public class BendingLaserBlockEntity extends BlockEntity {
 
     public void serverTick() {
         if (level == null || ++ticks % 100 != 0) return;
-        ReactorCoreBlockEntity core = ReactorLocator.findCore(level, worldPosition, LINK_RADIUS);
+        ReactorCoreBlockEntity core = ReactorLocator.findCore(level, worldPosition, com.masteri.bhe.config.ReactorConfig.LASER_RANGE.get());
         if (core != null) core.linkLaser(worldPosition);
     }
 

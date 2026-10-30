@@ -108,6 +108,14 @@ public class HorizonGateBlockEntity extends BlockEntity {
             say(player, Component.translatable(EventHorizon.key("gate_busy")).withStyle(ChatFormatting.GRAY));
             return;
         }
+        if (!free() && !ReactorConfig.HORIZON_ENABLED.get()) {
+            say(player, Component.translatable(EventHorizon.key("disabled")).withStyle(ChatFormatting.GRAY));
+            return;
+        }
+        if (!free() && !ReactorConfig.allows(ReactorConfig.GATE_DIMENSIONS.get(), server.dimension())) {
+            say(player, Component.translatable(EventHorizon.key("gate_dimension")).withStyle(ChatFormatting.GRAY));
+            return;
+        }
         Direction.Axis found = HorizonRing.find(server, worldPosition);
         if (found == null) {
             int missing = HorizonRing.missing(server, worldPosition, HorizonRing.likely(server, worldPosition));

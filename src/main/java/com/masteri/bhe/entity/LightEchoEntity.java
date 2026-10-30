@@ -16,16 +16,15 @@ import java.util.UUID;
 
 /**
  * A Light Trap's echo of a player: light from five seconds ago still circling the trap's tiny black hole. It does
- * exactly what its player did, {@link #DELAY} ticks late, and it counts for the trap's pads (see TrapCoreBlockEntity),
+ * exactly what its player did, a few seconds late (config), and it counts for the trap's pads (see TrapCoreBlockEntity),
  * so you can stand on one pad while your past self stands on the other. Made by the trap core; never saved.
  */
 public class LightEchoEntity extends Entity {
-    public static final int DELAY = 100;
     private static final EntityDataAccessor<Optional<UUID>> OWNER = SynchedEntityData.defineId(LightEchoEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Boolean> SHOWN = SynchedEntityData.defineId(LightEchoEntity.class, EntityDataSerializers.BOOLEAN);
 
-    /** Where its player was, one entry per tick: x, y, z, yaw, pitch. A ring buffer {@link #DELAY} long. */
-    private final double[][] past = new double[DELAY][];
+    /** Where its player was, one entry per tick: x, y, z, yaw, pitch. A ring buffer as long as the delay (config). */
+    private double[][] past;
     private int recorded;
     /** Client: how far it has walked, for the leg swing. */
     public float walked, walkedBefore;
@@ -71,7 +70,8 @@ public class LightEchoEntity extends Entity {
             discard();
             return;
         }
-        int slot = recorded % DELAY;
+        if (past == null) past = new double[com.masteri.bhe.config.ReactorConfig.ECHO_DELAY_SECONDS.get() * 20][];
+        int slot = recorded % past.length;
         double[] then = past[slot];
         past[slot] = new double[] {owner.getX(), owner.getY(), owner.getZ(), owner.getYRot(), owner.getXRot()};
         recorded++;

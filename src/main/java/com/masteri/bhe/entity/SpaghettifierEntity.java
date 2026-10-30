@@ -143,7 +143,7 @@ public class SpaghettifierEntity extends Monster {
         Vec3 below = victim.position().add(0, -1.2, 0);
         getMoveControl().setWantedPosition(below.x, below.y, below.z, 2.0);
         setDeltaMovement(below.subtract(position()).scale(0.4));
-        if (grabTicks % 10 == 0) victim.hurt(damageSources().mobAttack(this), 2);
+        if (grabTicks % 10 == 0) victim.hurt(damageSources().mobAttack(this), (float) (getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.4));
         if (level() instanceof ServerLevel server && grabTicks % 2 == 0) {
             server.sendParticles(TRAIL, victim.getX(), victim.getY() + victim.getBbHeight() / 2, victim.getZ(), 4, 0.3, 0.6, 0.3, 0);
         }

@@ -360,5 +360,10 @@
   "jei.masteris_bhe.info.reactor_key": "Dropped by the Echo of the Core guarding a Frozen Reactor in the Event Horizon, one kind per kind of reactor. The Citadel's altar takes one of each.",
   "jei.masteris_bhe.info.telescope": "Found in the Observatory ruin. Fit a Singularity Glass as its lens, then look through it to find the nearest Frozen Reactor (or the Citadel, carrying all three keys).",
   "jei.masteris_bhe.info.light_trap": "Found in the Light Trap ruin. Stand on both Light Pads at once (your echo from five seconds ago counts) to open the vault.",
-  "jei.masteris_bhe.info.evaporating_rock": "What the Hawking Garden's islands are made of. Step on it, or stay near, and it fades away."
+  "jei.masteris_bhe.info.evaporating_rock": "What the Hawking Garden's islands are made of. Step on it, or stay near, and it fades away.",
+  "message.masteris_bhe.ignite.dimension": "Ignition failed: reactors can't be ignited in this dimension.",
+  "message.masteris_bhe.bomb.disabled": "The bomb won't arm: Black Hole Bombs are turned off on this server.",
+  "message.masteris_bhe.horizon.disabled": "The ring won't open: the Event Horizon is turned off on this server.",
+  "message.masteris_bhe.horizon.gate_dimension": "The ring won't open: Horizon Rings don't work in this dimension.",
+  "message.masteris_bhe.horizon.lure_disabled": "Nothing answers: Singularity Lures are turned off on this server."
 }

@@ -547,10 +547,10 @@ public class ReactorCoreBlockEntity extends BlockEntity {
             case STABLE, WARNING -> {
                 runReactor();
                 if (state != ReactorState.STABLE && state != ReactorState.WARNING) break; // a fault fired
-                if (stability < 20 || stress >= 100 || totalMass < ReactorConfig.CRITICAL_MASS.get()) {
+                if (stability < ReactorConfig.PRE_MELTDOWN_STABILITY.get() || stress >= 100 || totalMass < ReactorConfig.CRITICAL_MASS.get()) {
                     enterState(ReactorState.PRE_MELTDOWN, ReactorConfig.PRE_MELTDOWN_SECONDS.get() * 20);
                 } else {
-                    state = stability < 50 ? ReactorState.WARNING : ReactorState.STABLE;
+                    state = stability < ReactorConfig.WARNING_STABILITY.get() ? ReactorState.WARNING : ReactorState.STABLE;
                 }
             }
             case SHUTTING_DOWN -> {
@@ -582,7 +582,8 @@ public class ReactorCoreBlockEntity extends BlockEntity {
                 runReactor();
                 if (state != ReactorState.PRE_MELTDOWN) break;
                 screenShakeParticles(6);
-                boolean recovered = ticks % 20 == 0 && formed && stability >= 35 && stress < 90
+                boolean recovered = ticks % 20 == 0 && formed && stability >= ReactorConfig.RECOVER_STABILITY.get()
+                        && stress < ReactorConfig.RECOVER_STRESS.get()
                         && totalMass >= ReactorConfig.CRITICAL_MASS.get()
                         && ReactorStructure.check(level, worldPosition).complete();
                 if (recovered) {
@@ -593,11 +594,11 @@ public class ReactorCoreBlockEntity extends BlockEntity {
                 }
             }
             case MELTDOWN_1 -> {
-                meltdownEffects(20, 0.04, 2.0F);
+                meltdownEffects(ReactorConfig.MELTDOWN_1_PULL.get(), 0.04, 2.0F);
                 if (--stateTimer <= 0) enterState(ReactorState.MELTDOWN_2, ReactorConfig.MELTDOWN_2_SECONDS.get() * 20);
             }
             case MELTDOWN_2 -> {
-                meltdownEffects(32, 0.10, 4.0F);
+                meltdownEffects(ReactorConfig.MELTDOWN_2_PULL.get(), 0.10, 4.0F);
                 if (--stateTimer <= 0) {
                     collapse();
                     return; // the core is gone
@@ -946,6 +947,11 @@ public class ReactorCoreBlockEntity extends BlockEntity {
     private void ignite(@Nullable Player player) {
         if (state != ReactorState.OFFLINE) { tell(player, "ignite.running", ChatFormatting.YELLOW); return; }
         if (!checkStructure().complete()) { tell(player, "ignite.structure", ChatFormatting.RED); return; }
+        if (level != null && !ReactorConfig.allows(ReactorConfig.IGNITION_DIMENSIONS.get(), level.dimension())) {
+            tell(player, "ignite.dimension", ChatFormatting.RED);
+            fizzle();
+            return;
+        }
         long min = ReactorConfig.MIN_MASS_PER_STABILIZER.get();
         for (long mass : stabilizerMasses()) {
             if (mass < min) {
@@ -991,7 +997,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         scrammed = true;
         scramSeq++;
         scramEffects();
-        if (Math.abs(rpm) > 0.9 * ReactorConfig.SAFE_RPM.get()) {
+        if (Math.abs(rpm) > ReactorConfig.SCRAM_STALL_SPIN.get() * ReactorConfig.SAFE_RPM.get()) {
             enterDiscStall(); // snapping the stabilizers back at high spin stalls the disc
         } else if (state != ReactorState.PRE_MELTDOWN) {
             armShutdownFault();
@@ -1017,7 +1023,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
             playSound(SoundEvents.BEACON_POWER_SELECT, 1.2F);
             tell(player, "jump.success", ChatFormatting.GREEN);
         } else {
-            stateTimer = Math.max(1, stateTimer - 100);
+            stateTimer = Math.max(1, stateTimer - ReactorConfig.JUMP_PENALTY_SECONDS.get() * 20);
             playSound(SoundEvents.FIRE_EXTINGUISH, 0.6F);
             say(player, Component.translatable("message.masteris_bhe.jump.fail", sideNames(missing))
                     .withStyle(ChatFormatting.RED), false);

@@ -47,7 +47,6 @@ public final class ZoneEffects {
     private static final ResourceLocation ARMOR_ID = id("corrupted_armor");
     private static final String CORRUPTED = MasteriBHE.MODID + ":corrupted";
     private static final DustParticleOptions TRAIL = new DustParticleOptions(new Vector3f(0.55F, 0.1F, 0.85F), 1.2F);
-    private static final float GRAVITON_CHANCE = 0.03F;
 
     public static boolean isCorrupted(Entity entity) {
         return entity.getPersistentData().getBoolean(CORRUPTED);
@@ -100,10 +99,10 @@ public final class ZoneEffects {
     /** Marks the mob as corrupted (saved with it) and makes it tougher: 2x health, +50% damage, faster, some armor. */
     public static void corrupt(Mob mob) {
         mob.getPersistentData().putBoolean(CORRUPTED, true);
-        modify(mob, Attributes.MAX_HEALTH, HEALTH_ID, 1.0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
-        modify(mob, Attributes.ATTACK_DAMAGE, DAMAGE_ID, 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
-        modify(mob, Attributes.MOVEMENT_SPEED, SPEED_ID, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
-        modify(mob, Attributes.ARMOR, ARMOR_ID, 4.0, AttributeModifier.Operation.ADD_VALUE);
+        modify(mob, Attributes.MAX_HEALTH, HEALTH_ID, ReactorConfig.CORRUPTED_HEALTH.get(), AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+        modify(mob, Attributes.ATTACK_DAMAGE, DAMAGE_ID, ReactorConfig.CORRUPTED_DAMAGE.get(), AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+        modify(mob, Attributes.MOVEMENT_SPEED, SPEED_ID, ReactorConfig.CORRUPTED_SPEED.get(), AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+        modify(mob, Attributes.ARMOR, ARMOR_ID, ReactorConfig.CORRUPTED_ARMOR.get(), AttributeModifier.Operation.ADD_VALUE);
         mob.setHealth(mob.getMaxHealth());
     }
 
@@ -119,7 +118,7 @@ public final class ZoneEffects {
         if (!isCorrupted(entity) || entity.level().isClientSide) return;
         RandomSource random = entity.getRandom();
         event.getDrops().add(drop(entity, new ItemStack(ModItems.VOID_DUST.get(), 1 + random.nextInt(2))));
-        if (event.isRecentlyHit() && random.nextFloat() < GRAVITON_CHANCE) {
+        if (event.isRecentlyHit() && random.nextDouble() < ReactorConfig.GRAVITON_CHANCE.get()) {
             event.getDrops().add(drop(entity, new ItemStack(ModItems.GRAVITON_CORE.get())));
         }
     }

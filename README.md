@@ -69,10 +69,34 @@ Install it on both the client and the server.
 
 ## Configuration
 
-Server settings live in `serverconfig/masteris_bhe-server.toml` inside each world (also editable from the Mods
-screen). Every option has a description in the file: ignition cost, stability thresholds, spin and power numbers,
-failure timers, whether a collapse destroys blocks, zone size and mobs, the bomb, and the Event Horizon's gravity,
-time dilation and boss.
+Server settings live in `config/masteris_bhe-server.toml` (also editable from the Mods screen); a world can override
+them with its own copy in `<world>/serverconfig/`. Every option has a description in the file. Among them:
+
+- **Reactor:** ignition RF and minimum mass, the dimensions reactors may be ignited in, stability and recovery
+  thresholds, spin, resonance and laser numbers, failure and meltdown timers, meltdown pull, link ranges
+- **Collapses and zones:** whether collapses destroy blocks, crater and zone size, fallout, gravity, chunk loading,
+  ore and discharge chances, corrupted mob bonuses, mob caps and the Echo's cooldown
+- **Research and the bomb:** research step time; the bomb's fuse and radius, or turning bombs off
+- **Event Horizon:** turning it off, which dimensions Horizon Rings work in, trip cost, ring open time, arrival
+  height, gravity, time dilation, the spaghettification line, mass values, the Hawking Cell, Graviton Wells,
+  Evaporating Rock, the Light Echo, the Singularity Lure and the Singularity
+- **Mobs:** health and damage for every mob and boss, and Hawking Wisp lifetimes
+
+**Modpacks:** ship a tuned `config/masteris_bhe-server.toml` with the pack. Only the server's copy counts in
+multiplayer: it's sent to the players when they join.
+
+**World generation** (the Event Horizon's terrain, biomes, ores, mob spawns, ruin frequency and ruin loot) is data,
+so a datapack changes it, under `data/masteris_bhe/`:
+
+- `worldgen/structure_set/<ruin>.json`: how often each ruin appears (`spacing` and `separation`, in chunks)
+- `worldgen/structure/<ruin>.json`: which heights and biomes it appears in
+- `worldgen/placed_feature/`: how much Neutronium, Mass Shards, Graviton Wells and Frozen Mobs generate
+- `worldgen/biome/`: mob spawns and features per layer
+- `loot_table/chests/`: what the ruins' chests hold
+- `recipe/`: every recipe
+
+`tools/worldgen/event_horizon.py` generates all of these; editing it and re-running it is the easiest way to make
+bigger changes.
 
 ## Building from source
 

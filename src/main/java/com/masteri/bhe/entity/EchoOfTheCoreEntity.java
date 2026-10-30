@@ -142,6 +142,11 @@ public class EchoOfTheCoreEntity extends Monster {
         return position().add(0, getBbHeight() / 2, 0);
     }
 
+    /** An attack's damage, scaled by the config. */
+    private static float damage(float base) {
+        return (float) (base * com.masteri.bhe.config.ReactorConfig.ECHO_DAMAGE.get());
+    }
+
     private boolean enraged() {
         return getHealth() < getMaxHealth() / 2;
     }
@@ -238,7 +243,7 @@ public class EchoOfTheCoreEntity extends Monster {
             // Only on the ground near the wave's level: jumping clears it.
             if (Math.abs(dist - radius) > 1 || !player.onGround() || Math.abs(player.getY() - waveY) > 3) continue;
             hitThisAttack.add(player.getUUID());
-            player.hurt(damageSources().mobAttack(this), enraged() ? 11 : 8);
+            player.hurt(damageSources().mobAttack(this), damage(enraged() ? 11 : 8));
             Vec3 away = new Vec3(dx, 0, dz).normalize().scale(1.2);
             player.push(away.x, 0.6, away.z);
             player.hurtMarked = true;
@@ -261,7 +266,7 @@ public class EchoOfTheCoreEntity extends Monster {
             double strength = (0.03 + 0.09 * (1 - dist / PULL_RANGE)) * (enraged() ? 1.4 : 1);
             player.setDeltaMovement(player.getDeltaMovement().add(toCore.scale(strength / dist)));
             player.hurtMarked = true;
-            if (dist < 3 && tick % 10 == 0) player.hurt(damageSources().mobAttack(this), enraged() ? 5 : 3);
+            if (dist < 3 && tick % 10 == 0) player.hurt(damageSources().mobAttack(this), damage(enraged() ? 5 : 3));
         }
         if (tick % 2 == 0) level.sendParticles(ParticleTypes.REVERSE_PORTAL, center.x, center.y, center.z, 20, 6, 3, 6, 0.6);
         if (tick % 20 == 0) level.playSound(null, blockPosition(), SoundEvents.WARDEN_HEARTBEAT, SoundSource.HOSTILE, 4F, 0.5F);
@@ -289,7 +294,7 @@ public class EchoOfTheCoreEntity extends Monster {
             double along = Math.max(0, Math.min(rel.dot(dir), from.distanceTo(end)));
             if (c.distanceTo(from.add(dir.scale(along))) > 1.2) continue;
             hitThisAttack.add(living.getUUID());
-            living.hurt(damageSources().indirectMagic(this, this), enraged() ? 14 : 10);
+            living.hurt(damageSources().indirectMagic(this, this), damage(enraged() ? 14 : 10));
         }
         for (double d = 0; d < from.distanceTo(end); d += 1.5) {
             Vec3 p = from.add(dir.scale(d));

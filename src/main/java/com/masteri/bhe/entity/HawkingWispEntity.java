@@ -43,7 +43,12 @@ public class HawkingWispEntity extends PathfinderMob {
         moveControl = new FlyingMoveControl(this, 10, true);
         setNoGravity(true);
         xpReward = 2;
-        int lifespan = MIN_LIFE + random.nextInt(MAX_LIFE - MIN_LIFE);
+        int min = MIN_LIFE, max = MAX_LIFE;
+        if (!level.isClientSide) { // the client just shows what the server synced
+            min = com.masteri.bhe.config.ReactorConfig.WISP_LIFE_MIN.get() * 20;
+            max = Math.max(min + 1, com.masteri.bhe.config.ReactorConfig.WISP_LIFE_MAX.get() * 20);
+        }
+        int lifespan = min + random.nextInt(max - min);
         entityData.set(LIFESPAN, lifespan);
         entityData.set(LIFE, lifespan);
     }

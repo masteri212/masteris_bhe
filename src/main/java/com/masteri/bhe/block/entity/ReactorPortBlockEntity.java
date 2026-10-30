@@ -14,7 +14,6 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 
 public class ReactorPortBlockEntity extends BlockEntity {
-    private static final int PUSH_PER_SIDE = 2_000_000;
 
     @Nullable private BlockPos corePos;
 
@@ -75,7 +74,7 @@ public class ReactorPortBlockEntity extends BlockEntity {
             if (level.getBlockEntity(target) instanceof ReactorPortBlockEntity) continue;
             IEnergyStorage sink = level.getCapability(Capabilities.EnergyStorage.BLOCK, target, dir.getOpposite());
             if (sink == null || !sink.canReceive()) continue;
-            int available = core.getEnergy().extractEnergy(PUSH_PER_SIDE, true);
+            int available = core.getEnergy().extractEnergy(com.masteri.bhe.config.ReactorConfig.PORT_PUSH_RF.get(), true);
             if (available <= 0) return;
             int accepted = sink.receiveEnergy(available, false);
             core.getEnergy().extractEnergy(accepted, false);

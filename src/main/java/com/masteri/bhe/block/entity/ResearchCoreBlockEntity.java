@@ -38,7 +38,6 @@ import org.jetbrains.annotations.Nullable;
  * gives way, the captured black hole is lost (the box is gone) and a small blast goes off, with no block damage.
  */
 public class ResearchCoreBlockEntity extends BlockEntity {
-    public static final int STEP_TICKS = 600;
     /** The resonance lamp: a PULSE only takes while it's green, for 0.75 s of every 3 s. */
     public static final int PULSE_PERIOD = 60, PULSE_OPEN = 15;
     // Buttons 0..5 start that experiment.
@@ -175,7 +174,7 @@ public class ResearchCoreBlockEntity extends BlockEntity {
         experiment = which;
         steps = Step.generate(which.steps, level.random);
         stepIndex = 0;
-        stepTicks = STEP_TICKS;
+        stepTicks = com.masteri.bhe.config.ReactorConfig.RESEARCH_STEP_SECONDS.get() * 20;
         fed = 0;
         field = 50;
         sound(SoundEvents.BEACON_ACTIVATE, 1.4F);
@@ -218,7 +217,7 @@ public class ResearchCoreBlockEntity extends BlockEntity {
 
     private void advance() {
         stepIndex++;
-        stepTicks = STEP_TICKS;
+        stepTicks = com.masteri.bhe.config.ReactorConfig.RESEARCH_STEP_SECONDS.get() * 20;
         fed = 0;
         if (stepIndex >= steps.length) {
             succeed();

@@ -38,10 +38,8 @@ public final class EventHorizon {
 
     /** Height of the world's top, where gravity is weakest. */
     public static final int TOP = 330;
-    /** Where gates set players down: in the debris drift, the band with the most islands. */
-    public static final int ARRIVAL_Y = 190;
-    /** Time starts running faster below this height, and is fastest from {@link #DEEP_FULL} down. */
-    public static final int DEEP_START = 150, DEEP_FULL = 60;
+    /** The tidal depths: below this height (where Neutronium is, and the Singularity can be called). */
+    public static final int DEEP_START = 150;
 
     public static boolean isHorizon(Level level) {
         return level.dimension() == LEVEL;
@@ -58,9 +56,15 @@ public final class EventHorizon {
         return Mth.lerp(t * t, top, bottom);
     }
 
-    /** How many times faster time runs at a height (1 above the deep). */
+    /** Time starts running faster below this height (config). */
+    public static int dilationStart() {
+        return ReactorConfig.DILATION_START_Y.get();
+    }
+
+    /** How many times faster time runs at a height (1 above the dilation band). */
     public static double dilationAt(double y) {
-        double t = Mth.clamp((DEEP_START - y) / (DEEP_START - DEEP_FULL), 0, 1);
+        int start = dilationStart(), full = Math.min(start - 1, ReactorConfig.DILATION_FULL_Y.get());
+        double t = Mth.clamp((start - y) / (double) (start - full), 0, 1);
         return 1 + (ReactorConfig.TIME_DILATION.get() - 1) * t;
     }
 
@@ -81,7 +85,7 @@ public final class EventHorizon {
             return false;
         }
         player.setData(ModAttachments.HORIZON_RETURN, GlobalPos.of(player.level().dimension(), gate.immutable()));
-        BlockPos arrival = new BlockPos(gate.getX(), ARRIVAL_Y, gate.getZ());
+        BlockPos arrival = new BlockPos(gate.getX(), ReactorConfig.ARRIVAL_Y.get(), gate.getZ());
         buildArrival(horizon, arrival);
         // Facing the ring (north of the landing spot).
         player.changeDimension(new DimensionTransition(horizon, Vec3.atBottomCenterOf(arrival), Vec3.ZERO, 180F, 0F,

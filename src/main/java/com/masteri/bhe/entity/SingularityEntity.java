@@ -197,6 +197,11 @@ public class SingularityEntity extends Monster {
         return preferred;
     }
 
+    /** An attack's damage, scaled by the config. */
+    private static float damage(float base) {
+        return (float) (base * ReactorConfig.SINGULARITY_DAMAGE.get());
+    }
+
     private boolean unstable() {
         return fedFraction() >= 0.5F;
     }
@@ -293,7 +298,7 @@ public class SingularityEntity extends Monster {
             double strength = (0.012 + 0.05 * (1 - d / PULL_RANGE)) * force;
             player.setDeltaMovement(player.getDeltaMovement().add(to.scale(strength / d)));
             if (tickCount % 2 == 0) player.hurtMarked = true;
-            if (d < r + 1.5 && tickCount % 10 == 0) player.hurt(EventHorizon.spaghettified(level, this), unstable() ? 8 : 5);
+            if (d < r + 1.5 && tickCount % 10 == 0) player.hurt(EventHorizon.spaghettified(level, this), damage(unstable() ? 8 : 5));
         }
         for (ItemEntity item : level.getEntitiesOfClass(ItemEntity.class, new AABB(c, c).inflate(PULL_RANGE))) {
             Vec3 to = c.subtract(item.position());
@@ -357,7 +362,7 @@ public class SingularityEntity extends Monster {
             level.playSound(null, BlockPos.containing(at), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.HOSTILE, 1.5F, 1.4F);
             for (Player player : level.getEntitiesOfClass(Player.class, new AABB(at, at).inflate(2.8, 3, 2.8))) {
                 if (player.isCreative() || player.isSpectator()) continue;
-                player.hurt(EventHorizon.spaghettified(level, this), unstable() ? 11 : 8);
+                player.hurt(EventHorizon.spaghettified(level, this), damage(unstable() ? 11 : 8));
                 Vec3 toCore = core().subtract(player.position()).normalize();
                 player.setDeltaMovement(player.getDeltaMovement().add(toCore.scale(0.9)));
                 player.hurtMarked = true;
@@ -375,7 +380,7 @@ public class SingularityEntity extends Monster {
             if (player.isCreative() || player.isSpectator() || player.distanceToSqr(c) > BURST_RANGE * BURST_RANGE) continue;
             HitResult hit = level.clip(new ClipContext(c, player.getEyePosition(), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
             if (hit.getType() == HitResult.Type.BLOCK) continue; // in cover
-            player.hurt(level.damageSources().indirectMagic(this, this), unstable() ? 14 : 10);
+            player.hurt(level.damageSources().indirectMagic(this, this), damage(unstable() ? 14 : 10));
             Vec3 away = player.position().subtract(c).normalize();
             player.setDeltaMovement(player.getDeltaMovement().add(away.scale(1.4)).add(0, 0.3, 0));
             player.hurtMarked = true;

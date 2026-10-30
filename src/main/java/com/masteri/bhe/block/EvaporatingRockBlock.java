@@ -33,11 +33,12 @@ public class EvaporatingRockBlock extends Block {
         builder.add(FADING);
     }
 
-    /** Starts it fading: gone in 2-5 seconds. */
+    /** Starts it fading: gone a few seconds later (rockFadeMinSeconds..rockFadeMaxSeconds). */
     private void fade(Level level, BlockPos pos, BlockState state, RandomSource random) {
         if (state.getValue(FADING)) return;
         level.setBlock(pos, state.setValue(FADING, true), Block.UPDATE_ALL);
-        level.scheduleTick(pos, this, 40 + random.nextInt(60));
+        int min = com.masteri.bhe.config.ReactorConfig.ROCK_FADE_MIN.get() * 20, max = Math.max(min, com.masteri.bhe.config.ReactorConfig.ROCK_FADE_MAX.get() * 20);
+        level.scheduleTick(pos, this, min + random.nextInt(max - min + 1));
     }
 
     @Override

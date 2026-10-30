@@ -98,11 +98,11 @@ public final class HorizonEffects {
     @SubscribeEvent
     public static void onLevelTick(LevelTickEvent.Post event) {
         if (!(event.getLevel() instanceof ServerLevel level) || !EventHorizon.isHorizon(level)) return;
-        if (EventHorizon.dilationAt(EventHorizon.DEEP_FULL) <= 1) return; // turned off
+        if (EventHorizon.dilationAt(0) <= 1) return; // turned off
         int randomTicks = level.getGameRules().getInt(GameRules.RULE_RANDOMTICKING);
         LongSet done = new LongOpenHashSet();
         for (ServerPlayer player : level.players()) {
-            if (player.getY() > EventHorizon.DEEP_START + 48) continue; // too far above the deep to matter
+            if (player.getY() > EventHorizon.dilationStart() + 48) continue; // too far above the deep to matter
             int cx = player.chunkPosition().x, cz = player.chunkPosition().z;
             for (int dx = -DILATION_RADIUS; dx <= DILATION_RADIUS; dx++) {
                 for (int dz = -DILATION_RADIUS; dz <= DILATION_RADIUS; dz++) {
@@ -125,7 +125,7 @@ public final class HorizonEffects {
         for (int i = 0; i < sections.length; i++) {
             LevelChunkSection section = sections[i];
             int baseY = SectionPos.sectionToBlockCoord(chunk.getSectionYFromSectionIndex(i));
-            if (baseY >= EventHorizon.DEEP_START || randomTicks <= 0 || !section.isRandomlyTicking()) continue;
+            if (baseY >= EventHorizon.dilationStart() || randomTicks <= 0 || !section.isRandomlyTicking()) continue;
             int extra = roll(random, (EventHorizon.dilationAt(baseY + 8) - 1) * randomTicks);
             for (int n = 0; n < extra; n++) {
                 BlockPos pos = level.getBlockRandomPos(minX, baseY, minZ, 15);
@@ -135,7 +135,7 @@ public final class HorizonEffects {
         }
         List<BlockEntity> furnaces = new ArrayList<>();
         for (BlockEntity be : chunk.getBlockEntities().values()) {
-            if (be instanceof AbstractFurnaceBlockEntity && be.getBlockPos().getY() < EventHorizon.DEEP_START) furnaces.add(be);
+            if (be instanceof AbstractFurnaceBlockEntity && be.getBlockPos().getY() < EventHorizon.dilationStart()) furnaces.add(be);
         }
         for (BlockEntity be : furnaces) {
             int extra = roll(random, EventHorizon.dilationAt(be.getBlockPos().getY()) - 1);
