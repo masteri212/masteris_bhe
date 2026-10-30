@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "This book covers everything in $(thing)Masteri's Black Hole Energy$(): how to build a dark energy reactor, run it for power, and keep it from $(danger)melting down$().$(br2)Click any $(l:building/full_reactor)blue link$() to jump between entries."
+      "text": "This book covers everything in $(thing)Masteri's Black Hole Energy$(): how to build a dark energy reactor, run it for power, and keep it from $(danger)melting down$(), and what's waiting past it: dark energy zones and the $(l:event_horizon/getting_there)Event Horizon$().$(br2)Click any $(l:building/full_reactor)blue link$() to jump between entries."
     },
     {
       "type": "patchouli:text",

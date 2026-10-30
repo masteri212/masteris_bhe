@@ -57,7 +57,7 @@
     {
       "type": "patchouli:text",
       "title": "Beating the Echo",
-      "text": "Before the last node it can't be hurt. It hits harder below half health.$(br2)Beaten, it drops a random $(l:operation/research)Recording$(), an $(item)Event Horizon Fragment$() and a $(item)Graviton Core$(), and the zone falls in on itself and is gone.$(br2)It doesn't leave: run too far from the crater and it drifts back to wait for you there."
+      "text": "Before the last node it can't be hurt. It hits harder below half health.$(br2)Beaten, it drops a random $(l:operation/research)Recording$(), one or two $(item)Event Horizon Fragments$() and a $(item)Graviton Core$(), and the zone falls in on itself and is gone.$(br2)It doesn't leave: run too far from the crater and it drifts back to wait for you there."
     },
     {
       "type": "patchouli:spotlight",

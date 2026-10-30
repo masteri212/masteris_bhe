@@ -6,13 +6,13 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Recreate the reactor's failures on a small captured black hole to make $(thing)Recordings$(): crafting components you can't get any other way.$(br2)The $(l:safety/venting_lance)Venting Lance$() and the $(l:building/axial_stabilizers)axial stabilizers$() are made from them."
+      "text": "Recreate the reactor's failures on a small captured black hole to make $(thing)Recordings$(): crafting components you can only make here (a few also turn up in the $(l:event_horizon/ruins)Event Horizon's ruins$()).$(br2)The $(l:safety/venting_lance)Venting Lance$() and the $(l:building/axial_stabilizers)axial stabilizers$() are made from them."
     },
     {
       "type": "patchouli:spotlight",
       "item": "masteris_bhe:singularity_container",
       "title": "Capturing a black hole",
-      "text": "Four $(item)Singularity Glass$() (from a collapse crater) make a $(item)Singularity Container$().$(br2)Throw it into a running reactor's black hole: it's flung back out as a $(item)Containment Box$() holding a tiny black hole."
+      "text": "Four $(item)Singularity Glass$() (from a collapse crater, or the Event Horizon's ruins) make a $(item)Singularity Container$().$(br2)Throw it into a running reactor's black hole: it's flung back out as a $(item)Containment Box$() holding a tiny black hole."
     },
     {
       "type": "patchouli:multiblock",

@@ -27,7 +27,7 @@
     {
       "type": "patchouli:text",
       "title": "Its attacks",
-      "text": "It pulls on everything, and $(danger)touching it burns$().$(li)$(thing)Rifts$(): red rings open where you stand, then snap shut. Move.$(li)$(thing)Tide$(): it pulls much harder for a few seconds.$(li)$(thing)Hawking burst$(): a flare gathers, then hits everyone it can see. Get behind a spire.$(li)It spawns $(thing)Spaghettifiers$().$(br2)Past half-fed it's unstable: faster and harder."
+      "text": "It pulls on everything, and $(danger)touching it burns$().$(li)$(thing)Rifts$(): red rings open where you stand, then snap shut. Move.$(li)$(thing)Tide$(): it pulls much harder for a few seconds.$(li)$(thing)Hawking burst$(): a flare gathers, then hits everyone it can see. Get behind a spire or a pillar.$(li)It spawns $(thing)Spaghettifiers$().$(br2)Past half-fed it's unstable: faster and harder."
     },
     {
       "type": "patchouli:spotlight",
