@@ -71,6 +71,14 @@ public final class ModItems {
             SingularityLureItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.EPIC));
     public static final DeferredItem<Item> SINGULARITY_HEART = ITEMS.registerSimpleItem("singularity_heart",
             new Item.Properties().rarity(Rarity.EPIC).fireResistant());
+    /** Dropped by a Frozen Reactor's Echo, one kind per kind of reactor; the Citadel's altar takes one of each. */
+    public static final DeferredItem<Item> REACTOR_KEY_OVERSPUN = reactorKey("overspun");
+    public static final DeferredItem<Item> REACTOR_KEY_STARVED = reactorKey("starved");
+    public static final DeferredItem<Item> REACTOR_KEY_BREACHED = reactorKey("breached");
+
+    private static DeferredItem<Item> reactorKey(String kind) {
+        return ITEMS.registerSimpleItem("reactor_key_" + kind, new Item.Properties().rarity(Rarity.RARE).stacksTo(16));
+    }
 
     // Mobs
     public static final DeferredItem<DeferredSpawnEggItem> DRIFTER_SPAWN_EGG = ITEMS.registerItem("drifter_spawn_egg",

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "masteris_bhe:block/singularity_altar_side",
+    "top": "masteris_bhe:block/singularity_altar_top_1",
+    "bottom": "masteris_bhe:block/singularity_altar_side"
+  }
+}

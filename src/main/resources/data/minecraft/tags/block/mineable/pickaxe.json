@@ -27,6 +27,7 @@
     "masteris_bhe:mass_shard_cluster",
     "masteris_bhe:graviton_well",
     "masteris_bhe:hawking_cell",
-    "masteris_bhe:horizon_frame"
+    "masteris_bhe:horizon_frame",
+    "masteris_bhe:telescope"
   ]
 }

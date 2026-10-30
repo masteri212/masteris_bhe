@@ -1,0 +1,51 @@
+{
+  "name": "Ruins",
+  "icon": "masteris_bhe:ring_frame",
+  "category": "masteris_bhe:event_horizon",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Ruins",
+      "text": "The Event Horizon is full of things it swallowed. No two ruins are quite alike.$(br2)Ruins only appear in parts of the Event Horizon nobody has visited yet."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Swallowed Chunks",
+      "text": "Slices of the overworld torn off and floating in the drift: grass, dirt and stone with ores. Some carry a little forest, a farm with a hut, a dungeon buried inside, or a stretch of mineshaft."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Expedition Camp",
+      "text": "Where the first expedition camped: tents, a cold campfire, their supplies (Escape Recordings among them), a journal, and the wreck of their Horizon Gate, with $(item)Horizon Frames$() to salvage."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:telescope",
+      "title": "Observatory",
+      "text": "A wrecked observatory high in the drift. Its telescope's lens is cracked: fit a $(item)Singularity Glass$() (there's usually one in its chest).$(br2)Then look through it: it points the way to the nearest $(thing)Frozen Reactor$(). Carrying all three Reactor Keys, it finds the $(thing)Citadel$() instead."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Frozen Reactors",
+      "text": "Reactors caught in the middle of collapsing: a broken ring, a cracked core, debris hanging in mid-fall, a control room with the reactor's last log.$(br2)Three kinds, by how they died: $(thing)overspun$() (the ring sheared in two), $(thing)starved$() (thin, full of gaps) and $(thing)breached$() (an arc blown outward)."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:reactor_key_overspun",
+      "title": "Reactor Keys",
+      "text": "Each Frozen Reactor's $(thing)Echo of the Core$() is still on guard. Beat it and it leaves that reactor's $(item)Reactor Key$(): Overspun, Starved or Breached."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recording Archive",
+      "text": "A three-floor tower in the depths, its walls lined with shelves: chests of $(l:operation/research)Recordings$(), Event Horizon ones included.$(br2)$(danger)Lensing Stalkers$() stand in the stacks."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:singularity_altar",
+      "title": "The Citadel",
+      "text": "A great round platform just above the singularity, ringed with pillars, a broken ring hanging overhead.$(br2)Set one Reactor Key of each kind into the $(item)Singularity Altar$() in the middle and the $(thing)Singularity$() rises over it. The pillars are your cover from its Hawking burst."
+    }
+  ]
+}

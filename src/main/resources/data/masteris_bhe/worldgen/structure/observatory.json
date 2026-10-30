@@ -1,0 +1,10 @@
+{
+  "type": "masteris_bhe:ruin",
+  "kind": "observatory",
+  "min_y": 205,
+  "max_y": 250,
+  "biomes": "#masteris_bhe:has_structure/observatory",
+  "step": "surface_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}

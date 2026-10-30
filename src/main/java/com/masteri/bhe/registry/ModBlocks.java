@@ -105,5 +105,14 @@ public final class ModBlocks {
     public static final DeferredBlock<HawkingCellBlock> HAWKING_CELL = BLOCKS.registerBlock("hawking_cell",
             HawkingCellBlock::new, machine(MapColor.COLOR_LIGHT_BLUE).lightLevel(s -> 12));
 
+    /** In the Observatory ruins: points the way to Frozen Reactors (and the Citadel). */
+    public static final DeferredBlock<com.masteri.bhe.block.TelescopeBlock> TELESCOPE = BLOCKS.registerBlock("telescope",
+            com.masteri.bhe.block.TelescopeBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE)
+                    .strength(3.0F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.COPPER).noOcclusion());
+    /** In the Citadel: takes the three Reactor Keys and calls up the Singularity. */
+    public static final DeferredBlock<com.masteri.bhe.block.SingularityAltarBlock> SINGULARITY_ALTAR = BLOCKS.registerBlock("singularity_altar",
+            com.masteri.bhe.block.SingularityAltarBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK)
+                    .strength(-1.0F, 3600000.0F).noLootTable().lightLevel(s -> 9).sound(SoundType.LODESTONE));
+
     private ModBlocks() {}
 }

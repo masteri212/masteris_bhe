@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "breached=false,overspun=false,starved=false": {
+      "model": "masteris_bhe:block/singularity_altar_0"
+    },
+    "breached=true,overspun=false,starved=false": {
+      "model": "masteris_bhe:block/singularity_altar_1"
+    },
+    "breached=false,overspun=false,starved=true": {
+      "model": "masteris_bhe:block/singularity_altar_1"
+    },
+    "breached=true,overspun=false,starved=true": {
+      "model": "masteris_bhe:block/singularity_altar_2"
+    },
+    "breached=false,overspun=true,starved=false": {
+      "model": "masteris_bhe:block/singularity_altar_1"
+    },
+    "breached=true,overspun=true,starved=false": {
+      "model": "masteris_bhe:block/singularity_altar_2"
+    },
+    "breached=false,overspun=true,starved=true": {
+      "model": "masteris_bhe:block/singularity_altar_2"
+    },
+    "breached=true,overspun=true,starved=true": {
+      "model": "masteris_bhe:block/singularity_altar_3"
+    }
+  }
+}

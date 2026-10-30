@@ -1,0 +1,10 @@
+{
+  "type": "masteris_bhe:ruin",
+  "kind": "frozen_reactor",
+  "min_y": 90,
+  "max_y": 190,
+  "biomes": "#masteris_bhe:has_structure/frozen_reactor",
+  "step": "surface_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}

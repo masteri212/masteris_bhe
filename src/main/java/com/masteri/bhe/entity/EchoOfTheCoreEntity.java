@@ -30,6 +30,7 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -68,6 +69,8 @@ public class EchoOfTheCoreEntity extends Monster {
             BossEvent.BossBarColor.PURPLE, BossEvent.BossBarOverlay.PROGRESS);
     private final Set<UUID> hitThisAttack = new HashSet<>();
     @Nullable private BlockPos home;
+    /** Persistent data: which kind of Frozen Reactor this Echo guards (1 overspun, 2 starved, 3 breached; 0 none). */
+    public static final String REACTOR_KIND = com.masteri.bhe.MasteriBHE.MODID + ":reactor_kind";
     private int cooldown = 60;
     /** Where the shockwave rolls (the ground under it when it started). */
     private double waveY;
@@ -330,6 +333,14 @@ public class EchoOfTheCoreEntity extends Monster {
     public void die(DamageSource source) {
         super.die(source);
         if (!(level() instanceof ServerLevel server)) return;
+        // A Frozen Reactor's Echo leaves its reactor's key (for the Citadel's altar).
+        ItemStack key = switch (getPersistentData().getInt(REACTOR_KIND)) {
+            case 1 -> new ItemStack(com.masteri.bhe.registry.ModItems.REACTOR_KEY_OVERSPUN.get());
+            case 2 -> new ItemStack(com.masteri.bhe.registry.ModItems.REACTOR_KEY_STARVED.get());
+            case 3 -> new ItemStack(com.masteri.bhe.registry.ModItems.REACTOR_KEY_BREACHED.get());
+            default -> ItemStack.EMPTY;
+        };
+        if (!key.isEmpty()) spawnAtLocation(key);
         BlockPos at = home != null ? home : blockPosition();
         DarkZones.Stabilized result = DarkZones.get(server).stabilize(server, at);
         Component text = result == null

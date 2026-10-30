@@ -1,0 +1,10 @@
+{
+  "type": "masteris_bhe:ruin",
+  "kind": "citadel",
+  "min_y": 55,
+  "max_y": 62,
+  "biomes": "#masteris_bhe:has_structure/citadel",
+  "step": "surface_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}

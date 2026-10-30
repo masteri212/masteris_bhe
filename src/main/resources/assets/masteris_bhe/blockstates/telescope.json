@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "fixed=false": {
+      "model": "masteris_bhe:block/telescope_cracked"
+    },
+    "fixed=true": {
+      "model": "masteris_bhe:block/telescope"
+    }
+  }
+}

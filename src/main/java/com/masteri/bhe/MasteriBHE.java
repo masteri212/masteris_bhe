@@ -12,6 +12,7 @@ import com.masteri.bhe.registry.ModCapabilities;
 import com.masteri.bhe.registry.ModCreativeTabs;
 import com.masteri.bhe.registry.ModEntities;
 import com.masteri.bhe.registry.ModFeatures;
+import com.masteri.bhe.registry.ModStructures;
 import com.masteri.bhe.registry.ModItems;
 import com.masteri.bhe.registry.ModMenus;
 import com.mojang.logging.LogUtils;
@@ -36,6 +37,8 @@ public class MasteriBHE {
         ModAttachments.ATTACHMENTS.register(modEventBus);
         ModEntities.ENTITY_TYPES.register(modEventBus);
         ModFeatures.FEATURES.register(modEventBus);
+        ModStructures.TYPES.register(modEventBus);
+        ModStructures.PIECES.register(modEventBus);
         modEventBus.addListener(ModEntities::registerAttributes);
         modEventBus.addListener(ModEntities::registerSpawnPlacements);
         modEventBus.addListener(ModCapabilities::register);

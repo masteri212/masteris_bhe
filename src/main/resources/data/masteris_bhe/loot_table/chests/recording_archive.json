@@ -1,0 +1,118 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 3,
+        "max": 5
+      },
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_disc_stall",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_overspin",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_starvation",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_pre_meltdown",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_breach",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_meltdown",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_spaghettification",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_hawking_radiation",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:singularity_glass",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:mass_shard",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 6
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:enchant_randomly"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:written_book",
+          "functions": [
+            {
+              "function": "minecraft:set_written_book_pages",
+              "pages": [
+                "Everything a black hole does, it does again. We recorded every collapse we could reach.",
+                "Do not read in the stacks with your back to the shelves. The tall ones only move when you look away."
+              ],
+              "mode": "replace_all"
+            },
+            {
+              "function": "minecraft:set_book_cover",
+              "title": "Archive Index",
+              "author": "The Archivist",
+              "generation": 0
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.5
+        }
+      ]
+    }
+  ],
+  "random_sequence": "masteris_bhe:chests/recording_archive"
+}

@@ -1,0 +1,10 @@
+{
+  "type": "masteris_bhe:ruin",
+  "kind": "expedition_camp",
+  "min_y": 180,
+  "max_y": 230,
+  "biomes": "#masteris_bhe:has_structure/expedition_camp",
+  "step": "surface_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}

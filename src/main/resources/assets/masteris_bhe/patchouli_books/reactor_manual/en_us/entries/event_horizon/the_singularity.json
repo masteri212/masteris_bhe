@@ -7,8 +7,8 @@
     {
       "type": "patchouli:spotlight",
       "item": "masteris_bhe:singularity_lure",
-      "text": "Use a $(item)Singularity Lure$() in the Tidal Depths (below y 150) and the $(thing)Singularity$() rises out of the dark in front of you.",
-      "title": "Calling it"
+      "title": "Calling it",
+      "text": "Two ways: set the three $(l:event_horizon/ruins)Reactor Keys$() into the altar in the $(thing)Citadel$(), or use a $(item)Singularity Lure$() in the Tidal Depths (below y 150) and it rises out of the dark in front of you."
     },
     {
       "type": "patchouli:crafting",

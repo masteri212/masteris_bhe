@@ -55,21 +55,7 @@ public class SingularityLureItem extends Item {
         Vec3 preferred = player.position().add(look.normalize().scale(DISTANCE));
         preferred = new Vec3(preferred.x, Math.max(EventHorizon.spaghettificationY() + 14, player.getY() - 2), preferred.z);
         Vec3 open = SingularityEntity.findOpenSpot(server, player.position(), preferred);
-        Vec3 at = new Vec3(open.x, open.y - 2, open.z); // the entity's feet: its middle is 2 up
-        double y = at.y;
-        SingularityEntity singularity = ModEntities.SINGULARITY.get().create(server);
-        if (singularity == null) return InteractionResultHolder.fail(stack);
-        singularity.moveTo(at.x, y, at.z, 0, 0);
-        singularity.setHome(BlockPos.containing(at.x, y, at.z));
-        singularity.finalizeSpawn(server, server.getCurrentDifficultyAt(singularity.blockPosition()), MobSpawnType.EVENT, null);
-        server.addFreshEntity(singularity);
-        server.sendParticles(ParticleTypes.FLASH, at.x, y + 2, at.z, 1, 0, 0, 0, 0);
-        server.sendParticles(ParticleTypes.REVERSE_PORTAL, at.x, y + 2, at.z, 300, 4, 4, 4, 0.6);
-        server.playSound(null, singularity.blockPosition(), SoundEvents.WITHER_SPAWN, SoundSource.HOSTILE, 4F, 0.4F);
-        Component text = Component.translatable(EventHorizon.key("singularity_risen")).withStyle(ChatFormatting.GOLD);
-        for (ServerPlayer p : server.players()) {
-            if (p.distanceToSqr(singularity) < 128 * 128) p.sendSystemMessage(text);
-        }
+        if (SingularityEntity.rise(server, new Vec3(open.x, open.y - 2, open.z)) == null) return InteractionResultHolder.fail(stack);
         if (!player.getAbilities().instabuild) stack.shrink(1);
         return InteractionResultHolder.consume(stack);
     }

@@ -258,6 +258,121 @@ NOISES = {
     'rubble': {'firstOctave': -4, 'amplitudes': [1.0, 0.5]},
 }
 
+# ---------------------------------------------------------------- ruins (built in code: horizon/ruins)
+
+# name: (biomes, min_y, max_y, spacing, separation, salt) -- spacing and separation in chunks.
+RUINS = {
+    'swallowed_chunk': (['debris_drift'], 170, 240, 14, 5, 734501),
+    'expedition_camp': (['debris_drift'], 180, 230, 30, 10, 734502),
+    'observatory': (['debris_drift', 'horizon_shallows'], 205, 250, 34, 12, 734503),
+    'frozen_reactor': (['debris_drift', 'tidal_depths'], 90, 190, 26, 10, 734504),
+    'recording_archive': (['tidal_depths'], 70, 110, 40, 14, 734505),
+    'citadel': (['tidal_depths'], 55, 62, 64, 24, 734506),
+}
+
+
+def ruin_files():
+    for name, (biomes, lo, hi, spacing, separation, salt) in RUINS.items():
+        write('tags/worldgen/biome/has_structure/' + name, {'values': [ns(b) for b in biomes]})
+        write('worldgen/structure/' + name, {
+            'type': ns('ruin'), 'kind': name, 'min_y': lo, 'max_y': hi,
+            'biomes': '#' + ns('has_structure/' + name), 'step': 'surface_structures',
+            'spawn_overrides': {}, 'terrain_adaptation': 'none'})
+        write('worldgen/structure_set/' + name, {
+            'structures': [{'structure': ns(name), 'weight': 1}],
+            'placement': {'type': 'minecraft:random_spread', 'spacing': spacing, 'separation': separation, 'salt': salt}})
+    # For the Observatory's telescope.
+    write('tags/worldgen/structure/frozen_reactors', {'values': [ns('frozen_reactor')]})
+    write('tags/worldgen/structure/citadels', {'values': [ns('citadel')]})
+
+
+# ---------------------------------------------------------------- ruin chests
+
+def item(name, weight=1, lo=1, hi=1, functions=()):
+    e = {'type': 'minecraft:item', 'name': name, 'weight': weight}
+    fns = list(functions)
+    if hi > 1 or lo != 1:
+        fns.insert(0, {'function': 'minecraft:set_count', 'count': {'type': 'minecraft:uniform', 'min': lo, 'max': hi}})
+    if fns:
+        e['functions'] = fns
+    return e
+
+
+def book(title, author, pages):
+    return {'type': 'minecraft:item', 'name': 'minecraft:written_book', 'functions': [
+        {'function': 'minecraft:set_written_book_pages', 'pages': pages, 'mode': 'replace_all'},
+        {'function': 'minecraft:set_book_cover', 'title': title, 'author': author, 'generation': 0}]}
+
+
+def chest(name, *pools):
+    write('loot_table/chests/' + name, {'type': 'minecraft:chest', 'pools': list(pools), 'random_sequence': ns('chests/' + name)})
+
+
+def pool(lo, hi, *entries, chance=None):
+    p = {'rolls': {'type': 'minecraft:uniform', 'min': lo, 'max': hi} if hi != lo else lo, 'bonus_rolls': 0, 'entries': list(entries)}
+    if chance is not None:
+        p['conditions'] = [{'condition': 'minecraft:random_chance', 'chance': chance}]
+    return p
+
+
+ENCHANTED_BOOK = item('minecraft:book', 3, functions=[{'function': 'minecraft:enchant_randomly'}])
+REACTOR_LOGS = [
+    book('Reactor Log, Last Page', 'Shift Lead', [
+        "Day 211. Spin is climbing again and the axial trim won't hold it. Told the night crew to bleed it down by hand.",
+        "The ring is singing. Not the hum, a note, high and rising. Okonkwo says that's just the stress gauges.",
+        "It is not the gauges. If anyone reads this: SCRAM EARLY. The ring doesn't warn you twice."]),
+    book('Reactor Log, Last Page', 'Mass Officer', [
+        "Feed line jammed for six hours. Stability under forty and falling. We are starving it.",
+        "The black hole is getting smaller and the core is getting LOUDER. I did not know it could do both.",
+        "Ordered the evacuation. I am staying to throw the last of the stone in by hand. It won't be enough."]),
+    book('Reactor Log, Last Page', 'Containment Tech', [
+        "Breach on the north arc. Ring stress pinned at 100. Nobody can get near enough to patch it.",
+        "Everything is sliding toward the core. The tools, the floor, the light.",
+        "The clock on the wall stopped. Or I did. I can't tell from in here."]),
+]
+CAMP_JOURNAL = book('Expedition Journal', 'Dr. I. Varga', [
+    "We came through the gate at dawn (is there dawn here?) and set up camp on the first rock we could reach.",
+    "Gravity is wrong. Up here we float; Halloran went down to the deep islands and came back saying he weighed twice as much and his watch ran fast.",
+    "Found a frozen cow. Just hanging there, mid-fall, eyes open. We did not touch it.",
+    "The gate failed on day nine. Something long and bright took Halloran off the edge of the deep islands. We are rationing.",
+    "There are ruins out here. Reactors, like ours, stuck in the middle of dying. Something guards them. Whoever finds this: the Escape Recordings in the chest still work."])
+OBSERVATORY_NOTES = book('Observation Notes', 'Unknown', [
+    "The telescope can see the other wrecks: reactors, frozen where they fell in. Their light hasn't left them yet.",
+    "The lens cracked during the last tide. Singularity Glass will do for a new one; nothing else can focus this light.",
+    "Three reactors of three kinds, and at the bottom a ring of black stone with an altar. I think the reactors are keys."])
+ARCHIVE_TEXT = book('Archive Index', 'The Archivist', [
+    "Everything a black hole does, it does again. We recorded every collapse we could reach.",
+    "Do not read in the stacks with your back to the shelves. The tall ones only move when you look away."])
+
+RECORDINGS = ['disc_stall', 'overspin', 'starvation', 'pre_meltdown', 'breach', 'meltdown']
+
+
+def ruin_loot():
+    chest('frozen_reactor',
+          pool(4, 7, item(ns('ring_frame'), 6, 2, 6), item(ns('stabilizer_casing'), 4, 1, 3), item(ns('neutronium_ingot'), 4, 1, 3),
+               item(ns('mass_shard'), 5, 3, 8), item(ns('unstable_dark_residue'), 4, 1, 4), item(ns('graviton_core'), 2),
+               item(ns('event_horizon_fragment'), 1), *[item(ns('recording_' + r), 1) for r in RECORDINGS]),
+          pool(1, 1, *REACTOR_LOGS, chance=0.6))
+    chest('expedition_camp',
+          pool(4, 6, item(ns('escape_recording'), 6, 1, 2), item('minecraft:bread', 6, 2, 5), item('minecraft:torch', 6, 4, 12),
+               item(ns('charged_dark_matter_crystal'), 2), item(ns('horizon_frame'), 4, 1, 3), item(ns('graviton_core'), 1),
+               item('minecraft:ender_pearl', 3, 1, 2), item('minecraft:iron_ingot', 4, 1, 4)),
+          pool(1, 1, CAMP_JOURNAL))
+    chest('observatory',
+          pool(1, 1, item(ns('singularity_glass'), 1, 1, 2)),
+          pool(2, 4, item('minecraft:spyglass', 3), item('minecraft:paper', 5, 2, 6), item('minecraft:compass', 3),
+               item(ns('mass_shard'), 4, 2, 5), item(ns('recording_hawking_radiation'), 1)),
+          pool(1, 1, OBSERVATORY_NOTES))
+    chest('recording_archive',
+          pool(3, 5, *[item(ns('recording_' + r), 2) for r in RECORDINGS], item(ns('recording_spaghettification'), 2),
+               item(ns('recording_hawking_radiation'), 2), item(ns('singularity_glass'), 2), item(ns('mass_shard'), 3, 2, 6),
+               ENCHANTED_BOOK),
+          pool(1, 1, ARCHIVE_TEXT, chance=0.5))
+    chest('citadel',
+          pool(4, 7, item(ns('neutronium_block'), 2, 1, 2), item(ns('neutronium_ingot'), 5, 3, 8), item(ns('event_horizon_fragment'), 3, 1, 3),
+               item(ns('graviton_core'), 3, 1, 2), item(ns('mass_shard'), 4, 8, 16),
+               item('minecraft:book', 3, functions=[{'function': 'minecraft:enchant_with_levels', 'levels': 30, 'options': '#minecraft:on_random_loot'}])))
+
 
 def main():
     write('dimension_type/event_horizon', DIMENSION_TYPE)
@@ -271,6 +386,8 @@ def main():
         write('worldgen/configured_feature/' + name, obj)
     for name, obj in PLACED.items():
         write('worldgen/placed_feature/' + name, obj)
+    ruin_files()
+    ruin_loot()
     print('wrote Event Horizon worldgen')
 
 

@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "masteris_bhe:recording_archive",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 40,
+    "separation": 14,
+    "salt": 734505
+  }
+}

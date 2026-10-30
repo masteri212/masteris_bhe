@@ -1,0 +1,10 @@
+{
+  "type": "masteris_bhe:ruin",
+  "kind": "recording_archive",
+  "min_y": 70,
+  "max_y": 110,
+  "biomes": "#masteris_bhe:has_structure/recording_archive",
+  "step": "surface_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}

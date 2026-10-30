@@ -1,0 +1,10 @@
+{
+  "type": "masteris_bhe:ruin",
+  "kind": "swallowed_chunk",
+  "min_y": 170,
+  "max_y": 240,
+  "biomes": "#masteris_bhe:has_structure/swallowed_chunk",
+  "step": "surface_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}

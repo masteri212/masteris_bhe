@@ -1,0 +1,206 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 4,
+        "max": 7
+      },
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:ring_frame",
+          "weight": 6,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 6
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:stabilizer_casing",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:neutronium_ingot",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:mass_shard",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 3,
+                "max": 8
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:unstable_dark_residue",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:graviton_core",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:event_horizon_fragment",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_disc_stall",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_overspin",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_starvation",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_pre_meltdown",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_breach",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "masteris_bhe:recording_meltdown",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:written_book",
+          "functions": [
+            {
+              "function": "minecraft:set_written_book_pages",
+              "pages": [
+                "Day 211. Spin is climbing again and the axial trim won't hold it. Told the night crew to bleed it down by hand.",
+                "The ring is singing. Not the hum, a note, high and rising. Okonkwo says that's just the stress gauges.",
+                "It is not the gauges. If anyone reads this: SCRAM EARLY. The ring doesn't warn you twice."
+              ],
+              "mode": "replace_all"
+            },
+            {
+              "function": "minecraft:set_book_cover",
+              "title": "Reactor Log, Last Page",
+              "author": "Shift Lead",
+              "generation": 0
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:written_book",
+          "functions": [
+            {
+              "function": "minecraft:set_written_book_pages",
+              "pages": [
+                "Feed line jammed for six hours. Stability under forty and falling. We are starving it.",
+                "The black hole is getting smaller and the core is getting LOUDER. I did not know it could do both.",
+                "Ordered the evacuation. I am staying to throw the last of the stone in by hand. It won't be enough."
+              ],
+              "mode": "replace_all"
+            },
+            {
+              "function": "minecraft:set_book_cover",
+              "title": "Reactor Log, Last Page",
+              "author": "Mass Officer",
+              "generation": 0
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:written_book",
+          "functions": [
+            {
+              "function": "minecraft:set_written_book_pages",
+              "pages": [
+                "Breach on the north arc. Ring stress pinned at 100. Nobody can get near enough to patch it.",
+                "Everything is sliding toward the core. The tools, the floor, the light.",
+                "The clock on the wall stopped. Or I did. I can't tell from in here."
+              ],
+              "mode": "replace_all"
+            },
+            {
+              "function": "minecraft:set_book_cover",
+              "title": "Reactor Log, Last Page",
+              "author": "Containment Tech",
+              "generation": 0
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.6
+        }
+      ]
+    }
+  ],
+  "random_sequence": "masteris_bhe:chests/frozen_reactor"
+}

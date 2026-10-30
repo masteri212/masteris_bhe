@@ -215,6 +215,77 @@ RECORDINGS = {'recording_spaghettification': (25, 1.0, 0.0), 'recording_hawking_
               'escape_recording': (135, 0.9, 0.0)}
 
 
+# ---------------------------------------------------------------- ruins: telescope, altar, keys
+
+COPPER = hx('3f8f7a')        # weathered copper
+ALTAR = hx('1c1a22')
+KEY_COLORS = {'overspun': hx('ff8a3a'), 'starved': hx('8ad8ff'), 'breached': hx('ff4a6a')}
+
+
+def telescope_side():
+    img = plate(COPPER, 41, 0.06)
+    for y in (4, 11):
+        for x in range(16):
+            img.set(x, y, shade(COPPER, 0.6))
+    corner_rivets(img, COPPER, 0)
+    return img
+
+
+def telescope_top(cracked):
+    img = plate(COPPER, 42, 0.06)
+    lens(img, 8, 8, 5.0, COPPER, CYAN, 0.5 if cracked else 1.0)
+    if cracked:
+        for i in range(9):              # a crack across the lens
+            img.set(4 + i, 5 + (i * 2) // 3 + (i % 2), (30, 30, 36, 255))
+    return img
+
+
+def altar_side():
+    img = plate(ALTAR, 43, 0.04)
+    img.inset(2, 2, 13, 13, ALTAR)
+    for x in range(4, 12):              # gold inlay
+        img.set(x, 8, hx('e2b84a'))
+    img.set(7, 6, hx('e2b84a')); img.set(8, 10, hx('e2b84a'))
+    return img
+
+
+def altar_top(keys):
+    img = plate(ALTAR, 44, 0.04)
+    img.disc(8, 8, 3.2, hx('050208'))
+    img.glow(8, 8, 4.5, hx('ffb050'), 0.25 + 0.25 * keys, 1.4)
+    for i, (x, y) in enumerate(((8, 2), (3, 12), (13, 12))):   # three sockets
+        lit = i < keys
+        img.disc(x + 0.5, y + 0.5, 1.6, hx('ffd890') if lit else hx('3a3440'))
+        if lit:
+            img.glow(x + 0.5, y + 0.5, 3, hx('ffb050'), 0.6, 1.4)
+    return img
+
+
+def reactor_key(color):
+    def make():
+        img = Img()
+        img.disc(5.5, 5.5, 3.6, hx('2a2f3a'))
+        img.disc(5.5, 5.5, 2.0, color)
+        img.glow(5.5, 5.5, 3.5, color, 0.6, 1.4)
+        for i in range(8):              # the shaft, down-right
+            img.set(7 + i, 7 + i, hx('6b7487'))
+            img.set(8 + i, 7 + i, shade(hx('6b7487'), 0.6))
+        for x, y in ((12, 14), (13, 13), (14, 11)):  # teeth
+            img.set(x, y, hx('6b7487'))
+        img.set(4, 4, (255, 255, 255, 255))
+        return outline_item(img)
+    return make
+
+
+BLOCKS.update({
+    'telescope_side': telescope_side, 'telescope_top': lambda: telescope_top(False),
+    'telescope_top_cracked': lambda: telescope_top(True), 'singularity_altar_side': altar_side,
+    'singularity_altar_top_0': lambda: altar_top(0), 'singularity_altar_top_1': lambda: altar_top(1),
+    'singularity_altar_top_2': lambda: altar_top(2), 'singularity_altar_top_3': lambda: altar_top(3),
+})
+ITEMS.update({'reactor_key_' + k: reactor_key(c) for k, c in KEY_COLORS.items()})
+
+
 def main():
     out = sys.argv[1]
     preview = sys.argv[sys.argv.index('--preview') + 1] if '--preview' in sys.argv else None

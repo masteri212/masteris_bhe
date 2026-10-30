@@ -146,6 +146,25 @@ public class SingularityEntity extends Monster {
         return position().add(0, getBbHeight() / 2, 0);
     }
 
+    /** Calls one up with its feet at {@code at} (its middle is 2 above): flash, sound and a message to everyone near. */
+    @Nullable
+    public static SingularityEntity rise(ServerLevel server, Vec3 at) {
+        SingularityEntity singularity = ModEntities.SINGULARITY.get().create(server);
+        if (singularity == null) return null;
+        singularity.moveTo(at.x, at.y, at.z, 0, 0);
+        singularity.setHome(BlockPos.containing(at));
+        singularity.finalizeSpawn(server, server.getCurrentDifficultyAt(singularity.blockPosition()), MobSpawnType.EVENT, null);
+        server.addFreshEntity(singularity);
+        server.sendParticles(ParticleTypes.FLASH, at.x, at.y + 2, at.z, 1, 0, 0, 0, 0);
+        server.sendParticles(ParticleTypes.REVERSE_PORTAL, at.x, at.y + 2, at.z, 300, 4, 4, 4, 0.6);
+        server.playSound(null, singularity.blockPosition(), SoundEvents.WITHER_SPAWN, SoundSource.HOSTILE, 4F, 0.4F);
+        Component text = Component.translatable(EventHorizon.key("singularity_risen")).withStyle(ChatFormatting.GOLD);
+        for (ServerPlayer p : server.players()) {
+            if (p.distanceToSqr(singularity) < 128 * 128) p.sendSystemMessage(text);
+        }
+        return singularity;
+    }
+
     // ------------------------------------------------------------------ keeping out of the rock
 
     /** Room for it to be seen: no solid block within {@code radius} of {@code center}. */

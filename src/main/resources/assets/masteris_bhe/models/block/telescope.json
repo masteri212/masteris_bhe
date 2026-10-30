@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "masteris_bhe:block/telescope_side",
+    "top": "masteris_bhe:block/telescope_top",
+    "bottom": "masteris_bhe:block/telescope_side"
+  }
+}
