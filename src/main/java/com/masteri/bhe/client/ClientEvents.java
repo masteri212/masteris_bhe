@@ -34,6 +34,9 @@ public final class ClientEvents {
         event.registerEntityRenderer(ModEntities.HAWKING_WISP.get(), HawkingWispRenderer::new);
         event.registerEntityRenderer(ModEntities.SINGULARITY.get(), SingularityRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.HORIZON_GATE.get(), HorizonGateRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.TRAP_CORE.get(), TrapCoreRenderer::new);
+        event.registerEntityRenderer(ModEntities.LIGHT_ECHO.get(), LightEchoRenderer::new);
+        event.registerEntityRenderer(ModEntities.DEBRIS_PLATFORM.get(), DebrisPlatformRenderer::new);
     }
 
     @SubscribeEvent

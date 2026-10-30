@@ -420,5 +420,107 @@ final class Ruins {
         b.chest(4, 1, 0, Direction.WEST, "citadel");
     }
 
+    // ------------------------------------------------------------------ Light Trap
+
+    /**
+     * A glass sphere round a tiny black hole (the core) that holds light in orbit. Inside, everyone gets an echo of
+     * themselves from five seconds ago (TrapCoreBlockEntity). The vault under the core is sealed in Light Seals that
+     * only fall when both Light Pads, far apart on the floor, are stood on at once: stand on one, then walk to the
+     * other before your echo leaves the first.
+     */
+    static void lightTrap(Build b) {
+        b.clear(10.5, 0, 18);
+        b.island(0, -1, 0, 9, 7, s(Blocks.DEEPSLATE), s(Blocks.DEEPSLATE));
+        for (int x = -10; x <= 10; x++) {
+            for (int y = 0; y <= 15; y++) {
+                for (int z = -10; z <= 10; z++) {
+                    double d = Math.sqrt(x * x + (y - 5) * (y - 5) + z * z);
+                    if (d > 8.5 && d <= 9.5) b.set(x, y, z, b.noise(x * 5 + y, z * 5 - y, 2) > 0.72 ? s(Blocks.SEA_LANTERN) : s(Blocks.TINTED_GLASS));
+                }
+            }
+        }
+        for (int x = -9; x <= 9; x++) {
+            for (int z = -9; z <= 9; z++) {
+                double d = Math.sqrt(x * x + z * z);
+                if (d <= 8.6) b.set(x, 0, z, d > 7.5 ? s(Blocks.LIGHT_BLUE_STAINED_GLASS) : s(Blocks.SMOOTH_QUARTZ));
+            }
+        }
+        b.fill(8, 1, -1, 10, 3, 1, s(Blocks.AIR)); // the way in
+        // The vault, sealed, with the core hanging over it.
+        b.fill(-2, 1, -2, 2, 5, 2, s(ModBlocks.LIGHT_SEAL.get()));
+        b.fill(-1, 2, -1, 1, 4, 1, s(Blocks.AIR));
+        b.chest(0, 2, 0, Direction.NORTH, "light_trap");
+        b.set(0, 8, 0, s(ModBlocks.TRAP_CORE.get()));
+        // The two pads, too far apart to stand on both.
+        b.set(-6, 0, 0, s(ModBlocks.LIGHT_PAD.get()));
+        b.set(6, 0, 0, s(ModBlocks.LIGHT_PAD.get()));
+    }
+
+    // ------------------------------------------------------------------ Hawking Garden
+
+    /**
+     * A cluster of small islands of Evaporating Rock round a bigger one, Hawking Blooms growing on them and Hawking
+     * Wisps drifting between. The rock fades away under your feet and around you, so pick fast and keep moving.
+     */
+    static void hawkingGarden(Build b) {
+        BlockState rock = s(ModBlocks.EVAPORATING_ROCK.get());
+        b.clear(16.5, -8, 10);
+        b.island(0, 0, 0, 5, 5, rock, rock);
+        blooms(b, 0, 0, 0, 5);
+        b.chest(0, 1, 0, Direction.NORTH, "hawking_garden");
+        int count = 5 + b.random.nextInt(3);
+        for (int i = 0; i < count; i++) {
+            double a = i * Math.PI * 2 / count + b.random.nextDouble() * 0.5;
+            double d = 9 + b.random.nextDouble() * 5;
+            int cx = (int) Math.round(Math.cos(a) * d), cz = (int) Math.round(Math.sin(a) * d), cy = b.random.nextInt(11) - 5;
+            double r = 2.5 + b.random.nextDouble() * 2;
+            b.island(cx, cy, cz, r, r + 1, rock, rock);
+            blooms(b, cx, cy, cz, r);
+        }
+        for (int i = 0; i < 4; i++) {
+            b.entity(b.random.nextInt(17) - 8, 3 + b.random.nextInt(4), b.random.nextInt(17) - 8, ModEntities.HAWKING_WISP.get(), w -> {});
+        }
+    }
+
+    private static void blooms(Build b, int cx, int top, int cz, double r) {
+        int ri = (int) Math.floor(r * 0.6);
+        for (int x = -ri; x <= ri; x++) {
+            for (int z = -ri; z <= ri; z++) {
+                if (b.random.nextFloat() < 0.3F && !(x == 0 && z == 0)) b.set(cx + x, top + 1, cz + z, s(ModBlocks.HAWKING_BLOOM.get()));
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------ Debris Ring
+
+    /**
+     * Two rings of rubble orbiting an empty point, the outer one way, the inner the other, round a small island
+     * with a chest. Land on the pier, ride the outer ring, hop onto the inner one as it passes, and step off onto
+     * the middle. The platforms are DebrisPlatformEntity: they really move, and carry you.
+     */
+    static void debrisRing(Build b) {
+        b.clear(18, -4, 7);
+        b.island(0, 2, 0, 5.5, 5, s(Blocks.DEEPSLATE_TILES), s(Blocks.DEEPSLATE));
+        b.chest(0, 3, 0, Direction.NORTH, "debris_ring");
+        b.set(2, 3, 2, s(Blocks.SOUL_LANTERN));
+        b.set(-2, 3, -2, s(Blocks.SOUL_LANTERN));
+        b.island(20, 0, 0, 3, 4, s(ModBlocks.CORRUPTED_STONE.get()), s(ModBlocks.CORRUPTED_STONE.get()));
+        b.fill(20, 1, 2, 20, 2, 2, s(Blocks.OAK_FENCE));
+        b.set(20, 3, 2, s(Blocks.SOUL_LANTERN));
+        orbit(b, 9, 14.5F, 0.0035F, 1, 3, 4);
+        orbit(b, 6, 9.5F, -0.0055F, 2, 3, 3);
+    }
+
+    /** {@code count} platforms evenly round one orbit, their tops at {@code topY}. */
+    private static void orbit(Build b, int count, float radius, float speed, int topY, int minWidth, int maxWidth) {
+        net.minecraft.core.BlockPos center = b.pos(0, topY + 1, 0);
+        for (int i = 0; i < count; i++) {
+            float phase = (float) (i * Math.PI * 2 / count + b.random.nextDouble() * 0.3);
+            int width = minWidth + b.random.nextInt(maxWidth - minWidth + 1), style = b.random.nextInt(1000);
+            // All spawned at the middle (one chunk); on its first tick each jumps to its place on the orbit.
+            b.entity(0, topY + 1, 0, ModEntities.DEBRIS_PLATFORM.get(), p -> p.setOrbit(center, radius, phase, speed, width, style, false));
+        }
+    }
+
     private Ruins() {}
 }

@@ -46,6 +46,23 @@
       "item": "masteris_bhe:singularity_altar",
       "title": "The Citadel",
       "text": "A great round platform just above the singularity, ringed with pillars, a broken ring hanging overhead.$(br2)Set one Reactor Key of each kind into the $(item)Singularity Altar$() in the middle and the $(thing)Singularity$() rises over it. The pillars are your cover from its Hawking burst."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:light_pad",
+      "title": "Light Trap",
+      "text": "A glass sphere round a tiny black hole that holds light in orbit. Inside, you see an $(thing)echo$() of yourself doing what you did five seconds ago.$(br2)The vault is sealed until both $(item)Light Pads$() are stood on at once. They're too far apart for one person, but your echo counts."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "masteris_bhe:hawking_bloom",
+      "title": "Hawking Garden",
+      "text": "Small islands of $(item)Evaporating Rock$() in the depths, covered in $(item)Hawking Blooms$() (picked, they give Hawking Motes) and drifting Wisps.$(br2)$(danger)The rock fades$(): step on it, or stay near, and it's gone a few seconds later. Keep moving."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Debris Ring",
+      "text": "Two rings of rubble $(thing)orbiting$() an empty point, one each way, round a small island with a chest.$(br2)Land on the pier, step onto the outer ring as it passes (it carries you), hop onto the inner ring when they line up, then onto the middle."
     }
   ]
 }

@@ -332,5 +332,14 @@
   "message.masteris_bhe.horizon.dir.w": "west",
   "message.masteris_bhe.horizon.dir.nw": "north-west",
   "message.masteris_bhe.horizon.altar_has_key": "That key is already set in the altar.",
-  "message.masteris_bhe.horizon.altar_needs": "The altar waits for: %s"
+  "message.masteris_bhe.horizon.altar_needs": "The altar waits for: %s",
+  "block.masteris_bhe.light_seal": "Light Seal",
+  "block.masteris_bhe.light_pad": "Light Pad",
+  "block.masteris_bhe.trap_core": "Light Trap Core",
+  "block.masteris_bhe.evaporating_rock": "Evaporating Rock",
+  "block.masteris_bhe.hawking_bloom": "Hawking Bloom",
+  "entity.masteris_bhe.light_echo": "Light Echo",
+  "entity.masteris_bhe.debris_platform": "Debris",
+  "message.masteris_bhe.horizon.trap_enter": "Light circles the core... and you see yourself, five seconds ago.",
+  "message.masteris_bhe.horizon.trap_open": "The seals dissolve."
 }

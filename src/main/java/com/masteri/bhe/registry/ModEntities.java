@@ -59,6 +59,23 @@ public final class ModEntities {
                     .clientTrackingRange(16)
                     .build("singularity"));
 
+    /** A Light Trap's delayed copy of a player (not saved: the trap makes a new one). */
+    public static final DeferredHolder<EntityType<?>, EntityType<com.masteri.bhe.entity.LightEchoEntity>> LIGHT_ECHO = ENTITY_TYPES.register("light_echo",
+            () -> EntityType.Builder.<com.masteri.bhe.entity.LightEchoEntity>of(com.masteri.bhe.entity.LightEchoEntity::new, MobCategory.MISC)
+                    .sized(0.6F, 1.8F)
+                    .clientTrackingRange(8)
+                    .updateInterval(1)
+                    .noSave()
+                    .build("light_echo"));
+
+    /** A chunk of rubble orbiting a Debris Ring: solid, and carries what stands on it. */
+    public static final DeferredHolder<EntityType<?>, EntityType<com.masteri.bhe.entity.DebrisPlatformEntity>> DEBRIS_PLATFORM = ENTITY_TYPES.register("debris_platform",
+            () -> EntityType.Builder.<com.masteri.bhe.entity.DebrisPlatformEntity>of(com.masteri.bhe.entity.DebrisPlatformEntity::new, MobCategory.MISC)
+                    .sized(3.0F, 1.0F)
+                    .clientTrackingRange(10)
+                    .updateInterval(20)
+                    .build("debris_platform"));
+
     /** Mod bus. The Event Horizon's mobs float, so they spawn in the air (natural spawning, from the biomes). */
     public static void registerSpawnPlacements(RegisterSpawnPlacementsEvent event) {
         event.register(SPAGHETTIFIER.get(), SpawnPlacementTypes.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,

@@ -15,7 +15,10 @@ public enum Ruin implements StringRepresentable {
     EXPEDITION_CAMP("expedition_camp", 11, 8, 8, Ruins::expeditionCamp),
     OBSERVATORY("observatory", 10, 10, 12, Ruins::observatory),
     RECORDING_ARCHIVE("recording_archive", 10, 10, 31, Ruins::recordingArchive),
-    CITADEL("citadel", 23, 15, 26, Ruins::citadel);
+    CITADEL("citadel", 23, 15, 26, Ruins::citadel),
+    LIGHT_TRAP("light_trap", 12, 9, 19, Ruins::lightTrap),
+    HAWKING_GARDEN("hawking_garden", 20, 13, 12, Ruins::hawkingGarden),
+    DEBRIS_RING("debris_ring", 27, 8, 8, Ruins::debrisRing);
 
     public static final Codec<Ruin> CODEC = StringRepresentable.fromEnum(Ruin::values);
 

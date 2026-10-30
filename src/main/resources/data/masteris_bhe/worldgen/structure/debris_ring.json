@@ -1,0 +1,10 @@
+{
+  "type": "masteris_bhe:ruin",
+  "kind": "debris_ring",
+  "min_y": 170,
+  "max_y": 230,
+  "biomes": "#masteris_bhe:has_structure/debris_ring",
+  "step": "surface_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}

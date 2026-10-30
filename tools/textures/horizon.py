@@ -286,6 +286,73 @@ BLOCKS.update({
 ITEMS.update({'reactor_key_' + k: reactor_key(c) for k, c in KEY_COLORS.items()})
 
 
+# ---------------------------------------------------------------- second ruins: light trap, hawking garden
+
+PALE = hx('bfe6ff')
+
+
+def light_seal():
+    img = Img()
+    for y in range(16):
+        for x in range(16):
+            n = 0.6 * h(x // 2, y // 2, 51) + 0.4 * h(x, y, 52)
+            img.set(x, y, mix(hx('5aa8e0'), PALE, n))
+    for i in range(16):                 # bright diagonal lattice
+        img.set(i, i, (255, 255, 255, 255))
+        img.set(15 - i, i, tint(PALE, 0.5))
+    img.frame(0, 0, 15, 15, hx('3a78b8'))
+    return img
+
+
+def light_pad(lit):
+    img = plate(hx('2a3a4a'), 53, 0.05)
+    img.disc(8, 8, 5.2, hx('3a78b8'))
+    img.disc(8, 8, 3.6, PALE if lit else hx('5aa8e0'))
+    if lit:
+        img.glow(8, 8, 7, PALE, 0.8, 1.3)
+    for a in range(4):
+        ang = a / 4 * math.tau + math.pi / 4
+        img.set(int(7.5 + math.cos(ang) * 6.3), int(7.5 + math.sin(ang) * 6.3), PALE)
+    return img
+
+
+def trap_core():
+    img = Img(fill=hx('08060c'))
+    img.glow(8, 8, 7, PALE, 0.7, 1.2)
+    img.disc(8, 8, 3, hx('020104'))
+    return img
+
+
+def evaporating_rock(fading):
+    img = stone(hx('7fa6b8'), 54, PALE, 0.9 if fading else 0.3)
+    if fading:
+        for y in range(16):
+            for x in range(16):
+                if h(x, y, 55) > 0.82:
+                    img.set(x, y, (255, 255, 255, 255))
+    return img
+
+
+def hawking_bloom():
+    img = Img()
+    for y in range(9, 16):              # stem
+        img.set(8, y, hx('4a8a9a'))
+    img.set(7, 12, hx('4a8a9a')); img.set(6, 11, hx('6ab0c0')); img.set(9, 13, hx('6ab0c0'))
+    for a in range(6):                  # petals of light
+        ang = a / 6 * math.tau
+        img.disc(8 + math.cos(ang) * 2.6, 6 + math.sin(ang) * 2.6, 1.6, PALE)
+    img.disc(8, 6, 1.6, (255, 255, 255, 255))
+    img.glow(8, 6, 5, PALE, 0.5, 1.4)
+    return img
+
+
+BLOCKS.update({
+    'light_seal': light_seal, 'light_pad': lambda: light_pad(False), 'light_pad_lit': lambda: light_pad(True),
+    'trap_core': trap_core, 'evaporating_rock': lambda: evaporating_rock(False),
+    'evaporating_rock_fading': lambda: evaporating_rock(True), 'hawking_bloom': hawking_bloom,
+})
+
+
 def main():
     out = sys.argv[1]
     preview = sys.argv[sys.argv.index('--preview') + 1] if '--preview' in sys.argv else None

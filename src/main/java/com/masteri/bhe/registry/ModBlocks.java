@@ -114,5 +114,26 @@ public final class ModBlocks {
             com.masteri.bhe.block.SingularityAltarBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK)
                     .strength(-1.0F, 3600000.0F).noLootTable().lightLevel(s -> 9).sound(SoundType.LODESTONE));
 
+    // Light Trap: unbreakable seals round its vault, pads to stand on, and the core that runs it.
+    public static final DeferredBlock<Block> LIGHT_SEAL = BLOCKS.registerSimpleBlock("light_seal",
+            BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE).strength(-1.0F, 3600000.0F).noLootTable()
+                    .lightLevel(s -> 12).sound(SoundType.GLASS));
+    public static final DeferredBlock<com.masteri.bhe.block.LightPadBlock> LIGHT_PAD = BLOCKS.registerBlock("light_pad",
+            com.masteri.bhe.block.LightPadBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(-1.0F, 3600000.0F).noLootTable().lightLevel(s -> s.getValue(com.masteri.bhe.block.LightPadBlock.LIT) ? 14 : 5)
+                    .sound(SoundType.AMETHYST));
+    public static final DeferredBlock<com.masteri.bhe.block.TrapCoreBlock> TRAP_CORE = BLOCKS.registerBlock("trap_core",
+            com.masteri.bhe.block.TrapCoreBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK)
+                    .strength(-1.0F, 3600000.0F).noLootTable().lightLevel(s -> 10).noOcclusion());
+    // Hawking Garden
+    public static final DeferredBlock<com.masteri.bhe.block.EvaporatingRockBlock> EVAPORATING_ROCK = BLOCKS.registerBlock("evaporating_rock",
+            com.masteri.bhe.block.EvaporatingRockBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(1.5F, 3.0F).randomTicks().sound(SoundType.CALCITE)
+                    .lightLevel(s -> s.getValue(com.masteri.bhe.block.EvaporatingRockBlock.FADING) ? 9 : 2));
+    public static final DeferredBlock<com.masteri.bhe.block.HawkingBloomBlock> HAWKING_BLOOM = BLOCKS.registerBlock("hawking_bloom",
+            com.masteri.bhe.block.HawkingBloomBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .noCollission().instabreak().randomTicks().sound(SoundType.SPORE_BLOSSOM).lightLevel(s -> 9)
+                    .offsetType(BlockBehaviour.OffsetType.XZ).pushReaction(PushReaction.DESTROY));
+
     private ModBlocks() {}
 }

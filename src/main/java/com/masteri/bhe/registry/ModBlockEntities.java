@@ -54,5 +54,9 @@ public final class ModBlockEntities {
             BLOCK_ENTITIES.register("hawking_cell", () ->
                     BlockEntityType.Builder.of(HawkingCellBlockEntity::new, ModBlocks.HAWKING_CELL.get()).build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.masteri.bhe.block.entity.TrapCoreBlockEntity>> TRAP_CORE =
+            BLOCK_ENTITIES.register("trap_core", () ->
+                    BlockEntityType.Builder.of(com.masteri.bhe.block.entity.TrapCoreBlockEntity::new, ModBlocks.TRAP_CORE.get()).build(null));
+
     private ModBlockEntities() {}
 }

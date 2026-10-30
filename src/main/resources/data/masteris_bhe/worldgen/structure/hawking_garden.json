@@ -1,0 +1,10 @@
+{
+  "type": "masteris_bhe:ruin",
+  "kind": "hawking_garden",
+  "min_y": 80,
+  "max_y": 130,
+  "biomes": "#masteris_bhe:has_structure/hawking_garden",
+  "step": "surface_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}

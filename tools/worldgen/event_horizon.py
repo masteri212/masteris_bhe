@@ -268,6 +268,9 @@ RUINS = {
     'frozen_reactor': (['debris_drift', 'tidal_depths'], 90, 190, 26, 10, 734504),
     'recording_archive': (['tidal_depths'], 70, 110, 40, 14, 734505),
     'citadel': (['tidal_depths'], 55, 62, 64, 24, 734506),
+    'light_trap': (['debris_drift', 'tidal_depths'], 100, 180, 40, 14, 734507),
+    'hawking_garden': (['tidal_depths'], 80, 130, 32, 12, 734508),
+    'debris_ring': (['debris_drift'], 170, 230, 36, 12, 734509),
 }
 
 
@@ -368,6 +371,17 @@ def ruin_loot():
                item(ns('recording_hawking_radiation'), 2), item(ns('singularity_glass'), 2), item(ns('mass_shard'), 3, 2, 6),
                ENCHANTED_BOOK),
           pool(1, 1, ARCHIVE_TEXT, chance=0.5))
+    chest('light_trap',
+          pool(4, 6, item(ns('event_horizon_fragment'), 3, 1, 2), item(ns('singularity_glass'), 4, 1, 3), item(ns('neutronium_ingot'), 4, 2, 5),
+               item(ns('recording_hawking_radiation'), 2), item(ns('recording_spaghettification'), 2), item(ns('graviton_core'), 3),
+               item('minecraft:book', 3, functions=[{'function': 'minecraft:enchant_with_levels', 'levels': 25, 'options': '#minecraft:on_random_loot'}])))
+    chest('hawking_garden',
+          pool(1, 1, item(ns('hawking_mote'), 1, 4, 10)),
+          pool(2, 4, item(ns('recording_hawking_radiation'), 2), item(ns('singularity_glass'), 2), item(ns('mass_shard'), 4, 3, 8),
+               item(ns('neutronium_ingot'), 2, 1, 3), item(ns('escape_recording'), 2)))
+    chest('debris_ring',
+          pool(4, 7, item(ns('neutronium_ingot'), 5, 2, 6), item(ns('mass_shard'), 5, 4, 12), item(ns('graviton_core'), 3, 1, 2),
+               item(ns('event_horizon_fragment'), 2), item(ns('raw_neutronium'), 4, 2, 6), item(ns('horizon_frame'), 3, 2, 5)))
     chest('citadel',
           pool(4, 7, item(ns('neutronium_block'), 2, 1, 2), item(ns('neutronium_ingot'), 5, 3, 8), item(ns('event_horizon_fragment'), 3, 1, 3),
                item(ns('graviton_core'), 3, 1, 2), item(ns('mass_shard'), 4, 8, 16),

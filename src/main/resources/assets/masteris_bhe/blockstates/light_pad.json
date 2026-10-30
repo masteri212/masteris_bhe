@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "masteris_bhe:block/light_pad"
+    },
+    "lit=true": {
+      "model": "masteris_bhe:block/light_pad_lit"
+    }
+  }
+}

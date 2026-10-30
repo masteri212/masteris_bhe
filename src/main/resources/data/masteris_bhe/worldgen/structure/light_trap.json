@@ -1,0 +1,10 @@
+{
+  "type": "masteris_bhe:ruin",
+  "kind": "light_trap",
+  "min_y": 100,
+  "max_y": 180,
+  "biomes": "#masteris_bhe:has_structure/light_trap",
+  "step": "surface_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}
