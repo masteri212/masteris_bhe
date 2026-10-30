@@ -109,4 +109,10 @@ Made by Masteri. Inspired by jona23's DEM.
 
 ## License
 
-All Rights Reserved.
+Licensed under the [GNU Lesser General Public License v3.0](COPYING.LESSER) (LGPL-3.0-only), which builds on the
+[GNU General Public License v3.0](COPYING). In short: you may use, study, change and share this mod, and use it in
+modpacks and as a dependency of your own mods under any license; if you distribute a modified version of the mod
+itself, you must publish your changes under the same license.
+
+The build files that come from the [NeoForge MDK](https://github.com/NeoForged/MDK) stay under their own MIT
+license (see `TEMPLATE_LICENSE.txt`).
