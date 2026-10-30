@@ -3,6 +3,7 @@ package com.masteri.bhe.block;
 import com.masteri.bhe.block.entity.ReactorCoreBlockEntity;
 import com.masteri.bhe.registry.ModBlockEntities;
 import com.mojang.serialization.MapCodec;
+import com.masteri.bhe.multiblock.ReactorAssembly;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -38,6 +39,13 @@ public class ReactorCoreBlock extends BaseEntityBlock {
     @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
+    }
+
+    @Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        // Without the core nothing draws the assembled structures: show their blocks again.
+        if (!state.is(newState.getBlock()) && !level.isClientSide) ReactorAssembly.disassembleAll(level, pos);
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     @Nullable

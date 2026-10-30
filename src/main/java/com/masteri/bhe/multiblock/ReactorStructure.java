@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -129,6 +130,49 @@ public final class ReactorStructure {
             }
         }
         return parts;
+    }
+
+    /**
+     * One separately assembled piece of the reactor (see ReactorAssembly): the ring, one stabilizer or one axial
+     * stabilizer. {@code anchor} is a block that's always one of its own (never a Reactor Port or a console), whose
+     * state tells the client whether the piece is assembled. {@code facing}: a stabilizer's side of the core.
+     */
+    public record Section(Kind kind, List<Part> parts, BlockPos anchor, @Nullable Direction facing) {}
+
+    public enum Kind { RING, STABILIZER, AXIAL }
+
+    private static List<Section> sections;
+
+    public static List<Section> sections() {
+        if (sections == null) {
+            List<Section> list = new ArrayList<>();
+            int ringReach = RING_MAJOR_RADIUS + 3;
+            List<Part> ring = new ArrayList<>();
+            Map<Direction, List<Part>> stabilizers = new LinkedHashMap<>();
+            for (Part part : layout()) {
+                BlockPos o = part.offset();
+                if (o.getX() * o.getX() + o.getZ() * o.getZ() <= ringReach * ringReach) {
+                    ring.add(part);
+                } else {
+                    Direction dir = Math.abs(o.getX()) > Math.abs(o.getZ())
+                            ? (o.getX() > 0 ? Direction.EAST : Direction.WEST)
+                            : (o.getZ() > 0 ? Direction.SOUTH : Direction.NORTH);
+                    stabilizers.computeIfAbsent(dir, d -> new ArrayList<>()).add(part);
+                }
+            }
+            list.add(new Section(Kind.RING, Collections.unmodifiableList(ring), new BlockPos(0, 0, -RING_MAJOR_RADIUS), null));
+            for (Map.Entry<Direction, List<Part>> e : stabilizers.entrySet()) {
+                list.add(new Section(Kind.STABILIZER, Collections.unmodifiableList(e.getValue()),
+                        BlockPos.ZERO.relative(e.getKey(), EMITTER_DISTANCE), e.getKey()));
+            }
+            for (BlockPos center : axialCenters()) {
+                List<Part> parts = axialLayout().stream().filter(p -> Math.abs(p.offset().getX() - center.getX()) <= 1
+                        && Math.abs(p.offset().getY() - center.getY()) <= 1 && Math.abs(p.offset().getZ() - center.getZ()) <= 1).toList();
+                list.add(new Section(Kind.AXIAL, parts, center.below(), null));
+            }
+            sections = Collections.unmodifiableList(list);
+        }
+        return sections;
     }
 
     public static Result check(Level level, BlockPos core) {

@@ -1,0 +1,15 @@
+newmtl bronze
+Ka 0 0 0
+map_Kd masteris_bhe:block/formed/bronze
+
+newmtl bronze_dark
+Ka 0 0 0
+map_Kd masteris_bhe:block/formed/bronze_dark
+
+newmtl glow_amber
+Ka 1 1 1
+map_Kd masteris_bhe:block/formed/glow_amber
+
+newmtl lens_lance
+Ka 1 1 1
+map_Kd masteris_bhe:block/lance_top

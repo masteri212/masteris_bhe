@@ -3,6 +3,7 @@ package com.masteri.bhe.block.entity;
 import com.masteri.bhe.block.BreakerPanelBlock;
 import com.masteri.bhe.block.ReactorCoreBlock;
 import com.masteri.bhe.config.ReactorConfig;
+import com.masteri.bhe.multiblock.ReactorAssembly;
 import com.masteri.bhe.multiblock.ReactorStructure;
 import com.masteri.bhe.reactor.BlockContents;
 import com.masteri.bhe.reactor.MassValues;
@@ -522,6 +523,10 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         if (ticks % RECHECK_INTERVAL == 0) axialFormed = formed && ReactorStructure.checkAxial(level, worldPosition);
         // Offline, any torn block still hanging around (say, from before a reload) is let go too.
         if (ticks % RECHECK_INTERVAL == 0 && state == ReactorState.OFFLINE) releaseTornBlocks();
+        // Each structure (ring, stabilizers, axial stabilizers, lance) switches to its big model once it's complete.
+        if (ticks % RECHECK_INTERVAL == RECHECK_INTERVAL / 2 || ReactorAssembly.takeChanges(level, worldPosition)) {
+            ReactorAssembly.update(level, worldPosition);
+        }
         if (tickPreview()) return;
 
         if (ticks % RECHECK_INTERVAL == 0 && (formed || state != ReactorState.OFFLINE)) {
@@ -1826,7 +1831,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
             }
             if (shielded(pos, center, hole, spareStructure || slowStructure, spareLance)) continue; // behind something the black hole can't take
             BlockContents.Taken taken = level instanceof ServerLevel server ? BlockContents.take(server, pos) : BlockContents.Taken.NONE;
-            FallingBlockEntity falling = FallingBlockEntity.fall(level, pos, block);
+            FallingBlockEntity falling = FallingBlockEntity.fall(level, pos, com.masteri.bhe.block.Assemblable.plain(block));
             BlockContents.attach(falling, taken);
             falling.getPersistentData().putBoolean(TORN, true);
             falling.noPhysics = true;
@@ -1984,7 +1989,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         if (falling == null) return;
         // FallingBlockEntity has no public way to set its block other than loading it.
         CompoundTag tag = falling.saveWithoutId(new CompoundTag());
-        tag.put("BlockState", NbtUtils.writeBlockState(state));
+        tag.put("BlockState", NbtUtils.writeBlockState(com.masteri.bhe.block.Assemblable.plain(state)));
         falling.load(tag);
         falling.setPos(at.x, at.y - 0.5, at.z);
         BlockContents.attach(falling, taken);

@@ -1,0 +1,39 @@
+newmtl purple
+Ka 0 0 0
+map_Kd masteris_bhe:block/formed/purple
+
+newmtl coil
+Ka 0.7 0.7 0.7
+map_Kd masteris_bhe:block/stabilizer_coil
+
+newmtl purple_dark
+Ka 0 0 0
+map_Kd masteris_bhe:block/formed/purple_dark
+
+newmtl glow_violet
+Ka 1 1 1
+map_Kd masteris_bhe:block/formed/glow_violet
+
+newmtl lens_stabilizer
+Ka 1 1 1
+map_Kd masteris_bhe:block/stabilizer_emitter_front
+
+newmtl steel_dark
+Ka 0 0 0
+map_Kd masteris_bhe:block/formed/steel_dark
+
+newmtl hazard
+Ka 0 0 0
+map_Kd masteris_bhe:block/formed/hazard
+
+newmtl steel
+Ka 0 0 0
+map_Kd masteris_bhe:block/formed/steel
+
+newmtl glow_green
+Ka 1 1 1
+map_Kd masteris_bhe:block/formed/glow_green
+
+newmtl glow_red
+Ka 1 1 1
+map_Kd masteris_bhe:block/formed/glow_red

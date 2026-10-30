@@ -1,6 +1,8 @@
 package com.masteri.bhe.registry;
 
 import com.masteri.bhe.MasteriBHE;
+import com.masteri.bhe.block.AssemblyFacingBlock;
+import com.masteri.bhe.block.AssemblyPartBlock;
 import com.masteri.bhe.block.BendingLaserBlock;
 import com.masteri.bhe.block.BlackHoleBombBlock;
 import com.masteri.bhe.block.BreakerPanelBlock;
@@ -38,16 +40,16 @@ public final class ModBlocks {
     // Reactor
     public static final DeferredBlock<ReactorCoreBlock> REACTOR_CORE = BLOCKS.registerBlock("reactor_core",
             ReactorCoreBlock::new, machine(MapColor.COLOR_BLACK).noOcclusion().lightLevel(s -> 12));
-    public static final DeferredBlock<Block> RING_FRAME = BLOCKS.registerSimpleBlock("ring_frame", machine(MapColor.COLOR_BLUE));
-    public static final DeferredBlock<Block> RING_BEAM_PORT = BLOCKS.registerSimpleBlock("ring_beam_port", machine(MapColor.COLOR_BLUE).lightLevel(s -> 6));
+    public static final DeferredBlock<AssemblyPartBlock> RING_FRAME = BLOCKS.registerBlock("ring_frame", AssemblyPartBlock::new, machine(MapColor.COLOR_BLUE));
+    public static final DeferredBlock<AssemblyPartBlock> RING_BEAM_PORT = BLOCKS.registerBlock("ring_beam_port", AssemblyPartBlock::new, machine(MapColor.COLOR_BLUE).lightLevel(s -> 6));
     public static final DeferredBlock<ReactorPortBlock> REACTOR_PORT = BLOCKS.registerBlock("reactor_port",
             ReactorPortBlock::new, machine(MapColor.COLOR_BLUE));
 
     // Stabilizers
-    public static final DeferredBlock<Block> STABILIZER_CASING = BLOCKS.registerSimpleBlock("stabilizer_casing", machine(MapColor.COLOR_PURPLE));
-    public static final DeferredBlock<FacingBlock> STABILIZER_EMITTER = BLOCKS.registerBlock("stabilizer_emitter",
-            FacingBlock::new, machine(MapColor.COLOR_PURPLE).lightLevel(s -> 8));
-    public static final DeferredBlock<Block> STABILIZER_COIL = BLOCKS.registerSimpleBlock("stabilizer_coil", machine(MapColor.COLOR_PURPLE).lightLevel(s -> 7));
+    public static final DeferredBlock<AssemblyPartBlock> STABILIZER_CASING = BLOCKS.registerBlock("stabilizer_casing", AssemblyPartBlock::new, machine(MapColor.COLOR_PURPLE));
+    public static final DeferredBlock<AssemblyFacingBlock> STABILIZER_EMITTER = BLOCKS.registerBlock("stabilizer_emitter",
+            AssemblyFacingBlock::new, machine(MapColor.COLOR_PURPLE).lightLevel(s -> 8));
+    public static final DeferredBlock<AssemblyPartBlock> STABILIZER_COIL = BLOCKS.registerBlock("stabilizer_coil", AssemblyPartBlock::new, machine(MapColor.COLOR_PURPLE).lightLevel(s -> 7));
     public static final DeferredBlock<MassInputPortBlock> MASS_INPUT_PORT = BLOCKS.registerBlock("mass_input_port",
             MassInputPortBlock::new, machine(MapColor.COLOR_PURPLE));
     public static final DeferredBlock<StabilizerConsoleBlock> STABILIZER_CONSOLE = BLOCKS.registerBlock("stabilizer_console",
@@ -55,13 +57,13 @@ public final class ModBlocks {
     public static final DeferredBlock<BreakerPanelBlock> BREAKER_PANEL = BLOCKS.registerBlock("breaker_panel",
             BreakerPanelBlock::new, machine(MapColor.COLOR_PURPLE).lightLevel(s -> s.getValue(BreakerPanelBlock.OVERCHARGED) ? 9 : 3));
     /** The emitter of an axial stabilizer (the two raised above the ring that let spin make power): fires down. */
-    public static final DeferredBlock<Block> AXIAL_EMITTER = BLOCKS.registerSimpleBlock("axial_emitter",
+    public static final DeferredBlock<AssemblyPartBlock> AXIAL_EMITTER = BLOCKS.registerBlock("axial_emitter", AssemblyPartBlock::new,
             machine(MapColor.COLOR_PURPLE).lightLevel(s -> 8));
 
     // Laser, lance, control
     public static final DeferredBlock<BendingLaserBlock> BENDING_LASER = BLOCKS.registerBlock("bending_laser",
             BendingLaserBlock::new, machine(MapColor.COLOR_ORANGE));
-    public static final DeferredBlock<Block> LANCE_EMITTER = BLOCKS.registerSimpleBlock("lance_emitter", machine(MapColor.COLOR_ORANGE).lightLevel(s -> 9));
+    public static final DeferredBlock<AssemblyPartBlock> LANCE_EMITTER = BLOCKS.registerBlock("lance_emitter", AssemblyPartBlock::new, machine(MapColor.COLOR_ORANGE).lightLevel(s -> 9));
     public static final DeferredBlock<ControlConsoleBlock> CONTROL_CONSOLE = BLOCKS.registerBlock("control_console",
             ControlConsoleBlock::new, machine(MapColor.COLOR_GRAY).noOcclusion().lightLevel(s -> 5));
     public static final DeferredBlock<Block> ALARM_LIGHT = BLOCKS.registerSimpleBlock("alarm_light",

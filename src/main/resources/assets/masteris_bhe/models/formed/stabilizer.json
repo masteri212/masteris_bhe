@@ -1,0 +1,10 @@
+{
+  "loader": "neoforge:obj",
+  "model": "masteris_bhe:models/formed/stabilizer.obj",
+  "flip_v": false,
+  "automatic_culling": false,
+  "emissive_ambient": true,
+  "textures": {
+    "particle": "masteris_bhe:block/stabilizer_casing"
+  }
+}

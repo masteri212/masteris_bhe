@@ -46,6 +46,7 @@ public class ReactorCoreRenderer implements BlockEntityRenderer<ReactorCoreBlock
     @Override
     public void render(ReactorCoreBlockEntity core, float partialTick, PoseStack pose, MultiBufferSource buffers,
                        int packedLight, int packedOverlay) {
+        AssembledStructures.render(core, pose, buffers);
         renderLance(core, pose, buffers, partialTick);
         ReactorState state = core.getState();
         ReactorCoreBlockEntity.Anim anim = core.getAnim();
@@ -936,6 +937,8 @@ public class ReactorCoreRenderer implements BlockEntityRenderer<ReactorCoreBlock
     @Override
     public AABB getRenderBoundingBox(ReactorCoreBlockEntity core) {
         if (core.getVentTicks() > 0) return AABB.INFINITE; // the vent beam goes up past the top of the world
-        return new AABB(core.getBlockPos()).inflate(ReactorStructure.STABILIZER_DISTANCE + 1, 16, ReactorStructure.STABILIZER_DISTANCE + 1); // arcs reach high
+        // Arcs reach high, and an assembled lance can stand up to 52 blocks over the core.
+        return new AABB(core.getBlockPos()).inflate(ReactorStructure.STABILIZER_DISTANCE + 1,
+                VentingLance.MAX_BOTTOM + VentingLance.HEIGHT + 1, ReactorStructure.STABILIZER_DISTANCE + 1);
     }
 }

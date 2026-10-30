@@ -1,0 +1,23 @@
+newmtl steel
+Ka 0 0 0
+map_Kd masteris_bhe:block/formed/steel
+
+newmtl steel_dark
+Ka 0 0 0
+map_Kd masteris_bhe:block/formed/steel_dark
+
+newmtl glow_cyan
+Ka 1 1 1
+map_Kd masteris_bhe:block/formed/glow_cyan
+
+newmtl hazard
+Ka 0 0 0
+map_Kd masteris_bhe:block/formed/hazard
+
+newmtl grating
+Ka 0 0 0
+map_Kd masteris_bhe:block/formed/grating
+
+newmtl lens_ring
+Ka 1 1 1
+map_Kd masteris_bhe:block/ring_beam_port

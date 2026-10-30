@@ -8,6 +8,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
@@ -37,6 +38,12 @@ public final class ClientEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.TRAP_CORE.get(), TrapCoreRenderer::new);
         event.registerEntityRenderer(ModEntities.LIGHT_ECHO.get(), LightEchoRenderer::new);
         event.registerEntityRenderer(ModEntities.DEBRIS_PLATFORM.get(), DebrisPlatformRenderer::new);
+    }
+
+    /** The assembled reactor structures' models (drawn by the core, not by any block). */
+    @SubscribeEvent
+    public static void registerModels(ModelEvent.RegisterAdditional event) {
+        AssembledStructures.register(event);
     }
 
     @SubscribeEvent

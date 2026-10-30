@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "All together: the core, the ring and four stabilizers. $(num)2,640$() blocks in total.$(br2)The next page shows the full structure. Project it into your world with the eye button and build it piece by piece."
+      "text": "All together: the core, the ring and four stabilizers. $(num)2,640$() blocks in total.$(br2)The next page shows the full structure. Project it into your world with the eye button and build it piece by piece.$(br2)Each finished piece (the ring, each stabilizer, each axial stabilizer, the Venting Lance) $(thing)assembles$() into one machine on its own. Break any of its blocks and it falls back into blocks."
     },
     {
       "type": "patchouli:multiblock",
