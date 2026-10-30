@@ -153,6 +153,11 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
     implementation "vazkii.patchouli:Patchouli:${patchouli_version}"
 
+    // JEI, optional: compiled against its API only (see compat/jei), the full mod just for the dev client.
+    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+    localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+
     // CC: Tweaked, optional: compiled against its API only (see compat/cc), the full mod just for the dev client.
     compileOnly "cc.tweaked:cc-tweaked-${minecraft_version}-core-api:${cc_tweaked_version}"
     compileOnly "cc.tweaked:cc-tweaked-${minecraft_version}-forge-api:${cc_tweaked_version}"
