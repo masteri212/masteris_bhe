@@ -11,6 +11,11 @@ collapse leaves a crater and a dark energy zone behind. Go further and you can o
 Everything is explained in-game in the **Reactor Manual** (a Patchouli book every player gets on their first join),
 including multiblock previews you can project into the world and build over.
 
+For the exact numbers, see the **[wiki](https://github.com/masteri212/masteris_bhe/wiki)**: the
+[reactor's calculations](https://github.com/masteri212/masteris_bhe/wiki/Reactor-Calculations), the
+[CC: Tweaked peripheral](https://github.com/masteri212/masteris_bhe/wiki/ComputerCraft) and
+[how it works with other mods](https://github.com/masteri212/masteris_bhe/wiki/Mod-Interactions).
+
 ## Features
 
 ### The reactor
