@@ -40,13 +40,13 @@
       "type": "patchouli:spotlight",
       "item": "masteris_bhe:drifter_spawn_egg",
       "title": "Drifters",
-      "text": "Jellyfish of dark matter that float through every zone. They never attack, but hit one and it $(thing)pulses$(): everything nearby floats up off its feet for a moment.$(br2)They drop $(item)Void Dust$()."
+      "text": "Jellyfish of dark matter that float through every zone. They never attack, but hit one and it $(thing)pulses$(): everything nearby floats up off its feet for a moment.$(br2)They drop $(item)Void Dust$(). Outside a zone they come apart in seconds, leaving nothing."
     },
     {
       "type": "patchouli:spotlight",
       "item": "masteris_bhe:lensing_stalker_spawn_egg",
       "title": "Lensing Stalkers",
-      "text": "Tall shapes that bend light, in the fallout. While anyone looks their way they $(thing)can't move$(); look away and they rush you.$(br2)Straight on you can barely see one: watch the edges of your view."
+      "text": "Tall shapes that bend light, in the fallout. While anyone looks their way they $(thing)can't move$(); look away and they rush you.$(br2)Straight on you can barely see one: watch the edges of your view. Like Drifters, they can't survive outside a zone."
     },
     {
       "type": "patchouli:spotlight",

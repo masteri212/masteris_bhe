@@ -76,6 +76,8 @@ public class LensingStalkerEntity extends Monster {
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
+        ZoneBound.tick(this);
+        if (isRemoved()) return;
         boolean watched = watchedByAnyone();
         if (watched != isWatched()) entityData.set(WATCHED, watched);
         if (watched) {

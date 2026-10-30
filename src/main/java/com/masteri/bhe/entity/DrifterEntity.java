@@ -77,6 +77,7 @@ public class DrifterEntity extends PathfinderMob {
         if (pulseCooldown > 0) pulseCooldown--;
         // A slow bob, and a faint trail of violet glow.
         if (!level().isClientSide) {
+            ZoneBound.tick(this);
             setDeltaMovement(getDeltaMovement().add(0, Math.sin(tickCount * 0.05) * 0.003, 0));
         } else if (random.nextInt(4) == 0) {
             level().addParticle(GLOW, getRandomX(0.5), getY() + random.nextDouble() * 0.6, getRandomZ(0.5), 0, -0.02, 0);
