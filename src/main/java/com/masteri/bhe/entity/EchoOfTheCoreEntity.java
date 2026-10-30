@@ -58,8 +58,6 @@ public class EchoOfTheCoreEntity extends Monster {
     public static final int SHOCKWAVE_TICKS = 28, PULL_TICKS = 70, BEAM_CHARGE = 30, BEAM_FIRE = 10;
     public static final float SHOCKWAVE_SPEED = 0.7F;
     private static final double PULL_RANGE = 22, LEASH = 28;
-    /** How far from its home a player can be and still be fought. Past this it gives up and goes home. */
-    private static final double ARENA = 64;
 
     private static final EntityDataAccessor<Integer> ATTACK = SynchedEntityData.defineId(EchoOfTheCoreEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData.defineId(EchoOfTheCoreEntity.class, EntityDataSerializers.INT);
@@ -108,8 +106,13 @@ public class EchoOfTheCoreEntity extends Monster {
         targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, false, false, this::inArena));
     }
 
+    /** How far from its home a player can be and still be fought (echoArenaRadius). Past this it gives up and goes home. */
+    private static double arena() {
+        return com.masteri.bhe.config.ReactorConfig.ECHO_ARENA.get();
+    }
+
     private boolean inArena(LivingEntity entity) {
-        return home == null || entity.distanceToSqr(Vec3.atCenterOf(home)) <= ARENA * ARENA;
+        return home == null || entity.distanceToSqr(Vec3.atCenterOf(home)) <= arena() * arena();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.masteri.bhe.entity;
 
+import com.masteri.bhe.config.ReactorConfig;
 import com.masteri.bhe.horizon.EventHorizon;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -63,16 +64,17 @@ public class SpaghettifierEntity extends Monster {
     }
 
     /**
-     * Natural spawning: in the air of the deep and lower drift, above the spaghettification line. Only one try in
-     * four counts, and never more than two already around: they're hunters, not a swarm.
+     * Natural spawning: in the air of the deep and lower drift, above the spaghettification line. Only some tries
+     * count, and never with too many already around (all from the config): they're hunters, not a swarm.
      */
     public static boolean checkSpawn(EntityType<SpaghettifierEntity> type, ServerLevelAccessor level, MobSpawnType reason,
                                      BlockPos pos, RandomSource random) {
         if (reason == MobSpawnType.SPAWNER || reason == MobSpawnType.SPAWN_EGG) return true;
-        return level.getDifficulty() != Difficulty.PEACEFUL && random.nextInt(4) == 0
+        return level.getDifficulty() != Difficulty.PEACEFUL && random.nextDouble() < ReactorConfig.SPAGHETTIFIER_SPAWN_CHANCE.get()
                 && pos.getY() > EventHorizon.spaghettificationY() + 6 && pos.getY() < EventHorizon.DEEP_START + 30
                 && level.isEmptyBlock(pos) && level.isEmptyBlock(pos.above())
-                && level.getEntitiesOfClass(SpaghettifierEntity.class, new net.minecraft.world.phys.AABB(pos).inflate(32)).size() < 2;
+                && level.getEntitiesOfClass(SpaghettifierEntity.class, new net.minecraft.world.phys.AABB(pos)
+                        .inflate(ReactorConfig.SPAGHETTIFIER_CROWD_RADIUS.get())).size() < ReactorConfig.SPAGHETTIFIER_MAX_NEARBY.get();
     }
 
     @Override

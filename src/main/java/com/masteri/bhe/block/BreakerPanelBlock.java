@@ -46,7 +46,7 @@ public class BreakerPanelBlock extends FacingBlock {
             boolean on = !state.getValue(OVERCHARGED);
             level.setBlock(pos, state.setValue(OVERCHARGED, on), Block.UPDATE_ALL);
             level.playSound(null, pos, SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 1F, on ? 0.6F : 0.5F);
-            if (on) level.playSound(null, pos, SoundEvents.BEACON_POWER_SELECT, SoundSource.BLOCKS, 0.5F, 1.8F);
+            if (on) level.playSound(null, pos, com.masteri.bhe.registry.ModSounds.REACTOR_BREAKER_CHARGE.get(), SoundSource.BLOCKS, 1F, 1F);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }

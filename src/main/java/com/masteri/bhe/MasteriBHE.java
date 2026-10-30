@@ -15,6 +15,7 @@ import com.masteri.bhe.registry.ModFeatures;
 import com.masteri.bhe.registry.ModStructures;
 import com.masteri.bhe.registry.ModItems;
 import com.masteri.bhe.registry.ModMenus;
+import com.masteri.bhe.registry.ModSounds;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -39,6 +40,7 @@ public class MasteriBHE {
         ModFeatures.FEATURES.register(modEventBus);
         ModStructures.TYPES.register(modEventBus);
         ModStructures.PIECES.register(modEventBus);
+        ModSounds.SOUNDS.register(modEventBus);
         modEventBus.addListener(ModEntities::registerAttributes);
         modEventBus.addListener(ModEntities::registerSpawnPlacements);
         modEventBus.addListener(ModCapabilities::register);

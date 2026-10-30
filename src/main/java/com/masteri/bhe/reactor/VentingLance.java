@@ -6,7 +6,7 @@ import com.masteri.bhe.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
+import com.masteri.bhe.registry.ModSounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -145,7 +145,7 @@ public final class VentingLance {
             double x = core.getX() + 0.5, y = core.getY() + bottom + HEIGHT / 2.0, z = core.getZ() + 0.5;
             server.sendParticles(ParticleTypes.EXPLOSION_EMITTER, x, y, z, 3, 1, HEIGHT / 3.0, 1, 0);
             server.sendParticles(ParticleTypes.LAVA, x, y, z, 40, 1.5, HEIGHT / 3.0, 1.5, 0);
-            level.playSound(null, core.above(bottom), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 6F, 0.7F);
+            level.playSound(null, core.above(bottom), ModSounds.REACTOR_BREACH.get(), SoundSource.BLOCKS, 6F, 1.2F);
         }
         return count;
     }
@@ -161,9 +161,7 @@ public final class VentingLance {
     public static void fire(ServerLevel level, BlockPos core, int lanceTop, boolean emergency) {
         BEAMS.add(new Beam(level, core, lanceTop, emergency));
         BlockPos top = core.above(lanceTop + 1);
-        level.playSound(null, top, SoundEvents.WARDEN_SONIC_BOOM, SoundSource.BLOCKS, 8F, 0.5F);
-        level.playSound(null, top, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 8F, 0.4F);
-        level.playSound(null, top, SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.WEATHER, 10F, 0.6F);
+        level.playSound(null, top, ModSounds.REACTOR_VENT_RELEASE.get(), SoundSource.BLOCKS, 10F, 1.0F);
         level.sendParticles(ParticleTypes.FLASH, top.getX() + 0.5, top.getY(), top.getZ() + 0.5, 1, 0, 0, 0, 0);
     }
 
@@ -246,7 +244,7 @@ public final class VentingLance {
                 level.sendParticles(ParticleTypes.END_ROD, x, bottom + 2, z, 20, radius * 0.6, 1, radius * 0.6, 0.6);
                 level.sendParticles(ParticleTypes.ELECTRIC_SPARK, x, bottom, z, 15, 1.5, 0.3, 1.5, 0.4);
             }
-            if (age % 20 == 0) level.playSound(null, core.above(lanceTop + 1), SoundEvents.BEACON_AMBIENT, SoundSource.BLOCKS, 6F, 0.5F);
+            if (age % 8 == 0) level.playSound(null, core.above(lanceTop + 1), ModSounds.REACTOR_ARC.get(), SoundSource.BLOCKS, 4F, 0.6F + level.random.nextFloat() * 0.2F);
             if (age >= beamTicks(emergency)) {
                 if (emergency) remove(level, core, true); // the emergency vent burns the lance out
                 return true;

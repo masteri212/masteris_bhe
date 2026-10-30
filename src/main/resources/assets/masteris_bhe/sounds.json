@@ -1,0 +1,221 @@
+{
+  "reactor.hum": {
+    "subtitle": "subtitles.masteris_bhe.reactor.hum",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/hum",
+        "stream": true
+      }
+    ]
+  },
+  "reactor.ignite": {
+    "subtitle": "subtitles.masteris_bhe.reactor.ignite",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/ignite",
+        "stream": true
+      }
+    ]
+  },
+  "reactor.power_down": {
+    "subtitle": "subtitles.masteris_bhe.reactor.power_down",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/power_down"
+      }
+    ]
+  },
+  "reactor.alarm": {
+    "subtitle": "subtitles.masteris_bhe.reactor.alarm",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/alarm"
+      }
+    ]
+  },
+  "reactor.alarm_meltdown": {
+    "subtitle": "subtitles.masteris_bhe.reactor.alarm_meltdown",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/alarm_meltdown"
+      }
+    ]
+  },
+  "reactor.fault": {
+    "subtitle": "subtitles.masteris_bhe.reactor.fault",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/fault"
+      }
+    ]
+  },
+  "reactor.stall": {
+    "subtitle": "subtitles.masteris_bhe.reactor.stall",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/stall"
+      }
+    ]
+  },
+  "reactor.ring_strain": {
+    "subtitle": "subtitles.masteris_bhe.reactor.ring_strain",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/ring_strain1"
+      },
+      {
+        "name": "masteris_bhe:reactor/ring_strain2"
+      },
+      {
+        "name": "masteris_bhe:reactor/ring_strain3"
+      }
+    ]
+  },
+  "reactor.arc": {
+    "subtitle": "subtitles.masteris_bhe.reactor.arc",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/arc1"
+      },
+      {
+        "name": "masteris_bhe:reactor/arc2"
+      },
+      {
+        "name": "masteris_bhe:reactor/arc3"
+      },
+      {
+        "name": "masteris_bhe:reactor/arc4"
+      }
+    ]
+  },
+  "reactor.beep_confirm": {
+    "subtitle": "subtitles.masteris_bhe.reactor.beep_confirm",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/beep_confirm"
+      }
+    ]
+  },
+  "reactor.beep_deny": {
+    "subtitle": "subtitles.masteris_bhe.reactor.beep_deny",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/beep_deny"
+      }
+    ]
+  },
+  "reactor.beep_ready": {
+    "subtitle": "subtitles.masteris_bhe.reactor.beep_ready",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/beep_ready"
+      }
+    ]
+  },
+  "reactor.console": {
+    "subtitle": "subtitles.masteris_bhe.reactor.console",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/console"
+      }
+    ]
+  },
+  "reactor.breaker_charge": {
+    "subtitle": "subtitles.masteris_bhe.reactor.breaker_charge",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/breaker_charge"
+      }
+    ]
+  },
+  "reactor.servo": {
+    "subtitle": "subtitles.masteris_bhe.reactor.servo",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/servo"
+      }
+    ]
+  },
+  "reactor.emitter_crack": {
+    "subtitle": "subtitles.masteris_bhe.reactor.emitter_crack",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/emitter_crack"
+      }
+    ]
+  },
+  "reactor.breach": {
+    "subtitle": "subtitles.masteris_bhe.reactor.breach",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/breach",
+        "stream": true
+      }
+    ]
+  },
+  "reactor.implode": {
+    "subtitle": "subtitles.masteris_bhe.reactor.implode",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/implode",
+        "stream": true
+      }
+    ]
+  },
+  "reactor.absorb": {
+    "subtitle": "subtitles.masteris_bhe.reactor.absorb",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/absorb1"
+      },
+      {
+        "name": "masteris_bhe:reactor/absorb2"
+      },
+      {
+        "name": "masteris_bhe:reactor/absorb3"
+      }
+    ]
+  },
+  "reactor.vent_strain": {
+    "subtitle": "subtitles.masteris_bhe.reactor.vent_strain",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/vent_strain"
+      }
+    ]
+  },
+  "reactor.vent_release": {
+    "subtitle": "subtitles.masteris_bhe.reactor.vent_release",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/vent_release",
+        "stream": true
+      }
+    ]
+  },
+  "reactor.rebound": {
+    "subtitle": "subtitles.masteris_bhe.reactor.rebound",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/rebound"
+      }
+    ]
+  },
+  "reactor.collapse": {
+    "subtitle": "subtitles.masteris_bhe.reactor.collapse",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/collapse",
+        "stream": true
+      }
+    ]
+  },
+  "reactor.capture": {
+    "subtitle": "subtitles.masteris_bhe.reactor.capture",
+    "sounds": [
+      {
+        "name": "masteris_bhe:reactor/capture"
+      }
+    ]
+  }
+}

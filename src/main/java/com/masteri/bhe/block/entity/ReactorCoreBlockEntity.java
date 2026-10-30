@@ -15,6 +15,7 @@ import com.masteri.bhe.reactor.SubLevelPull;
 import net.minecraft.world.item.ItemStack;
 import com.masteri.bhe.registry.ModBlocks;
 import com.masteri.bhe.registry.ModItems;
+import com.masteri.bhe.registry.ModSounds;
 import com.masteri.bhe.reactor.ReactorEnergy;
 import com.masteri.bhe.reactor.ReactorState;
 import com.masteri.bhe.reactor.VentingLance;
@@ -472,8 +473,8 @@ public class ReactorCoreBlockEntity extends BlockEntity {
                 }
                 level.addParticle(ParticleTypes.SMOKE, end.x, end.y, end.z, 0, 0.03, 0);
                 if (loud && rand.nextInt(3) == 0) {
-                    level.playLocalSound(end.x, end.y, end.z, SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.BLOCKS,
-                            0.4F, 1.4F + rand.nextFloat() * 0.4F, false);
+                    level.playLocalSound(end.x, end.y, end.z, ModSounds.REACTOR_ARC.get(), SoundSource.BLOCKS,
+                            0.6F, 0.85F + rand.nextFloat() * 0.3F, false);
                 }
             }
         }
@@ -566,7 +567,6 @@ public class ReactorCoreBlockEntity extends BlockEntity {
                         startShutdownFault(Fault.SINGULARITY_REBOUND);
                     } else {
                         enterState(ReactorState.OFFLINE, 0);
-                        playSound(SoundEvents.BEACON_DEACTIVATE, 1.0F);
                         powerDownEffects();
                     }
                 }
@@ -609,7 +609,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         failureEffects();
 
         if (ticks % 40 == 0 && state.isAlarm()) {
-            playSound(SoundEvents.NOTE_BLOCK_BIT.value(), state.isMeltdown() ? 0.5F : 0.8F);
+            playSound(state.isMeltdown() ? ModSounds.REACTOR_ALARM_MELTDOWN.get() : ModSounds.REACTOR_ALARM.get(), 1.0F);
         }
         if (ticks % 20 == 0) {
             for (BlockPos port : reactorPorts) {
@@ -778,7 +778,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         rpm = 0;
         stability = Math.max(0, stability - 15);
         escalate(ReactorState.DISC_STALL, ReactorConfig.STALL_SECONDS.get() * 20);
-        playSound(SoundEvents.ANVIL_LAND, 0.5F);
+        playSound(ModSounds.REACTOR_STALL.get(), 1.0F);
         broadcast(Component.translatable("message.masteris_bhe.reactor.disc_stall").withStyle(ChatFormatting.GOLD));
     }
 
@@ -870,7 +870,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
                         s.fault() == Fault.SINGULARITY_REBOUND ? "" : sideNames(s.faultMask()))
                 : Component.translatable(s.state().translationKey());
         broadcast(Component.translatable("message.masteris_bhe.reactor.resumed", what).withStyle(ChatFormatting.GOLD));
-        playSound(SoundEvents.NOTE_BLOCK_BIT.value(), 0.8F);
+        playSound(ModSounds.REACTOR_BEEP_CONFIRM.get(), 0.9F);
         return true;
     }
 
@@ -919,7 +919,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
                     armShutdownFault();
                     enterState(ReactorState.SHUTTING_DOWN, 0);
                     tell(player, "shutdown", ChatFormatting.AQUA);
-                    playSound(SoundEvents.BEACON_POWER_SELECT, 0.7F);
+                    playSound(ModSounds.REACTOR_BEEP_CONFIRM.get(), 0.8F);
                 }
             }
             case BUTTON_SCRAM -> scram(player);
@@ -980,14 +980,12 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         rpm = 0;
         scrammed = false;
         enterState(ReactorState.STABLE, 0);
-        playSound(SoundEvents.BEACON_ACTIVATE, 1.0F);
-        playSound(SoundEvents.RESPAWN_ANCHOR_CHARGE, 0.6F);
         startupEffects();
         tell(player, "ignite.success", ChatFormatting.GREEN);
     }
 
     private void fizzle() {
-        playSound(SoundEvents.FIRE_EXTINGUISH, 1.0F);
+        playSound(ModSounds.REACTOR_BEEP_DENY.get(), 0.8F);
     }
 
     private void scram(@Nullable Player player) {
@@ -1020,11 +1018,11 @@ public class ReactorCoreBlockEntity extends BlockEntity {
             stability = Math.min(100, stability + 10);
             if (!resumeSuspended()) enterState(ReactorState.WARNING, 0);
             resetBreakers();
-            playSound(SoundEvents.BEACON_POWER_SELECT, 1.2F);
+            playSound(ModSounds.REACTOR_IGNITE.get(), 1.25F);
             tell(player, "jump.success", ChatFormatting.GREEN);
         } else {
             stateTimer = Math.max(1, stateTimer - ReactorConfig.JUMP_PENALTY_SECONDS.get() * 20);
-            playSound(SoundEvents.FIRE_EXTINGUISH, 0.6F);
+            playSound(ModSounds.REACTOR_BEEP_DENY.get(), 0.9F);
             say(player, Component.translatable("message.masteris_bhe.jump.fail", sideNames(missing))
                     .withStyle(ChatFormatting.RED), false);
         }
@@ -1079,7 +1077,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
             server.sendParticles(ParticleTypes.SMOKE, x, y, z, 3, 0.3, 0.3, 0.3, 0.02);
             server.sendParticles(ParticleTypes.CRIT, x, y, z, (int) (load * 8), 0.3, 0.3, 0.3, 0.3);
             if (rand.nextFloat() < load * 0.15F) {
-                level.playSound(null, at, SoundEvents.CHAIN_BREAK, SoundSource.BLOCKS, 1.0F, 0.4F + rand.nextFloat() * 0.2F);
+                level.playSound(null, at, ModSounds.REACTOR_RING_STRAIN.get(), SoundSource.BLOCKS, 1.5F, 0.85F + rand.nextFloat() * 0.3F);
             }
         }
 
@@ -1101,15 +1099,14 @@ public class ReactorCoreBlockEntity extends BlockEntity {
                     Vec3 e = emitterFace(dir);
                     server.sendParticles(ParticleTypes.ELECTRIC_SPARK, e.x, e.y, e.z, 20, 0.3, 0.3, 0.3, 0.4);
                     server.sendParticles(ParticleTypes.LARGE_SMOKE, e.x, e.y, e.z, 4, 0.2, 0.2, 0.2, 0.03);
-                    level.playSound(null, BlockPos.containing(e), SoundEvents.GLASS_BREAK, SoundSource.BLOCKS, 0.8F, 0.6F);
+                    level.playSound(null, BlockPos.containing(e), ModSounds.REACTOR_EMITTER_CRACK.get(), SoundSource.BLOCKS, 1.0F, 0.8F + rand.nextFloat() * 0.3F);
                 }
             }
             case MELTDOWN_2 -> {
                 // (phase 2's block pull is part of the black hole's reach now: see tearBlocks)
                 // The last few seconds: the core implodes before it goes.
                 if (stateTimer == 60) {
-                    playSound(SoundEvents.WARDEN_SONIC_CHARGE, 0.5F);
-                    playSound(SoundEvents.BEACON_DEACTIVATE, 0.5F);
+                    playSound(ModSounds.REACTOR_IMPLODE.get(), 1.0F);
                 }
             }
             default -> {}
@@ -1123,8 +1120,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         server.sendParticles(ParticleTypes.FLASH, c.x, c.y, c.z, 1, 0, 0, 0, 0);
         server.sendParticles(ParticleTypes.REVERSE_PORTAL, c.x, c.y, c.z, 200, 8, 1, 8, 0.6);
         server.sendParticles(ParticleTypes.EXPLOSION, c.x, c.y, c.z, 6, 6, 1, 6, 0);
-        playSound(SoundEvents.WARDEN_SONIC_BOOM, 0.7F);
-        playSound(SoundEvents.GENERIC_EXPLODE.value(), 0.5F);
+        loudSound(ModSounds.REACTOR_BREACH.get(), 8F, 1.0F);
     }
 
     // ------------------------------------------------------------------ venting lance
@@ -1151,8 +1147,8 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         if (ventTicks > 0) return;
         if (!ventArmed()) {
             ventArmedUntil = VENT_ARM_TICKS;
-            playSound(SoundEvents.NOTE_BLOCK_BIT.value(), 1.6F);
-            playSound(SoundEvents.BEACON_POWER_SELECT, 0.5F);
+            playSound(ModSounds.REACTOR_BEEP_CONFIRM.get(), 1.4F);
+            playSound(ModSounds.REACTOR_ALARM.get(), 1.3F);
             tell(player, state == ReactorState.MELTDOWN_1 ? "vent.armed_emergency" : "vent.armed", ChatFormatting.GOLD);
             syncIfChanged();
             return;
@@ -1304,7 +1300,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         if (fixed == faultFixed) return;
         faultFixed = fixed;
         if (fixed) {
-            playSound(SoundEvents.NOTE_BLOCK_CHIME.value(), 1.2F);
+            playSound(ModSounds.REACTOR_BEEP_READY.get(), 1.0F);
             broadcast(Component.translatable("message.masteris_bhe.fault.ready").withStyle(ChatFormatting.GREEN));
         }
         setChanged();
@@ -1315,25 +1311,23 @@ public class ReactorCoreBlockEntity extends BlockEntity {
     private void resetFault(@Nullable Player player) {
         if (!faultFixed) {
             tell(player, "fault.not_fixed", ChatFormatting.RED);
-            playSound(SoundEvents.NOTE_BLOCK_BASS.value(), 0.6F);
+            playSound(ModSounds.REACTOR_BEEP_DENY.get(), 1.0F);
             return;
         }
         switch (fault) {
             case STABILIZER_DESYNC, MASS_FLASH -> {
                 stability = Math.max(stability, 70);
                 enterState(ReactorState.STABLE, 0);
-                playSound(SoundEvents.BEACON_ACTIVATE, 1.0F);
                 startupEffects();
                 broadcast(Component.translatable("message.masteris_bhe.fault.fixed.ignition").withStyle(ChatFormatting.GREEN));
             }
             case CRACKED_LENS -> {
                 enterState(ReactorState.SHUTTING_DOWN, 0);
-                playSound(SoundEvents.BEACON_POWER_SELECT, 0.7F);
+                playSound(ModSounds.REACTOR_BEEP_CONFIRM.get(), 0.8F);
                 broadcast(Component.translatable("message.masteris_bhe.fault.fixed.lens").withStyle(ChatFormatting.GREEN));
             }
             case SINGULARITY_REBOUND -> {
                 enterState(ReactorState.OFFLINE, 0);
-                playSound(SoundEvents.BEACON_DEACTIVATE, 1.0F);
                 powerDownEffects();
                 broadcast(Component.translatable("message.masteris_bhe.fault.fixed.rebound").withStyle(ChatFormatting.GREEN));
             }
@@ -1372,7 +1366,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
 
     /** Configurator on a Stabilizer Emitter: realigns it if a desync knocked it out of line. */
     public FixResult realignEmitter(BlockPos pos) {
-        return fixEmitter(pos, Fault.STABILIZER_DESYNC, SoundEvents.BEACON_POWER_SELECT);
+        return fixEmitter(pos, Fault.STABILIZER_DESYNC, ModSounds.REACTOR_SERVO.get());
     }
 
     /** The lens recalibration command on a Stabilizer Console: fixes that stabilizer's lens if it cracked. */
@@ -1414,8 +1408,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         if (!(level instanceof ServerLevel server)) return;
         Vec3 c = Vec3.atCenterOf(worldPosition);
         server.sendParticles(ParticleTypes.FLASH, c.x, c.y, c.z, 1, 0, 0, 0, 0);
-        playSound(SoundEvents.ANVIL_LAND, 0.6F);
-        playSound(SoundEvents.NOTE_BLOCK_BIT.value(), 0.6F);
+        playSound(ModSounds.REACTOR_FAULT.get(), 1.0F);
         for (Direction dir : Direction.Plane.HORIZONTAL) {
             if (!isFaulted(dir)) continue;
             Vec3 e = emitterFace(dir);
@@ -1425,7 +1418,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
                     server.sendParticles(ParticleTypes.FLASH, port.getX() + 0.5, port.getY() + 1, port.getZ() + 0.5, 1, 0, 0, 0, 0);
                     server.sendParticles(ParticleTypes.END_ROD, port.getX() + 0.5, port.getY() + 1, port.getZ() + 0.5, 60, 1, 1, 1, 0.3);
                 }
-                case CRACKED_LENS -> level.playSound(null, BlockPos.containing(e), SoundEvents.GLASS_BREAK, SoundSource.BLOCKS, 1.5F, 0.7F);
+                case CRACKED_LENS -> level.playSound(null, BlockPos.containing(e), ModSounds.REACTOR_EMITTER_CRACK.get(), SoundSource.BLOCKS, 1.5F, 0.8F);
                 default -> server.sendParticles(ParticleTypes.ELECTRIC_SPARK, e.x, e.y, e.z, 40, 0.4, 0.4, 0.4, 0.4);
             }
         }
@@ -1483,7 +1476,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         preview = next;
         switch (next) {
             case DISC_STALL -> {
-                playSound(SoundEvents.ANVIL_LAND, 0.5F);
+                playSound(ModSounds.REACTOR_STALL.get(), 1.0F);
                 enterState(ReactorState.DISC_STALL, PREVIEW_TICKS);
             }
             case OVERSPIN, STARVATION -> enterState(ReactorState.WARNING, 0);
@@ -1526,7 +1519,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         if (stateDuration > 0 && --stateTimer <= 0) enterState(state, stateDuration);
         failureEffects();
         if (ticks % 40 == 0 && state.isAlarm()) {
-            playSound(SoundEvents.NOTE_BLOCK_BIT.value(), state.isMeltdown() ? 0.5F : 0.8F);
+            playSound(state.isMeltdown() ? ModSounds.REACTOR_ALARM_MELTDOWN.get() : ModSounds.REACTOR_ALARM.get(), 1.0F);
         }
         return true;
     }
@@ -1632,6 +1625,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         }
         server.sendParticles(ParticleTypes.FLASH, center.x, center.y, center.z, 1, 0, 0, 0, 0);
         server.sendParticles(ParticleTypes.REVERSE_PORTAL, center.x, center.y, center.z, 80, 1.5, 0.5, 1.5, 0.3);
+        loudSound(ModSounds.REACTOR_IGNITE.get(), 5F, 1.0F);
     }
 
     /** SCRAM: the emitters spark as the beams are cut, and the core flashes. */
@@ -1644,8 +1638,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
             server.sendParticles(ParticleTypes.LARGE_SMOKE, from.x, from.y, from.z, 6, 0.2, 0.2, 0.2, 0.02);
         }
         server.sendParticles(ParticleTypes.FLASH, center.x, center.y, center.z, 1, 0, 0, 0, 0);
-        playSound(SoundEvents.BEACON_DEACTIVATE, 0.6F);
-        playSound(SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), 0.8F);
+        playSound(ModSounds.REACTOR_POWER_DOWN.get(), 1.0F);
     }
 
     /** Back to offline: the black hole collapses in on itself. */
@@ -1654,6 +1647,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         Vec3 center = Vec3.atCenterOf(worldPosition);
         server.sendParticles(ParticleTypes.REVERSE_PORTAL, center.x, center.y, center.z, 120, 3, 0.3, 3, 0.05);
         server.sendParticles(ParticleTypes.SMOKE, center.x, center.y, center.z, 20, 0.5, 0.5, 0.5, 0.02);
+        playSound(ModSounds.REACTOR_POWER_DOWN.get(), 1.0F);
     }
 
     private void broadcast(Component message) {
@@ -1664,7 +1658,12 @@ public class ReactorCoreBlockEntity extends BlockEntity {
     }
 
     private void playSound(net.minecraft.sounds.SoundEvent sound, float pitch) {
-        if (level != null) level.playSound(null, worldPosition, sound, SoundSource.BLOCKS, 3.0F, pitch);
+        loudSound(sound, 3.0F, pitch);
+    }
+
+    /** A sound from the core that carries further: volume above 1 widens its range (16 blocks per 1). */
+    private void loudSound(net.minecraft.sounds.SoundEvent sound, float volume, float pitch) {
+        if (level != null) level.playSound(null, worldPosition, sound, SoundSource.BLOCKS, volume, pitch);
     }
 
     // ------------------------------------------------------------------ absorption
@@ -1935,25 +1934,21 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         Vec3 c = Vec3.atCenterOf(worldPosition);
         if (age == 20) {
             // The standoff: a low groan as the black hole strains against the lance.
-            level.playSound(null, worldPosition, SoundEvents.WARDEN_HEARTBEAT, SoundSource.BLOCKS, 8F, 0.5F);
-            level.playSound(null, worldPosition, SoundEvents.PORTAL_AMBIENT, SoundSource.BLOCKS, 6F, 0.4F);
+            loudSound(ModSounds.REACTOR_VENT_STRAIN.get(), 8F, 1.0F);
         }
         if (p >= EmergencyVent.SURGE && before < EmergencyVent.SURGE) {
             // The surge: the column bursts open.
-            level.playSound(null, worldPosition, SoundEvents.WARDEN_SONIC_BOOM, SoundSource.BLOCKS, 8F, 0.6F);
-            level.playSound(null, worldPosition, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 8F, 0.5F);
+            loudSound(ModSounds.REACTOR_VENT_RELEASE.get(), 8F, 1.0F);
             server.sendParticles(ParticleTypes.FLASH, c.x, c.y, c.z, 1, 0, 0, 0, 0);
         }
         int beat = EmergencyVent.beatIndex(p);
         if (beat >= 0 && beat != EmergencyVent.beatIndex(before)) { // a rebound
-            level.playSound(null, worldPosition, SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.BLOCKS, 6F, 0.5F + level.random.nextFloat() * 0.3F);
+            loudSound(ModSounds.REACTOR_REBOUND.get(), 6F, 0.85F + level.random.nextFloat() * 0.3F);
             server.sendParticles(ParticleTypes.REVERSE_PORTAL, c.x, c.y, c.z, 80, 2, 2, 2, 0.6);
             server.sendParticles(ParticleTypes.ELECTRIC_SPARK, c.x, c.y, c.z, 40, 3, 3, 3, 0.8);
         }
         if (p >= EmergencyVent.IMPLODE && before < EmergencyVent.IMPLODE) { // it gives way
-            level.playSound(null, worldPosition, SoundEvents.WARDEN_SONIC_BOOM, SoundSource.BLOCKS, 10F, 0.4F);
-            level.playSound(null, worldPosition, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 8F, 0.5F);
-            level.playSound(null, worldPosition, SoundEvents.END_PORTAL_SPAWN, SoundSource.BLOCKS, 6F, 0.8F);
+            loudSound(ModSounds.REACTOR_BREACH.get(), 10F, 0.8F);
             server.sendParticles(ParticleTypes.FLASH, c.x, c.y, c.z, 3, 1, 1, 1, 0);
             server.sendParticles(ParticleTypes.EXPLOSION_EMITTER, c.x, c.y, c.z, 2, 1, 1, 1, 0);
             server.sendParticles(ParticleTypes.END_ROD, c.x, c.y, c.z, 150, 1, 1, 1, 1.2);
@@ -2054,14 +2049,15 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         }
         long mass;
         if (e instanceof ItemEntity item) {
-            // Every item at least 1; the Event Horizon's dense materials far more (MassValues).
-            mass = Math.max(1, MassValues.per(item.getItem().getItem())) * item.getItem().getCount();
+            // Blocks and dense materials by MassValues; anything else at swallowedItemMass.
+            long per = MassValues.per(item.getItem().getItem());
+            mass = (per > 0 ? per : ReactorConfig.ITEM_MASS.get()) * item.getItem().getCount();
             item.discard();
         } else if (e instanceof FallingBlockEntity falling) {
-            mass = BlockContents.massOf(falling); // every block is 1 mass (Neutronium more), plus 1 per item it carried in
+            mass = BlockContents.massOf(falling); // blockMass (Neutronium more), plus 1 per item it carried in
             falling.discard();
         } else if (e instanceof LivingEntity living) {
-            mass = Math.max(1, (long) Math.ceil(living.getMaxHealth() / 2)); // 1 heart = 1 mass
+            mass = (long) Math.ceil(living.getMaxHealth() / 2 * ReactorConfig.CREATURE_MASS_PER_HEART.get()); // per heart
             living.hurt(level.damageSources().fellOutOfWorld(), Float.MAX_VALUE);
             if (living.isAlive()) return; // totem or similar: it survives, no mass
             if (!(living instanceof Player)) living.discard(); // no drops, no corpse: it's gone
@@ -2073,7 +2069,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         server.sendParticles(ParticleTypes.REVERSE_PORTAL, p.x, p.y + e.getBbHeight() / 2, p.z, 12, 0.2, 0.2, 0.2, 0.05);
         if (ticks - lastAbsorbSound >= 4) {
             lastAbsorbSound = ticks;
-            level.playSound(null, worldPosition, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.6F, 0.5F);
+            level.playSound(null, worldPosition, ModSounds.REACTOR_ABSORB.get(), SoundSource.BLOCKS, 1.5F, 0.8F + level.random.nextFloat() * 0.4F);
         }
     }
 
@@ -2097,8 +2093,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         }
         server.sendParticles(ParticleTypes.FLASH, c.x, c.y + out, c.z, 1, 0, 0, 0, 0);
         server.sendParticles(ParticleTypes.END_ROD, c.x, c.y + out, c.z, 30, 0.4, 0.4, 0.4, 0.2);
-        level.playSound(null, worldPosition, SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.BLOCKS, 3F, 0.5F);
-        level.playSound(null, worldPosition, SoundEvents.GLASS_PLACE, SoundSource.BLOCKS, 2F, 0.6F);
+        loudSound(ModSounds.REACTOR_CAPTURE.get(), 3F, 1.0F);
     }
 
     /** Splits mass evenly across the stabilizers; the remainder goes round-robin so nothing is lost. */

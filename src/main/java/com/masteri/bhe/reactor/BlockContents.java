@@ -76,9 +76,9 @@ public final class BlockContents {
         if (taken.items() > 0) falling.getPersistentData().putLong(CARRIED, taken.items());
     }
 
-    /** The mass a swallowed torn block is worth: the block's own (1, or more for Neutronium), plus 1 per item it carried. */
+    /** The mass a swallowed torn block is worth: the block's own (blockMass, or more for Neutronium), plus 1 per item it carried. */
     public static long massOf(FallingBlockEntity falling) {
-        long own = Math.max(1, MassValues.per(falling.getBlockState().getBlock().asItem()));
+        long own = Math.max(com.masteri.bhe.config.ReactorConfig.BLOCK_MASS.get(), MassValues.per(falling.getBlockState().getBlock().asItem()));
         return own + Math.max(0, falling.getPersistentData().getLong(CARRIED));
     }
 

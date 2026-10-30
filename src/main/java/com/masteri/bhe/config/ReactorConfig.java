@@ -28,6 +28,12 @@ public final class ReactorConfig {
             .defineInRange("warningMass", 10_000, 0, Integer.MAX_VALUE);
     public static final ModConfigSpec.IntValue CRITICAL_MASS = B.comment("Below this total mass, the core can't be held (pre-meltdown).")
             .defineInRange("criticalMass", 4_000, 0, Integer.MAX_VALUE);
+    public static final ModConfigSpec.IntValue BLOCK_MASS = B.comment("Mass one ordinary block is worth, fed in or swallowed (the Event Horizon's dense materials have their own values).")
+            .defineInRange("blockMass", 1, 1, 1_000_000);
+    public static final ModConfigSpec.IntValue ITEM_MASS = B.comment("Mass a black hole gets from swallowing one item that isn't a block (these can't be fed in).")
+            .defineInRange("swallowedItemMass", 1, 0, 1_000_000);
+    public static final ModConfigSpec.DoubleValue CREATURE_MASS_PER_HEART = B.comment("Mass a black hole gets per heart of max health of a creature it swallows.")
+            .defineInRange("creatureMassPerHeart", 1.0, 0.0, 1_000.0);
     static { B.pop().push("laser"); }
     public static final ModConfigSpec.IntValue LASER_MAX_RATE = B.comment("RF/t the bending laser fires at 100% power.")
             .defineInRange("laserMaxRate", 200_000, 0, 10_000_000);
@@ -224,8 +230,16 @@ public final class ReactorConfig {
     public static final ModConfigSpec.DoubleValue STALKER_HEALTH = B.comment("Lensing Stalker health.").defineInRange("lensingStalkerHealth", 30.0, 1.0, 1024.0);
     public static final ModConfigSpec.DoubleValue STALKER_DAMAGE = B.comment("Lensing Stalker attack damage.").defineInRange("lensingStalkerDamage", 7.0, 0.0, 1024.0);
     public static final ModConfigSpec.DoubleValue ECHO_HEALTH = B.comment("Echo of the Core health.").defineInRange("echoHealth", 300.0, 1.0, 10_000.0);
+    public static final ModConfigSpec.IntValue ECHO_ARENA = B.comment("Echo of the Core arena radius around where it rose, in blocks: it ignores players outside it.")
+            .defineInRange("echoArenaRadius", 64, 16, 512);
     public static final ModConfigSpec.DoubleValue ECHO_DAMAGE = B.comment("Multiplier on all the Echo of the Core's attacks.").defineInRange("echoDamageMultiplier", 1.0, 0.0, 100.0);
     public static final ModConfigSpec.DoubleValue SPAGHETTIFIER_HEALTH = B.comment("Spaghettifier health.").defineInRange("spaghettifierHealth", 24.0, 1.0, 1024.0);
+    public static final ModConfigSpec.DoubleValue SPAGHETTIFIER_SPAWN_CHANCE = B.comment("Share of the natural spawn attempts for Spaghettifiers that go through (0 turns natural spawns off).")
+            .defineInRange("spaghettifierSpawnChance", 0.25, 0.0, 1.0);
+    public static final ModConfigSpec.IntValue SPAGHETTIFIER_MAX_NEARBY = B.comment("A Spaghettifier won't spawn naturally if this many are already within spaghettifierCrowdRadius.")
+            .defineInRange("spaghettifierMaxNearby", 2, 1, 64);
+    public static final ModConfigSpec.IntValue SPAGHETTIFIER_CROWD_RADIUS = B.comment("How far around a spawn spot to count Spaghettifiers, in blocks.")
+            .defineInRange("spaghettifierCrowdRadius", 32, 1, 128);
     public static final ModConfigSpec.DoubleValue SPAGHETTIFIER_DAMAGE = B.comment("Spaghettifier bite damage.").defineInRange("spaghettifierDamage", 5.0, 0.0, 1024.0);
     public static final ModConfigSpec.DoubleValue WISP_HEALTH = B.comment("Hawking Wisp health.").defineInRange("hawkingWispHealth", 4.0, 1.0, 1024.0);
     public static final ModConfigSpec.IntValue WISP_LIFE_MIN = B.comment("A Hawking Wisp evaporates after between this many seconds...")

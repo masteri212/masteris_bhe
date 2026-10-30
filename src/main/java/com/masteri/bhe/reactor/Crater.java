@@ -4,7 +4,6 @@ import com.masteri.bhe.MasteriBHE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -60,8 +59,7 @@ public final class Crater {
         }
         if (destroyBlocks) JOBS.add(new Job(level, center, radius));
         SHOCKWAVES.add(new Shockwave(level, center, radius));
-        level.playSound(null, center, SoundEvents.WARDEN_SONIC_BOOM, SoundSource.BLOCKS, 10F, 0.5F);
-        level.playSound(null, center, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 10F, 0.6F);
+        level.playSound(null, center, com.masteri.bhe.registry.ModSounds.REACTOR_COLLAPSE.get(), SoundSource.BLOCKS, 12F, 1.0F);
         level.sendParticles(ParticleTypes.EXPLOSION_EMITTER, c.x, c.y, c.z, 3, 2, 2, 2, 0);
         level.sendParticles(ParticleTypes.FLASH, c.x, c.y, c.z, 1, 0, 0, 0, 0);
     }

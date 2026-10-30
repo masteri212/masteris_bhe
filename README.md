@@ -73,14 +73,16 @@ Server settings live in `config/masteris_bhe-server.toml` (also editable from th
 them with its own copy in `<world>/serverconfig/`. Every option has a description in the file. Among them:
 
 - **Reactor:** ignition RF and minimum mass, the dimensions reactors may be ignited in, stability and recovery
-  thresholds, spin, resonance and laser numbers, failure and meltdown timers, meltdown pull, link ranges
+  thresholds, spin, resonance and laser numbers, failure and meltdown timers, meltdown pull, link ranges, and how
+  much mass a block, a swallowed item or a creature is worth
 - **Collapses and zones:** whether collapses destroy blocks, crater and zone size, fallout, gravity, chunk loading,
   ore and discharge chances, corrupted mob bonuses, mob caps and the Echo's cooldown
 - **Research and the bomb:** research step time; the bomb's fuse and radius, or turning bombs off
 - **Event Horizon:** turning it off, which dimensions Horizon Rings work in, trip cost, ring open time, arrival
   height, gravity, time dilation, the spaghettification line, mass values, the Hawking Cell, Graviton Wells,
   Evaporating Rock, the Light Echo, the Singularity Lure and the Singularity
-- **Mobs:** health and damage for every mob and boss, and Hawking Wisp lifetimes
+- **Mobs:** health and damage for every mob and boss, the Echo of the Core's arena size, Spaghettifier spawn
+  limits and Hawking Wisp lifetimes
 
 **Modpacks:** ship a tuned `config/masteris_bhe-server.toml` with the pack. Only the server's copy counts in
 multiplayer: it's sent to the players when they join.
@@ -125,6 +127,7 @@ The jar ends up in `build/libs/`. To try it in a development client or server:
 - `tools/`: Python generators (run from the project root)
   - `tools/textures/`: pixel-art block and item textures
   - `tools/models/`: mob textures and Blockbench models
+  - `tools/sounds/reactor.py`: the reactor's sounds (needs numpy and ffmpeg)
   - `tools/worldgen/event_horizon.py`: the Event Horizon's terrain, biomes, features, ruin placement and ruin loot
 
 ## Credits

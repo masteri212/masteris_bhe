@@ -7,7 +7,6 @@ import com.masteri.bhe.util.Tickers;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -216,7 +215,7 @@ public class ControlConsoleBlock extends FacingBlock implements EntityBlock {
         if (button == null) return InteractionResult.PASS;
         if (!level.isClientSide) {
             console.press(player, button.id());
-            level.playSound(null, pos, SoundEvents.STONE_BUTTON_CLICK_ON, SoundSource.BLOCKS, 0.5F, 1.4F);
+            level.playSound(null, pos, com.masteri.bhe.registry.ModSounds.REACTOR_CONSOLE.get(), SoundSource.BLOCKS, 0.8F, 0.9F + level.random.nextFloat() * 0.2F);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
