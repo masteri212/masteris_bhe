@@ -222,3 +222,8 @@ idea {
         downloadJavadoc = true
     }
 }
+
+// Ship the license texts (GPL and the LGPL on top of it) inside the jar.
+tasks.named("jar", Jar) {
+    from(rootProject.file("COPYING"), rootProject.file("COPYING.LESSER"))
+}

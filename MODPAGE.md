@@ -80,6 +80,8 @@ Nine kinds, every one built differently:
 
 - **CC: Tweaked** *(optional)*: run the reactor from a computer. Every gauge, every button.
 - **Sable** *(optional)*: the black hole eats Sable contraptions too, and they float in low gravity.
+- **JEI** *(optional)*: recipes and info pages for everything.
+- **Iris shaders**: the glows and the Event Horizon's sky stay visible with shader packs on.
 
 ## 📦 Requirements
 
