@@ -65,7 +65,7 @@ public class EchoRenderer extends MobRenderer<EchoOfTheCoreEntity, EchoModel> {
         pose.pushPose();
         pose.translate(0, mid, 0);
         ReactorCoreRenderer.renderSphere(pose, buffers.getBuffer(RenderType.debugQuads()), horizon);
-        VertexConsumer glow = buffers.getBuffer(ModRenderTypes.glow());
+        VertexConsumer glow = ModRenderTypes.glow(buffers);
         pose.pushPose();
         ReactorCoreRenderer.faceCamera(pose);
         ReactorCoreRenderer.renderRing(pose, glow, horizon * 1.04F, horizon * 1.5F, WHITE_VIOLET, 0.9F, 0);
@@ -90,7 +90,7 @@ public class EchoRenderer extends MobRenderer<EchoOfTheCoreEntity, EchoModel> {
         pose.pushPose();
         pose.translate(0, ground - echo.getY() + 0.15, 0);
         pose.mulPose(Axis.XP.rotationDegrees(90));
-        VertexConsumer glow = buffers.getBuffer(ModRenderTypes.glow());
+        VertexConsumer glow = ModRenderTypes.glow(buffers);
         ReactorCoreRenderer.renderRing(pose, glow, Math.max(0, radius - 0.6F), radius + 0.9F, GOLD, 0.9F * fade + 0.1F, 0);
         ReactorCoreRenderer.renderRing(pose, glow, radius + 0.9F, radius + 2.2F, WHITE_VIOLET, 0.35F * fade, 0);
         pose.popPose();
@@ -111,7 +111,7 @@ public class EchoRenderer extends MobRenderer<EchoOfTheCoreEntity, EchoModel> {
         if (side.lengthSquared() < 1e-4) side.set(1, 0, 0);
         side.normalize();
         Vector3f up = new Vector3f((float) dir.x, (float) dir.y, (float) dir.z).cross(side).normalize();
-        VertexConsumer glow = buffers.getBuffer(ModRenderTypes.glow());
+        VertexConsumer glow = ModRenderTypes.glow(buffers);
         PoseStack.Pose p = pose.last();
         if (tick < EchoOfTheCoreEntity.BEAM_CHARGE) {
             float flicker = 0.5F + 0.5F * Mth.sin(time * (1.5F + tick * 0.1F));

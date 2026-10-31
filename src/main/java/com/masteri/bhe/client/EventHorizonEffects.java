@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
@@ -15,6 +16,7 @@ import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
@@ -112,58 +114,87 @@ public class EventHorizonEffects extends DimensionSpecialEffects {
     @Override
     public boolean renderSky(ClientLevel level, int ticks, float partialTick, Matrix4f modelViewMatrix, Camera camera,
                              Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
-        float time = ticks + partialTick;
+        // A shader pack paints its own sky over this one: it's drawn later instead (renderUnderShaders).
+        if (ShaderCompat.shadersOn()) return true;
         PoseStack pose = new PoseStack();
         pose.mulPose(modelViewMatrix);
         FogRenderer.setupNoFog();
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
-
-        additive();
-        drawStars(pose.last().pose(), time);
-
-        pose.pushPose();
-        pose.mulPose(Axis.YP.rotationDegrees(-AZIMUTH));
-        pose.mulPose(Axis.XP.rotationDegrees(ELEVATION));
-        pose.translate(0, 0, -DISTANCE);
-        Matrix4f m = pose.last().pose();
-        // Behind the shadow: a soft glow, the far half of the disc, and the far side's light bent over the top.
-        draw(m, b -> ring(b, m, SHADOW, DISC_OUTER * 1.25F, WARM, 0.12F, 0F, null));
-        draw(m, b -> disc(b, m, time, false));
-        draw(m, b -> lensedArc(b, m, time));
-        // The shadow itself: true black, hiding whatever is behind it.
-        RenderSystem.defaultBlendFunc();
-        draw(m, b -> shadow(b, m));
-        // In front: the near half of the disc and the thin photon ring.
-        additive();
-        draw(m, b -> disc(b, m, time, true));
-        draw(m, b -> ring(b, m, SHADOW * 0.99F, SHADOW * 1.07F, HOT, 0.9F, 0.15F, null));
-        pose.popPose();
-
+        paint(pose, ticks + partialTick, false);
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableBlend();
         RenderSystem.depthMask(true);
         return true;
     }
 
-    private static void additive() {
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+    /**
+     * The sky under a shader pack. Packs fill every pixel nothing was drawn on with their own sky, after the world
+     * is drawn, so this sky is drawn as part of the world instead: after the pack's lighting (after translucent
+     * blocks), centered on the camera and far beyond the terrain (half way to the far clipping plane), so terrain
+     * still hides it.
+     */
+    void renderUnderShaders(float time, float depthFar) {
+        PoseStack pose = new PoseStack();
+        float scale = depthFar * 0.5F / DISTANCE;
+        pose.scale(scale, scale, scale);
+        paint(pose, time, true);
+    }
+
+    /** Draws the whole sky; {@code shaders}: through render types a shader pack understands. */
+    private void paint(PoseStack pose, float time, boolean shaders) {
+        additive(shaders);
+        Matrix4f sky = pose.last().pose();
+        draw(b -> stars(b, sky, time), shaders ? ModRenderTypes.skyGlow() : null);
+
+        pose.pushPose();
+        pose.mulPose(Axis.YP.rotationDegrees(-AZIMUTH));
+        pose.mulPose(Axis.XP.rotationDegrees(ELEVATION));
+        pose.translate(0, 0, -DISTANCE);
+        Matrix4f m = pose.last().pose();
+        RenderType glow = shaders ? ModRenderTypes.skyGlow() : null;
+        // Behind the shadow: a soft glow, the far half of the disc, and the far side's light bent over the top.
+        draw(b -> ring(b, m, SHADOW, DISC_OUTER * 1.25F, WARM, 0.12F, 0F, null), glow);
+        draw(b -> disc(b, m, time, false), glow);
+        draw(b -> lensedArc(b, m, time), glow);
+        // The shadow itself: true black, hiding whatever is behind it.
+        if (!shaders) RenderSystem.defaultBlendFunc();
+        draw(b -> shadow(b, m), shaders ? ModRenderTypes.skyShadow() : null);
+        // In front: the near half of the disc and the thin photon ring.
+        additive(shaders);
+        draw(b -> disc(b, m, time, true), glow);
+        draw(b -> ring(b, m, SHADOW * 0.99F, SHADOW * 1.07F, HOT, 0.9F, 0.15F, null), glow);
+        pose.popPose();
+    }
+
+    private static void additive(boolean shaders) {
+        if (!shaders) RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
     }
 
     private interface Builder {
-        void build(BufferBuilder b);
+        void build(VertexConsumer b);
     }
 
-    private static void draw(Matrix4f m, Builder builder) {
-        BufferBuilder b = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        builder.build(b);
-        var mesh = b.build();
-        if (mesh != null) BufferUploader.drawWithShader(mesh);
+    /**
+     * Draws position + color quads: with the shader already set ({@code type} null), or through {@code type} as
+     * full-bright entity vertices.
+     */
+    private static void draw(Builder builder, @Nullable RenderType type) {
+        if (type == null) {
+            BufferBuilder b = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+            builder.build(b);
+            var mesh = b.build();
+            if (mesh != null) BufferUploader.drawWithShader(mesh);
+        } else {
+            BufferBuilder b = Tesselator.getInstance().begin(type.mode(), type.format());
+            builder.build(new ShaderCompat.FullBright(b));
+            var mesh = b.build();
+            if (mesh != null) type.draw(mesh);
+        }
     }
 
-    private void drawStars(Matrix4f m, float time) {
-        BufferBuilder b = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+    private void stars(VertexConsumer b, Matrix4f m, float time) {
         Vector3f up = new Vector3f(), side = new Vector3f();
         for (int i = 0; i < STARS; i++) {
             float x = stars[i * 5], y = stars[i * 5 + 1], z = stars[i * 5 + 2], size = stars[i * 5 + 3];
@@ -178,7 +209,6 @@ public class EventHorizonEffects extends DimensionSpecialEffects {
             b.addVertex(m, x + side.x + up.x, y + side.y + up.y, z + side.z + up.z).setColor(color);
             b.addVertex(m, x - side.x + up.x, y - side.y + up.y, z - side.z + up.z).setColor(color);
         }
-        BufferUploader.drawWithShader(b.buildOrThrow());
     }
 
     /**
@@ -186,7 +216,7 @@ public class EventHorizonEffects extends DimensionSpecialEffects {
      * half under it). Hot and white inside, ember red outside, with spiral streaks turning slowly, and the side
      * coming toward you brighter (Doppler beaming).
      */
-    private static void disc(BufferBuilder b, Matrix4f m, float time, boolean near) {
+    private static void disc(VertexConsumer b, Matrix4f m, float time, boolean near) {
         float cos = Mth.cos(TILT * Mth.DEG_TO_RAD), sin = Mth.sin(TILT * Mth.DEG_TO_RAD);
         for (int band = 0; band < BANDS; band++) {
             float t0 = band / (float) BANDS, t1 = (band + 1) / (float) BANDS;
@@ -204,7 +234,7 @@ public class EventHorizonEffects extends DimensionSpecialEffects {
         }
     }
 
-    private static void discVertex(BufferBuilder b, Matrix4f m, float r, float a, float t, float time, float cos, float sin) {
+    private static void discVertex(VertexConsumer b, Matrix4f m, float r, float a, float t, float time, float cos, float sin) {
         float x = r * Mth.cos(a), y = r * Mth.sin(a);
         float streak = 0.7F + 0.3F * Mth.sin(5 * a - time * 0.02F + t * 9);
         float beaming = 1 + 0.6F * Mth.cos(a);
@@ -214,7 +244,7 @@ public class EventHorizonEffects extends DimensionSpecialEffects {
     }
 
     /** The far side of the disc, its light bent up over the top of the shadow (and a fainter arc under it). */
-    private static void lensedArc(BufferBuilder b, Matrix4f m, float time) {
+    private static void lensedArc(VertexConsumer b, Matrix4f m, float time) {
         ring(b, m, SHADOW * 1.08F, SHADOW * 1.9F, WARM, 0.75F, 0.1F, a -> {
             float top = Math.max(0, Mth.sin(a)), bottom = Math.max(0, -Mth.sin(a));
             return (0.9F * top * top + 0.35F * bottom * bottom) * (0.85F + 0.15F * Mth.sin(6 * a + time * 0.03F));
@@ -226,7 +256,7 @@ public class EventHorizonEffects extends DimensionSpecialEffects {
     }
 
     /** A flat ring facing the camera: {@code alpha} at its inner edge, {@code outKeep} times that at its outer edge. */
-    private static void ring(BufferBuilder b, Matrix4f m, float r0, float r1, float[] color, float alpha, float outKeep,
+    private static void ring(VertexConsumer b, Matrix4f m, float r0, float r1, float[] color, float alpha, float outKeep,
                              @Nullable Shape shape) {
         for (int s = 0; s < SEGMENTS; s++) {
             float a0 = Mth.TWO_PI * s / SEGMENTS, a1 = Mth.TWO_PI * (s + 1) / SEGMENTS;
@@ -242,7 +272,7 @@ public class EventHorizonEffects extends DimensionSpecialEffects {
         }
     }
 
-    private static void shadow(BufferBuilder b, Matrix4f m) {
+    private static void shadow(VertexConsumer b, Matrix4f m) {
         int black = 0xFF000000;
         for (int s = 0; s < SEGMENTS; s++) {
             float a0 = Mth.TWO_PI * s / SEGMENTS, a1 = Mth.TWO_PI * (s + 1) / SEGMENTS;

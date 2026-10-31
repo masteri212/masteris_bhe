@@ -48,7 +48,7 @@ public class HorizonGateRenderer implements BlockEntityRenderer<HorizonGateBlock
             // No ring: just a spark over the gate, brighter as it charges.
             pose.translate(0.5, 1.6, 0.5);
             float charge = gate.charge();
-            ReactorCoreRenderer.renderFlare(pose, buffers.getBuffer(ModRenderTypes.glow()), new Vector3f(), 0.2F + 0.5F * charge, VIOLET, 0.25F + 0.5F * charge);
+            ReactorCoreRenderer.renderFlare(pose, ModRenderTypes.glow(buffers), new Vector3f(), 0.2F + 0.5F * charge, VIOLET, 0.25F + 0.5F * charge);
             pose.popPose();
             return;
         }
@@ -66,7 +66,7 @@ public class HorizonGateRenderer implements BlockEntityRenderer<HorizonGateBlock
 
     private static void idle(HorizonGateBlockEntity gate, PoseStack pose, MultiBufferSource buffers, float time) {
         float charge = gate.charge();
-        VertexConsumer glow = buffers.getBuffer(ModRenderTypes.glow());
+        VertexConsumer glow = ModRenderTypes.glow(buffers);
         List<int[]> frames = HorizonRing.FRAMES;
         for (int i = 0; i < frames.size(); i++) {
             float pulse = 0.5F + 0.5F * Mth.sin(time * 0.08F - i * 0.4F);
@@ -77,7 +77,7 @@ public class HorizonGateRenderer implements BlockEntityRenderer<HorizonGateBlock
 
     private static void spinning(PoseStack pose, MultiBufferSource buffers, float time, float age) {
         float p = Mth.clamp(age / HorizonGateBlockEntity.SPIN_TICKS, 0, 1);
-        VertexConsumer glow = buffers.getBuffer(ModRenderTypes.glow());
+        VertexConsumer glow = ModRenderTypes.glow(buffers);
         List<int[]> frames = HorizonRing.FRAMES;
         float lit = p * frames.size();
         for (int i = 0; i < frames.size(); i++) {
@@ -103,7 +103,7 @@ public class HorizonGateRenderer implements BlockEntityRenderer<HorizonGateBlock
         float horizon = HORIZON * size;
         // The event horizon itself: black, both faces.
         blackDisc(pose, buffers.getBuffer(RenderType.debugQuads()), horizon);
-        VertexConsumer glow = buffers.getBuffer(ModRenderTypes.glow());
+        VertexConsumer glow = ModRenderTypes.glow(buffers);
         // Accretion swirl from the horizon out to the frames, and the photon ring at its edge.
         swirl(pose, glow, horizon, RIM, time * 0.12F, GOLD, 0.85F * size);
         swirl(pose, glow, horizon, RIM, -time * 0.05F + 1.3F, VIOLET, 0.4F * size);

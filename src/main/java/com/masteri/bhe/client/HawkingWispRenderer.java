@@ -26,7 +26,7 @@ public class HawkingWispRenderer extends EntityRenderer<HawkingWispEntity> {
         float life = wisp.lifeFraction();
         float size = 0.25F + 0.35F * life;
         float flicker = 0.75F + 0.25F * Mth.sin(time * 0.9F) * Mth.sin(time * 0.37F);
-        VertexConsumer glow = buffers.getBuffer(ModRenderTypes.glow());
+        VertexConsumer glow = ModRenderTypes.glow(buffers);
         pose.pushPose();
         pose.translate(0, wisp.getBbHeight() / 2, 0);
         ReactorCoreRenderer.renderFlare(pose, glow, new Vector3f(), size * 2.2F, PALE, (0.3F + 0.6F * life) * flicker);

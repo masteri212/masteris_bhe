@@ -36,7 +36,7 @@ public class BlackHoleBombRenderer implements BlockEntityRenderer<BlackHoleBombB
 
         pose.pushPose();
         pose.translate(0.5, 0.5, 0.5);
-        VertexConsumer glow = buffers.getBuffer(ModRenderTypes.glow());
+        VertexConsumer glow = ModRenderTypes.glow(buffers);
         ReactorCoreRenderer.renderFlare(pose, glow, new Vector3f(), 0.9F + 0.6F * pulse + 1.2F * t, color, 0.35F + 0.5F * pulse);
 
         float fuse = bomb.getFuse() - partialTick;
@@ -45,7 +45,7 @@ public class BlackHoleBombRenderer implements BlockEntityRenderer<BlackHoleBombB
             float horizon = 0.3F + 2.4F * (1 - (1 - b) * (1 - b)) * (1 + 0.08F * pulse);
             // The black hole itself (drawn first, so the glow sits around it)...
             ReactorCoreRenderer.renderSphere(pose, buffers.getBuffer(RenderType.debugQuads()), horizon);
-            glow = buffers.getBuffer(ModRenderTypes.glow());
+            glow = ModRenderTypes.glow(buffers);
             // ...its photon ring...
             pose.pushPose();
             ReactorCoreRenderer.faceCamera(pose);

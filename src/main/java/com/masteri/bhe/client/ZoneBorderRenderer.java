@@ -81,12 +81,12 @@ public final class ZoneBorderRenderer {
                 renderSphere(pose, buffers.getBuffer(wallType), zone.radius(), cameraLocal, time, look, false);
             }
             if (look.shell > 0 && zone.radius() > 0.5F) {
-                renderSphere(pose, buffers.getBuffer(glowType), zone.radius() * 1.004F, cameraLocal, time, look, true);
+                renderSphere(pose, ModRenderTypes.glow(buffers), zone.radius() * 1.004F, cameraLocal, time, look, true);
             }
             if (look.flash > 0) {
                 // A ball of light at the crater: the zone's first moment, or its implosion.
                 Look ball = new Look(0, 0, 0, look.flash, look.flashColor, 0, 0, look.flashColor);
-                renderSphere(pose, buffers.getBuffer(glowType), look.flashRadius, cameraLocal, time, ball, true);
+                renderSphere(pose, ModRenderTypes.glow(buffers), look.flashRadius, cameraLocal, time, ball, true);
             }
             pose.popPose();
             drew = true;

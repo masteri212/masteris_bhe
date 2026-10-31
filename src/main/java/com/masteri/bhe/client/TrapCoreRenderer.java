@@ -26,7 +26,7 @@ public class TrapCoreRenderer implements BlockEntityRenderer<TrapCoreBlockEntity
         pose.translate(0.5, 0.5, 0.5);
         float r = 0.35F + 0.02F * Mth.sin(time * 0.2F);
         ReactorCoreRenderer.renderSphere(pose, buffers.getBuffer(RenderType.debugQuads()), r);
-        VertexConsumer glow = buffers.getBuffer(ModRenderTypes.glow());
+        VertexConsumer glow = ModRenderTypes.glow(buffers);
         pose.pushPose();
         ReactorCoreRenderer.faceCamera(pose);
         ReactorCoreRenderer.renderRing(pose, glow, r * 1.05F, r * 1.6F, WHITE, 0.95F, 0);

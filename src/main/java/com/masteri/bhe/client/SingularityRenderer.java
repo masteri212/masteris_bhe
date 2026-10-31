@@ -47,7 +47,7 @@ public class SingularityRenderer extends EntityRenderer<SingularityEntity> {
         pose.pushPose();
         pose.translate(0, s.getBbHeight() / 2, 0);
         ReactorCoreRenderer.renderSphere(pose, buffers.getBuffer(RenderType.debugQuads()), r);
-        VertexConsumer glow = buffers.getBuffer(ModRenderTypes.glow());
+        VertexConsumer glow = ModRenderTypes.glow(buffers);
         // Photon ring and halo, facing the camera.
         pose.pushPose();
         ReactorCoreRenderer.faceCamera(pose);

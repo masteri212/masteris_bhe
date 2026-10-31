@@ -354,7 +354,7 @@ public class ReactorCoreRenderer implements BlockEntityRenderer<ReactorCoreBlock
         // Event horizon (opaque black, drawn first so the glow layers sit around it)
         if (horizon > 0.02F) renderSphere(pose, buffers.getBuffer(RenderType.debugQuads()), horizon);
 
-        VertexConsumer glow = buffers.getBuffer(ModRenderTypes.glow());
+        VertexConsumer glow = ModRenderTypes.glow(buffers);
 
         // Accretion disc, flat in the ring's hole and wobbling when unstable (kept small so it stays clear of the ring)
         pose.pushPose();
@@ -727,7 +727,7 @@ public class ReactorCoreRenderer implements BlockEntityRenderer<ReactorCoreBlock
         boolean running = core.isLanceFormed() && core.isFormed() && core.getState() != ReactorState.OFFLINE;
         if (ventTicks <= 0 && !running) return;
         float time = core.getClientTicks() + partialTick;
-        VertexConsumer glow = buffers.getBuffer(ModRenderTypes.glow());
+        VertexConsumer glow = ModRenderTypes.glow(buffers);
         pose.pushPose();
         pose.translate(0.5, 0, 0.5);
         Vector3f tip = new Vector3f(0, core.getLanceTop() + 1, 0);
