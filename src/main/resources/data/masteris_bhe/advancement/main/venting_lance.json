@@ -1,0 +1,35 @@
+{
+  "parent": "masteris_bhe:main/recording",
+  "display": {
+    "icon": {
+      "id": "masteris_bhe:lance_emitter"
+    },
+    "title": {
+      "translate": "advancement.masteris_bhe.venting_lance.title"
+    },
+    "description": {
+      "translate": "advancement.masteris_bhe.venting_lance.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "has_lance_emitter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:lance_emitter"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_lance_emitter"
+    ]
+  ]
+}

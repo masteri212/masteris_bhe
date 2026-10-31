@@ -1,0 +1,35 @@
+{
+  "parent": "masteris_bhe:main/root",
+  "display": {
+    "icon": {
+      "id": "masteris_bhe:reactor_core"
+    },
+    "title": {
+      "translate": "advancement.masteris_bhe.reactor_core.title"
+    },
+    "description": {
+      "translate": "advancement.masteris_bhe.reactor_core.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "has_reactor_core": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:reactor_core"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_reactor_core"
+    ]
+  ]
+}

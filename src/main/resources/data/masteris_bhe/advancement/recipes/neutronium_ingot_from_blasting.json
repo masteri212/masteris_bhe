@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_raw_neutronium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:raw_neutronium"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "masteris_bhe:neutronium_ingot_from_blasting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_neutronium",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "masteris_bhe:neutronium_ingot_from_blasting"
+    ]
+  }
+}

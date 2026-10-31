@@ -1,0 +1,76 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_singularity_glass": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:singularity_glass"
+          }
+        ]
+      }
+    },
+    "has_event_horizon_fragment": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:event_horizon_fragment"
+          }
+        ]
+      }
+    },
+    "has_graviton_core": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:graviton_core"
+          }
+        ]
+      }
+    },
+    "has_containment_box": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:containment_box"
+          }
+        ]
+      }
+    },
+    "has_ring_frame": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:ring_frame"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "masteris_bhe:horizon_gate"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_singularity_glass",
+      "has_event_horizon_fragment",
+      "has_graviton_core",
+      "has_containment_box",
+      "has_ring_frame",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "masteris_bhe:horizon_gate"
+    ]
+  }
+}

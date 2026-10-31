@@ -1,0 +1,35 @@
+{
+  "parent": "masteris_bhe:main/event_horizon",
+  "display": {
+    "icon": {
+      "id": "masteris_bhe:hawking_cell"
+    },
+    "title": {
+      "translate": "advancement.masteris_bhe.hawking_cell.title"
+    },
+    "description": {
+      "translate": "advancement.masteris_bhe.hawking_cell.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "has_hawking_cell": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:hawking_cell"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_hawking_cell"
+    ]
+  ]
+}

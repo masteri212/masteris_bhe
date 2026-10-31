@@ -1,0 +1,35 @@
+{
+  "parent": "masteris_bhe:main/reactor_keys",
+  "display": {
+    "icon": {
+      "id": "masteris_bhe:singularity_heart"
+    },
+    "title": {
+      "translate": "advancement.masteris_bhe.singularity.title"
+    },
+    "description": {
+      "translate": "advancement.masteris_bhe.singularity.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_singularity_heart": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:singularity_heart"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_singularity_heart"
+    ]
+  ]
+}

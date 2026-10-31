@@ -1,0 +1,28 @@
+{
+  "parent": "masteris_bhe:main/ignition",
+  "display": {
+    "icon": {
+      "id": "masteris_bhe:alarm_light"
+    },
+    "title": {
+      "translate": "advancement.masteris_bhe.close_call.title"
+    },
+    "description": {
+      "translate": "advancement.masteris_bhe.close_call.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ]
+}

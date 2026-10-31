@@ -1,0 +1,54 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_ring_frame": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:ring_frame"
+          }
+        ]
+      }
+    },
+    "has_void_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:void_dust"
+          }
+        ]
+      }
+    },
+    "has_dark_matter_shard": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:dark_matter_shard"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "masteris_bhe:horizon_frame"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ring_frame",
+      "has_void_dust",
+      "has_dark_matter_shard",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "masteris_bhe:horizon_frame"
+    ]
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "parent": "masteris_bhe:main/singularity_glass",
+  "display": {
+    "icon": {
+      "id": "masteris_bhe:recording_breach"
+    },
+    "title": {
+      "translate": "advancement.masteris_bhe.recording.title"
+    },
+    "description": {
+      "translate": "advancement.masteris_bhe.recording.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_recording_disc_stall": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:recording_disc_stall"
+          }
+        ]
+      }
+    },
+    "has_recording_overspin": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:recording_overspin"
+          }
+        ]
+      }
+    },
+    "has_recording_starvation": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:recording_starvation"
+          }
+        ]
+      }
+    },
+    "has_recording_pre_meltdown": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:recording_pre_meltdown"
+          }
+        ]
+      }
+    },
+    "has_recording_breach": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:recording_breach"
+          }
+        ]
+      }
+    },
+    "has_recording_meltdown": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:recording_meltdown"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_recording_disc_stall",
+      "has_recording_overspin",
+      "has_recording_starvation",
+      "has_recording_pre_meltdown",
+      "has_recording_breach",
+      "has_recording_meltdown"
+    ]
+  ]
+}

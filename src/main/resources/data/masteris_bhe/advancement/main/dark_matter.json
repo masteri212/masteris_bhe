@@ -1,0 +1,35 @@
+{
+  "parent": "masteris_bhe:main/ground_zero",
+  "display": {
+    "icon": {
+      "id": "masteris_bhe:dark_matter_shard"
+    },
+    "title": {
+      "translate": "advancement.masteris_bhe.dark_matter.title"
+    },
+    "description": {
+      "translate": "advancement.masteris_bhe.dark_matter.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "has_dark_matter_shard": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:dark_matter_shard"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_dark_matter_shard"
+    ]
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_neutronium_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:neutronium_ingot"
+          }
+        ]
+      }
+    },
+    "has_hawking_mote": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:hawking_mote"
+          }
+        ]
+      }
+    },
+    "has_recording_hawking_radiation": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:recording_hawking_radiation"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "masteris_bhe:hawking_cell"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_neutronium_ingot",
+      "has_hawking_mote",
+      "has_recording_hawking_radiation",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "masteris_bhe:hawking_cell"
+    ]
+  }
+}

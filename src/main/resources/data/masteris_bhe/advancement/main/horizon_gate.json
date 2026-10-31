@@ -1,0 +1,35 @@
+{
+  "parent": "masteris_bhe:main/ignition",
+  "display": {
+    "icon": {
+      "id": "masteris_bhe:horizon_gate"
+    },
+    "title": {
+      "translate": "advancement.masteris_bhe.horizon_gate.title"
+    },
+    "description": {
+      "translate": "advancement.masteris_bhe.horizon_gate.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "has_horizon_gate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:horizon_gate"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_horizon_gate"
+    ]
+  ]
+}

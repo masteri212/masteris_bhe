@@ -1,0 +1,31 @@
+{
+  "parent": "masteris_bhe:main/horizon_gate",
+  "display": {
+    "icon": {
+      "id": "masteris_bhe:horizon_frame"
+    },
+    "title": {
+      "translate": "advancement.masteris_bhe.event_horizon.title"
+    },
+    "description": {
+      "translate": "advancement.masteris_bhe.event_horizon.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "entered": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "masteris_bhe:event_horizon"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "entered"
+    ]
+  ]
+}

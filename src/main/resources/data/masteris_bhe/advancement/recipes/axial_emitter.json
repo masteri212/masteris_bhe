@@ -1,0 +1,65 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_recording_disc_stall": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:recording_disc_stall"
+          }
+        ]
+      }
+    },
+    "has_recording_overspin": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:recording_overspin"
+          }
+        ]
+      }
+    },
+    "has_recording_starvation": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:recording_starvation"
+          }
+        ]
+      }
+    },
+    "has_stabilizer_emitter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:stabilizer_emitter"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "masteris_bhe:axial_emitter"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_recording_disc_stall",
+      "has_recording_overspin",
+      "has_recording_starvation",
+      "has_stabilizer_emitter",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "masteris_bhe:axial_emitter"
+    ]
+  }
+}

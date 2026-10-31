@@ -21,6 +21,7 @@ import com.masteri.bhe.reactor.ReactorEnergy;
 import com.masteri.bhe.reactor.ReactorState;
 import com.masteri.bhe.reactor.VentingLance;
 import com.masteri.bhe.registry.ModBlockEntities;
+import com.masteri.bhe.util.Advancements;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -606,6 +607,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
                         && ReactorStructure.check(level, worldPosition).complete();
                 if (recovered) {
                     broadcast(Component.translatable("message.masteris_bhe.reactor.recovered").withStyle(ChatFormatting.GREEN));
+                    if (level instanceof ServerLevel server) Advancements.awardNearby(server, worldPosition, 64, Advancements.CLOSE_CALL);
                     if (!resumeSuspended()) enterState(ReactorState.WARNING, 0);
                 } else if (--stateTimer <= 0) {
                     enterState(ReactorState.MELTDOWN_1, ReactorConfig.MELTDOWN_1_SECONDS.get() * 20);
@@ -1031,6 +1033,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         enterState(ReactorState.STABLE, 0);
         startupEffects();
         tell(player, "ignite.success", ChatFormatting.GREEN);
+        if (level instanceof ServerLevel server) Advancements.awardNearby(server, worldPosition, 64, Advancements.IGNITION);
     }
 
     private void fizzle() {
@@ -1588,6 +1591,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         Vec3 c = Vec3.atCenterOf(worldPosition);
         Level lvl = level;
         broadcast(Component.translatable("message.masteris_bhe.reactor.collapse").withStyle(ChatFormatting.DARK_PURPLE));
+        if (lvl instanceof ServerLevel server) Advancements.awardNearby(server, worldPosition, 160, Advancements.GROUND_ZERO);
         lvl.removeBlock(worldPosition, false);
         // A small vanilla blast for the boom and the particles; the crater itself is carved as a true sphere.
         lvl.explode(null, c.x, c.y, c.z, 8F, Level.ExplosionInteraction.NONE);

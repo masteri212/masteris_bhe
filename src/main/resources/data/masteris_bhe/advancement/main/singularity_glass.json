@@ -1,0 +1,35 @@
+{
+  "parent": "masteris_bhe:main/ground_zero",
+  "display": {
+    "icon": {
+      "id": "masteris_bhe:singularity_glass"
+    },
+    "title": {
+      "translate": "advancement.masteris_bhe.singularity_glass.title"
+    },
+    "description": {
+      "translate": "advancement.masteris_bhe.singularity_glass.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "has_singularity_glass": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:singularity_glass"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_singularity_glass"
+    ]
+  ]
+}

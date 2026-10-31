@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "id": "masteris_bhe:reactor_manual"
+    },
+    "title": {
+      "translate": "advancement.masteris_bhe.root.title"
+    },
+    "description": {
+      "translate": "advancement.masteris_bhe.root.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "masteris_bhe:textures/block/corrupted_stone.png"
+  },
+  "criteria": {
+    "has_reactor_manual": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:reactor_manual"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_reactor_manual"
+    ]
+  ]
+}

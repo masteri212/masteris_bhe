@@ -1,0 +1,54 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_recording_pre_meltdown": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:recording_pre_meltdown"
+          }
+        ]
+      }
+    },
+    "has_recording_breach": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:recording_breach"
+          }
+        ]
+      }
+    },
+    "has_recording_meltdown": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:recording_meltdown"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "masteris_bhe:lance_emitter"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_recording_pre_meltdown",
+      "has_recording_breach",
+      "has_recording_meltdown",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "masteris_bhe:lance_emitter"
+    ]
+  }
+}

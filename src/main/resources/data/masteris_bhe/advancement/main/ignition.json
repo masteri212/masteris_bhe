@@ -1,0 +1,28 @@
+{
+  "parent": "masteris_bhe:main/reactor_core",
+  "display": {
+    "icon": {
+      "id": "masteris_bhe:control_console"
+    },
+    "title": {
+      "translate": "advancement.masteris_bhe.ignition.title"
+    },
+    "description": {
+      "translate": "advancement.masteris_bhe.ignition.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_neutronium_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:neutronium_ingot"
+          }
+        ]
+      }
+    },
+    "has_recording_spaghettification": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:recording_spaghettification"
+          }
+        ]
+      }
+    },
+    "has_recording_hawking_radiation": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:recording_hawking_radiation"
+          }
+        ]
+      }
+    },
+    "has_unstable_dark_residue": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:unstable_dark_residue"
+          }
+        ]
+      }
+    },
+    "has_event_horizon_fragment": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:event_horizon_fragment"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "masteris_bhe:singularity_lure"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_neutronium_ingot",
+      "has_recording_spaghettification",
+      "has_recording_hawking_radiation",
+      "has_unstable_dark_residue",
+      "has_event_horizon_fragment",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "masteris_bhe:singularity_lure"
+    ]
+  }
+}

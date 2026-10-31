@@ -1,0 +1,33 @@
+{
+  "parent": "masteris_bhe:main/dark_matter",
+  "display": {
+    "icon": {
+      "id": "masteris_bhe:charged_dark_matter_crystal"
+    },
+    "title": {
+      "translate": "advancement.masteris_bhe.laid_to_rest.title"
+    },
+    "description": {
+      "translate": "advancement.masteris_bhe.laid_to_rest.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "killed": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "masteris_bhe:echo_of_the_core"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "killed"
+    ]
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "parent": "masteris_bhe:main/event_horizon",
+  "display": {
+    "icon": {
+      "id": "masteris_bhe:reactor_key_breached"
+    },
+    "title": {
+      "translate": "advancement.masteris_bhe.reactor_keys.title"
+    },
+    "description": {
+      "translate": "advancement.masteris_bhe.reactor_keys.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_reactor_key_overspun": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:reactor_key_overspun"
+          }
+        ]
+      }
+    },
+    "has_reactor_key_starved": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:reactor_key_starved"
+          }
+        ]
+      }
+    },
+    "has_reactor_key_breached": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:reactor_key_breached"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_reactor_key_overspun"
+    ],
+    [
+      "has_reactor_key_starved"
+    ],
+    [
+      "has_reactor_key_breached"
+    ]
+  ]
+}

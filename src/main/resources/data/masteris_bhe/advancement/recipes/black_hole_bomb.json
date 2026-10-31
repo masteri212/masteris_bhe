@@ -1,0 +1,65 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_unstable_dark_residue": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:unstable_dark_residue"
+          }
+        ]
+      }
+    },
+    "has_graviton_core": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:graviton_core"
+          }
+        ]
+      }
+    },
+    "has_event_horizon_fragment": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:event_horizon_fragment"
+          }
+        ]
+      }
+    },
+    "has_containment_box": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:containment_box"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "masteris_bhe:black_hole_bomb"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_unstable_dark_residue",
+      "has_graviton_core",
+      "has_event_horizon_fragment",
+      "has_containment_box",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "masteris_bhe:black_hole_bomb"
+    ]
+  }
+}

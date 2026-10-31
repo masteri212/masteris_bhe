@@ -1,0 +1,35 @@
+{
+  "parent": "masteris_bhe:main/ignition",
+  "display": {
+    "icon": {
+      "id": "masteris_bhe:bending_laser"
+    },
+    "title": {
+      "translate": "advancement.masteris_bhe.bending_laser.title"
+    },
+    "description": {
+      "translate": "advancement.masteris_bhe.bending_laser.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "has_bending_laser": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "masteris_bhe:bending_laser"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_bending_laser"
+    ]
+  ]
+}
