@@ -7,11 +7,11 @@
     {
       "type": "patchouli:spotlight",
       "item": "masteris_bhe:bending_laser",
-      "text": "Place it within $(num)24$() blocks of the core and feed it RF. Use $(thing)Laser +$() to fire it."
+      "text": "It's part of the $(l:building/containment_ring)containment ring$(): the outermost middle block of the $(thing)north-east$() beam port tunnel, $(num)12$() east and $(num)12$() north of the core at core height, in place of a Ring Beam Port. Feed it RF from outside the ring and use $(thing)Laser +$() to fire it."
     },
     {
       "type": "patchouli:text",
-      "text": "The beam bends around the core and comes back stronger: $(num)1.15x$() at low power, up to $(num)1.30x$() at full power.$(br2)The profit comes out of your mass: $(num)1$() mass per $(num)100,000 RF$() fired. Keep the stabilizers fed.",
+      "text": "The beam bends around the core and comes back stronger: $(num)1.15x$() at low power, up to $(num)1.30x$() at full power.$(br2)The profit comes out of your mass: $(num)1$() mass per $(num)400,000 RF$() fired (half a mass a tick at full power). Keep the stabilizers fed.",
       "title": "Gain"
     },
     {

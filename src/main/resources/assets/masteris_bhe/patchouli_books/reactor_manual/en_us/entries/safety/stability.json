@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Stability is the reactor's health, from 0 to 100%.$(br2)It drops with stabilizer offset, laser power, ring stress and low mass. It recovers slowly when you ease off.$(br2)$(good)Above 50%$(): Stable$(br)$(warn)Below 50%$(): Warning$(br)$(danger)Below 20%$(): Pre-meltdown"
+      "text": "Stability is the reactor's health, from 0 to 100%.$(br2)It drops with stabilizer offset, laser power, ring stress, low mass and unpowered stabilizers. It recovers slowly when you ease off.$(br2)$(good)Above 50%$(): Stable$(br)$(warn)Below 50%$(): Warning$(br)$(danger)Below 20%$(): Pre-meltdown"
     },
     {
       "type": "patchouli:image",

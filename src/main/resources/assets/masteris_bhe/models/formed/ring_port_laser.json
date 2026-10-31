@@ -1,0 +1,10 @@
+{
+  "loader": "neoforge:obj",
+  "model": "masteris_bhe:models/formed/ring_port_laser.obj",
+  "flip_v": false,
+  "automatic_culling": false,
+  "emissive_ambient": true,
+  "textures": {
+    "particle": "masteris_bhe:block/ring_beam_port"
+  }
+}

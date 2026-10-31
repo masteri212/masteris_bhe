@@ -40,11 +40,14 @@ import java.util.Set;
  */
 public final class AssembledStructures {
     public static final ModelResourceLocation RING = model("ring_segment"), RING_PORT = model("ring_port"),
-            STABILIZER = model("stabilizer"), AXIAL = model("axial_stabilizer"), LANCE = model("lance");
-    private static final List<ModelResourceLocation> ALL = List.of(RING, RING_PORT, STABILIZER, AXIAL, LANCE);
+            RING_PORT_LASER = model("ring_port_laser"), STABILIZER = model("stabilizer"), AXIAL = model("axial_stabilizer"),
+            LANCE = model("lance");
+    private static final List<ModelResourceLocation> ALL = List.of(RING, RING_PORT, RING_PORT_LASER, STABILIZER, AXIAL, LANCE);
     private static final int RING_SLICES = 16;
     /** Slices with a beam port: east, south, west, north and north-east (slice k is at k * 22.5 degrees from east). */
     private static final Set<Integer> PORT_SLICES = Set.of(0, 4, 8, 12, 14);
+    /** The north-east port, the Bending Laser's: a lens only on the inside (the outside is where the laser is powered). */
+    private static final int LASER_SLICE = 14;
     private static final RandomSource RANDOM = RandomSource.create();
     private static final float[] SHADES = new float[4];
     private static final int[] LIGHTS = new int[4];
@@ -74,7 +77,8 @@ public final class AssembledStructures {
                         int light = light(level, c.offset((int) Math.round(cos * r), 3, (int) Math.round(sin * r)),
                                 c.offset((int) Math.round(cos * (r - 4)), 0, (int) Math.round(sin * (r - 4))),
                                 c.offset((int) Math.round(cos * (r + 4)), 0, (int) Math.round(sin * (r + 4))));
-                        draw(pose, out, models.getModel(PORT_SLICES.contains(k) ? RING_PORT : RING), 0.5, 0, 0.5, k * 360F / RING_SLICES, light);
+                        ModelResourceLocation slice = k == LASER_SLICE ? RING_PORT_LASER : PORT_SLICES.contains(k) ? RING_PORT : RING;
+                        draw(pose, out, models.getModel(slice), 0.5, 0, 0.5, k * 360F / RING_SLICES, light);
                     }
                 }
                 case STABILIZER -> {

@@ -212,7 +212,7 @@
     {
       "type": "patchouli:spotlight",
       "item": "masteris_bhe:ring_beam_port",
-      "text": "3 x 3 tunnels through the middle three layers: north, south, east, west for the stabilizers, and north-east for the $(l:operation/bending_laser)laser$().",
+      "text": "3 x 3 tunnels through the middle three layers: north, south, east, west for the stabilizers, and north-east for the $(l:operation/bending_laser)laser$(): its outermost middle block can be a Bending Laser instead of a port.",
       "title": "Beam Ports"
     },
     {

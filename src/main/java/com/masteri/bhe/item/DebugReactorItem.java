@@ -59,8 +59,6 @@ public class DebugReactorItem extends Item {
         RESEARCH
     }
 
-    /** NE diagonal, just outside the ring, firing through the NE beam port at core height. */
-    private static final BlockPos LASER_OFFSET = new BlockPos(16, 0, -16);
     /** Bottom-left of the console wall: ground level on the south side, beside the south stabilizer, screen facing south. */
     private static final BlockPos CONSOLE_OFFSET = new BlockPos(4, -2, 19);
     private static final int LASER_CHARGE = 4_000_000;
@@ -176,12 +174,11 @@ public class DebugReactorItem extends Item {
         int placed = 1 + ReactorStructure.build(level, corePos) + ReactorStructure.buildAxial(level, corePos);
 
         if (mode != Mode.FRAME) {
-            placed += place(level, corePos.offset(LASER_OFFSET),
+            placed += place(level, corePos.offset(ReactorStructure.LASER_OFFSET),
                     ModBlocks.BENDING_LASER.get().defaultBlockState().setValue(FacingBlock.FACING, Direction.WEST));
-            if (level.getBlockEntity(corePos.offset(LASER_OFFSET)) instanceof BendingLaserBlockEntity laser) {
+            if (level.getBlockEntity(corePos.offset(ReactorStructure.LASER_OFFSET)) instanceof BendingLaserBlockEntity laser) {
                 laser.getEnergy().receiveEnergy(LASER_CHARGE, false);
                 laser.setChanged();
-                core.linkLaser(laser.getBlockPos());
             }
             if (!level.getBlockState(corePos.offset(CONSOLE_OFFSET)).is(ModBlocks.CONTROL_CONSOLE.get())) {
                 placed += ModBlocks.CONTROL_CONSOLE.get().placeWall(level, corePos.offset(CONSOLE_OFFSET), Direction.SOUTH);
@@ -217,7 +214,7 @@ public class DebugReactorItem extends Item {
                 removed++;
             }
         }
-        removed += removeIf(level, core.offset(LASER_OFFSET), ModBlocks.BENDING_LASER.get());
+        removed += removeIf(level, core.offset(ReactorStructure.LASER_OFFSET), ModBlocks.BENDING_LASER.get());
         removed += removeIf(level, core.offset(CONSOLE_OFFSET), ModBlocks.CONTROL_CONSOLE.get()); // takes the whole wall
         removed += VentingLance.remove(level, core, false);
         return removed;

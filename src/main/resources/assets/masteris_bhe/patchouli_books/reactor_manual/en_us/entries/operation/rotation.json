@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Output grows with the $(thing)square$() of the spin: about $(num)200,000 RF/t$() at 4,000 rpm.$(br2)The RF is made $(thing)from the spin$(): generating slowly spins the disc down. If the core is full, no spin is used.$(br2)Above $(num)4,000 rpm$() the ring takes stress. See $(l:safety/failures)Overspin$(). Rotation burns no mass.",
+      "text": "Output grows with the $(thing)square$() of the spin, and with the $(thing)mass$(): about $(num)200,000 RF/t$() at 4,000 rpm with the ignition minimum, four times that with four times the mass.$(br2)The RF is made $(thing)from the spin$(): generating slowly spins the disc down. If the core is full, no spin is used.$(br2)Above $(num)4,000 rpm$() the ring takes stress. See $(l:safety/failures)Overspin$(). Rotation burns no mass.",
       "title": "Output"
     },
     {

@@ -79,7 +79,6 @@ public class ReactorCoreBlockEntity extends BlockEntity {
 
     private final ReactorEnergy energy = new ReactorEnergy();
     private final List<BlockPos> reactorPorts = new ArrayList<>();
-    @Nullable private BlockPos laserPos;
 
     private boolean formed;
     /** Both axial stabilizers are built: only then does spin make power (see ReactorStructure#axialLayout). */
@@ -100,6 +99,15 @@ public class ReactorCoreBlockEntity extends BlockEntity {
     private static final int ALARM_PHASE_2_TICKS = 200;
     private int offset, targetOffset, laserPower, stateTimer, stateDuration, lastOutput, ticks;
     private long totalMass;
+    /** Whether the bending laser has fired into the black hole lately (synced: the renderer draws its beam). */
+    private boolean laserFiring;
+    /** How many stabilizers the core's buffer couldn't power last tick (see powerStabilizers). */
+    private int unpoweredStabilizers;
+    /** Stability target lost per unpowered stabilizer. */
+    private static final double UNPOWERED_STABILITY = 8;
+    /** Ticks the beam stays drawn after the laser last fired, so a laser fed in bursts doesn't flicker. */
+    private int laserGlowTicks;
+    private static final int LASER_GLOW_TICKS = 20;
 
     // Visual state, synced to clients for the renderer (see getUpdateTag).
     private static final int SYNC_INTERVAL = 5;
@@ -269,6 +277,9 @@ public class ReactorCoreBlockEntity extends BlockEntity {
     public double getWobble() { return wobble; }
     public int getLanceTop() { return lanceTop; }
     public int getVentTicks() { return ventTicks; }
+    /** Client: where the linked bending laser is, if it fired into the black hole lately. */
+    @Nullable public BlockPos getFiringLaser() { return laserFiring ? worldPosition.offset(ReactorStructure.LASER_OFFSET) : null; }
+    public int getLaserPower() { return laserPower; }
     public boolean isVentEmergency() { return ventEmergency; }
     public boolean isVentArmed() { return ventArmed(); }
     public boolean isFaulted(Direction dir) { return (faultMask & (1 << dir.get2DDataValue())) != 0; }
@@ -288,27 +299,23 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         return anim == Anim.NONE ? 1 : Mth.clamp((clientTicks + partialTick - animStart) / anim.duration, 0, 1);
     }
 
-    public void linkLaser(BlockPos pos) {
-        if (!pos.equals(laserPos)) {
-            laserPos = pos;
-            setChanged();
-        }
-    }
-
     // ------------------------------------------------------------------ structure
 
     public ReactorStructure.Result checkStructure() {
         ReactorStructure.Result result = ReactorStructure.check(level, worldPosition);
         findLance();
         setFormed(result.complete());
-        if (result.complete()) {
-            reactorPorts.clear();
-            reactorPorts.addAll(result.reactorPorts());
-            for (BlockPos port : reactorPorts) {
-                if (level.getBlockEntity(port) instanceof ReactorPortBlockEntity p) p.link(worldPosition);
-            }
-        }
+        if (result.complete()) linkPorts(result);
         return result;
+    }
+
+    /** Links every Reactor Port in the ring to this core (so ports added later work too). */
+    private void linkPorts(ReactorStructure.Result result) {
+        reactorPorts.clear();
+        reactorPorts.addAll(result.reactorPorts());
+        for (BlockPos port : reactorPorts) {
+            if (level.getBlockEntity(port) instanceof ReactorPortBlockEntity p) p.link(worldPosition);
+        }
     }
 
     private void setFormed(boolean value) {
@@ -530,7 +537,9 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         if (tickPreview()) return;
 
         if (ticks % RECHECK_INTERVAL == 0 && (formed || state != ReactorState.OFFLINE)) {
-            boolean intact = ReactorStructure.check(level, worldPosition).complete();
+            ReactorStructure.Result check = ReactorStructure.check(level, worldPosition);
+            boolean intact = check.complete();
+            if (intact && formed) linkPorts(check); // picks up ports placed since the last check
             if (!intact) {
                 // A breach starts the pre-meltdown countdown once; re-checks during it must not restart the timer.
                 if ((state.generates() || state == ReactorState.DISC_STALL || state.isFault()) && state != ReactorState.PRE_MELTDOWN) {
@@ -544,6 +553,8 @@ public class ReactorCoreBlockEntity extends BlockEntity {
             }
         }
 
+        if (laserGlowTicks > 0) laserGlowTicks--; // runReactor resets it whenever the laser fires
+        laserFiring = laserGlowTicks > 0;
         switch (state) {
             case OFFLINE -> {
                 rpm = towardZero(rpm, 50);
@@ -650,6 +661,10 @@ public class ReactorCoreBlockEntity extends BlockEntity {
             BendingLaserBlockEntity laser = laser();
             if (laser != null) laserIn = laser.fire(ReactorConfig.LASER_MAX_RATE.get() * laserPower / 100);
         }
+        if (laserIn > 0) {
+            laserGlowTicks = LASER_GLOW_TICKS;
+            laserFiring = true;
+        }
         double gain = ReactorConfig.LASER_GAIN_MIN.get()
                 + (ReactorConfig.LASER_GAIN_MAX.get() - ReactorConfig.LASER_GAIN_MIN.get()) * laserPower / 100.0;
         massDebt += laserIn / (double) ReactorConfig.LASER_RF_PER_MASS.get();
@@ -672,13 +687,16 @@ public class ReactorCoreBlockEntity extends BlockEntity {
             return;
         }
         lastEfficiency = axialFormed ? resonanceEfficiency(speed) * wobbleEfficiency() : 0;
+        // More mass makes more power at the same spin, and holds more energy per rpm, so it costs no extra spin.
+        double massPower = massPowerScale();
         long rotational = axialFormed
-                ? (long) Math.min(ReactorConfig.RF_PER_RPM_SQUARED.get() * rpm * rpm * lastEfficiency, room) : 0;
-        rpm = towardZero(rpm, rotational / (double) ReactorConfig.RF_PER_RPM_SPENT.get());
+                ? (long) Math.min(ReactorConfig.RF_PER_RPM_SQUARED.get() * rpm * rpm * lastEfficiency * massPower, room) : 0;
+        rpm = towardZero(rpm, rotational / (ReactorConfig.RF_PER_RPM_SPENT.get() * massPower));
         speed = Math.abs(rpm);
         long output = rotational + laserOut;
         energy.generate(output);
         lastOutput = (int) Math.min(output, Integer.MAX_VALUE);
+        powerStabilizers();
 
         // More mass holds the core steadier, so spin costs less stability and builds ring stress slower.
         double spinShake = spinShake();
@@ -693,7 +711,8 @@ public class ReactorCoreBlockEntity extends BlockEntity {
                 - stress * 0.3
                 - (speed > safeRpm ? (speed - safeRpm) / 100.0 * spinShake : 0)
                 - (totalMass < ReactorConfig.WARNING_MASS.get() ? 20 : 0)
-                - Math.max(0, Math.abs(wobble) - WOBBLE_SAFE) * 0.3;
+                - Math.max(0, Math.abs(wobble) - WOBBLE_SAFE) * 0.3
+                - unpoweredStabilizers * UNPOWERED_STABILITY;
         stability = Mth.clamp(stability + Mth.clamp(target - stability, -0.2, 0.2), 0, 100);
     }
 
@@ -768,6 +787,31 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         double reference = 4.0 * ReactorConfig.MIN_MASS_PER_STABILIZER.get();
         if (reference <= 0) return 1;
         return Mth.clamp(reference / Math.max(1, totalMass), MIN_SPIN_SHAKE, MAX_SPIN_SHAKE);
+    }
+
+    /**
+     * The stabilizers run on the core's own power: each (four around the ring, plus the two axial ones once built)
+     * draws stabilizerPower RF/t out of the buffer, paid from this tick's output before the ports take any. The ones
+     * it can't pay for are counted as unpowered, and each costs stability.
+     */
+    private void powerStabilizers() {
+        int each = ReactorConfig.STABILIZER_RF.get();
+        int count = 4 + (axialFormed ? 2 : 0);
+        if (each <= 0) {
+            unpoweredStabilizers = 0;
+            return;
+        }
+        long need = (long) each * count;
+        int paid = (int) Math.min(need, energy.getEnergyStored());
+        energy.setEnergy(energy.getEnergyStored() - paid);
+        unpoweredStabilizers = (int) Math.ceil((need - paid) / (double) each);
+    }
+
+    /** Spin power's mass multiplier: (mass / ignition minimum) ^ massPowerExponent, 1 at the ignition minimum. */
+    private double massPowerScale() {
+        double reference = 4.0 * ReactorConfig.MIN_MASS_PER_STABILIZER.get();
+        if (reference <= 0) return 1;
+        return Math.max(0.01, Math.pow(Math.max(1, totalMass) / reference, ReactorConfig.MASS_POWER_EXPONENT.get()));
     }
 
     /** Moves {@code value} toward 0 by {@code amount} without crossing it. */
@@ -1037,10 +1081,10 @@ public class ReactorCoreBlockEntity extends BlockEntity {
 
     @Nullable
     private BendingLaserBlockEntity laser() {
-        if (laserPos == null || level == null || !level.isLoaded(laserPos)) return null;
-        if (level.getBlockEntity(laserPos) instanceof BendingLaserBlockEntity laser) return laser;
-        laserPos = null;
-        return null;
+        if (level == null) return null;
+        BlockPos pos = worldPosition.offset(ReactorStructure.LASER_OFFSET);
+        if (!level.isLoaded(pos)) return null;
+        return level.getBlockEntity(pos) instanceof BendingLaserBlockEntity laser ? laser : null;
     }
 
     private void meltdownEffects(int radius, double pull, float damage) {
@@ -2166,7 +2210,8 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         if (level == null) return;
         int hash = java.util.Objects.hash(formed, state, offset, Math.round(spinFraction() * 50), scrammed, scramSeq,
                 Math.round(holeRadius() * 20), Math.round(stress / 5), stateTimer / 100, starving(), breachSeq, fault, faultMask,
-                lanceFormed, lanceTop, ventTicks > 0, ventArmed(), faultFixed, axialFormed, Math.round(wobble / 4));
+                lanceFormed, lanceTop, ventTicks > 0, ventArmed(), faultFixed, axialFormed, Math.round(wobble / 4),
+                laserFiring, laserPower / 10);
         if (hash == lastSyncHash) return;
         lastSyncHash = hash;
         BlockState blockState = getBlockState();
@@ -2198,6 +2243,8 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         tag.putInt("VentTicks", ventTicks);
         tag.putBoolean("VentEmergency", ventEmergency);
         tag.putInt("VentArmed", ventArmedUntil);
+        tag.putInt("LaserPower", laserPower);
+        tag.putBoolean("LaserFiring", laserFiring);
         return tag;
     }
 
@@ -2262,7 +2309,6 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         tag.putBoolean("FaultFixed", faultFixed);
         if (preview != null) tag.putString("Preview", preview.name());
         tag.putInt("Energy", energy.getEnergyStored());
-        if (laserPos != null) tag.put("Laser", NbtUtils.writeBlockPos(laserPos));
         ListTag ports = new ListTag();
         for (BlockPos p : reactorPorts) ports.add(NbtUtils.writeBlockPos(p));
         tag.put("Ports", ports);
@@ -2319,6 +2365,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         ventTicks = tag.getInt("VentTicks");
         ventEmergency = tag.getBoolean("VentEmergency");
         ventArmedUntil = tag.getInt("VentArmed");
+        laserFiring = tag.getBoolean("LaserFiring");
         try {
             preview = tag.contains("Preview") ? Preview.valueOf(tag.getString("Preview")) : null;
         } catch (IllegalArgumentException e) {
@@ -2336,7 +2383,6 @@ public class ReactorCoreBlockEntity extends BlockEntity {
             clientSynced = true;
         }
         energy.setEnergy(tag.getInt("Energy"));
-        laserPos = NbtUtils.readBlockPos(tag, "Laser").orElse(null);
         reactorPorts.clear();
         for (Tag t : tag.getList("Ports", Tag.TAG_INT_ARRAY)) {
             if (t instanceof net.minecraft.nbt.IntArrayTag arr && arr.size() == 3) {

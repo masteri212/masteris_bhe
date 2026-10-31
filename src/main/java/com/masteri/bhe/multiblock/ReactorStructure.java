@@ -93,8 +93,9 @@ public final class ReactorStructure {
                     if (d * d + dy * dy > RING_TUBE_RADIUS * RING_TUBE_RADIUS) continue;
                     boolean port = Math.abs(dy) <= 1 && (Math.abs(dx) <= 1 || Math.abs(dz) <= 1
                             || (dx > 0 && dz < 0 && Math.abs(dx + dz) <= 1)); // NE diagonal for the bending laser
+                    BlockPos at = new BlockPos(dx, dy, dz);
                     parts.add(port
-                            ? new Part(new BlockPos(dx, dy, dz), ModBlocks.RING_BEAM_PORT, null)
+                            ? new Part(at, ModBlocks.RING_BEAM_PORT, null, at.equals(LASER_OFFSET) ? ModBlocks.BENDING_LASER : null)
                             : new Part(new BlockPos(dx, dy, dz), ModBlocks.RING_FRAME, null, ModBlocks.REACTOR_PORT));
                 }
             }
@@ -223,6 +224,13 @@ public final class ReactorStructure {
         }
         return ringOffsets;
     }
+
+    /**
+     * The Bending Laser's spot: part of the containment ring, the outermost middle block of the north-east beam port
+     * tunnel (at core height), firing in through the tunnel. A Ring Beam Port or a Bending Laser both count there,
+     * so the ring forms either way; only a laser in this spot is used.
+     */
+    public static final BlockPos LASER_OFFSET = new BlockPos(12, 0, -12);
 
     /** Mass Input Port position of the stabilizer on the {@code dir} side of the core. */
     public static BlockPos massPortOffset(Direction dir) {

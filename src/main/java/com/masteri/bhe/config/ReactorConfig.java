@@ -21,6 +21,9 @@ public final class ReactorConfig {
             .defineListAllowEmpty("ignitionDimensions", List.of(), () -> "minecraft:overworld", o -> o instanceof String);
     public static final ModConfigSpec.IntValue CONSOLE_LINK_RADIUS = B.comment("How far from a Reactor Core a Control Console can be and still link to it, in blocks.")
             .defineInRange("consoleLinkRadius", 32, 4, 128);
+    public static final ModConfigSpec.IntValue STABILIZER_RF = B.comment("RF/t each stabilizer (the four around the ring and both axial ones) draws from the core's buffer while",
+                    "the reactor runs. Every stabilizer the buffer can't power costs stability. 0 turns it off.")
+            .defineInRange("stabilizerPower", 2_000, 0, 1_000_000);
     public static final ModConfigSpec.IntValue PORT_PUSH_RF = B.comment("Most RF/t a Reactor Port pushes into each neighbouring machine or cable.")
             .defineInRange("portPushPerSide", 2_000_000, 0, Integer.MAX_VALUE);
     static { B.pop().push("mass"); }
@@ -42,9 +45,7 @@ public final class ReactorConfig {
     public static final ModConfigSpec.DoubleValue LASER_GAIN_MAX = B.comment("Output multiplier at 100% laser power.")
             .defineInRange("laserGainMax", 1.30, 1.0, 10.0);
     public static final ModConfigSpec.IntValue LASER_RF_PER_MASS = B.comment("RF fired by the laser per 1 mass drained.")
-            .defineInRange("laserRfPerMass", 100_000, 1, Integer.MAX_VALUE);
-    public static final ModConfigSpec.IntValue LASER_RANGE = B.comment("How far from a Reactor Core the bending laser can be and still link to it, in blocks.")
-            .defineInRange("laserRange", 24, 4, 128);
+            .defineInRange("laserRfPerMass", 400_000, 1, Integer.MAX_VALUE);
     static { B.pop().push("rotation"); }
     public static final ModConfigSpec.IntValue MAX_OFFSET = B.comment("Maximum stabilizer offset in degrees.")
             .defineInRange("maxOffset", 15, 1, 90);
@@ -56,8 +57,11 @@ public final class ReactorConfig {
             .defineInRange("shutdownBrake", 40, 1, 100_000);
     public static final ModConfigSpec.IntValue SAFE_RPM = B.comment("Above this spin, the containment ring takes stress.")
             .defineInRange("safeRpm", 4_000, 1, 1_000_000);
-    public static final ModConfigSpec.DoubleValue RF_PER_RPM_SQUARED = B.comment("Rotational output = this x rpm^2 (RF/t). 0.0125 gives 200k RF/t at 4000 rpm.")
+    public static final ModConfigSpec.DoubleValue RF_PER_RPM_SQUARED = B.comment("Rotational output = this x rpm^2 (RF/t). 0.0125 gives 200k RF/t at 4000 rpm with the ignition minimum of mass (see massPowerExponent).")
             .defineInRange("rfPerRpmSquared", 0.0125, 0.0, 1000.0);
+    public static final ModConfigSpec.DoubleValue MASS_POWER_EXPONENT = B.comment("How much more RF the spin makes with more mass: output (and how much energy the spin holds) is",
+                    "multiplied by (mass / ignition minimum) ^ this. 1: four times the mass, four times the power. 0: mass doesn't matter.")
+            .defineInRange("massPowerExponent", 1.0, 0.0, 3.0);
     public static final ModConfigSpec.IntValue RESONANCE_RPM = B.comment("Center of the resonance band (where spin turns into RF at full efficiency) at the ignition minimum of mass.",
                     "It rises with the square root of the mass, stays under 95% of the safe spin, and drifts on its own.")
             .defineInRange("resonanceRpm", 2500, 100, 1_000_000);

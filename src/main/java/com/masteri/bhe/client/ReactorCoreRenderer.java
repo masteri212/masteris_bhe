@@ -1,6 +1,8 @@
 package com.masteri.bhe.client;
 
 import com.masteri.bhe.block.entity.ReactorCoreBlockEntity;
+import com.masteri.bhe.registry.ModBlocks;
+import net.minecraft.world.level.block.state.BlockState;
 import com.masteri.bhe.multiblock.ReactorStructure;
 import com.masteri.bhe.reactor.EmergencyVent;
 import com.masteri.bhe.reactor.ReactorState;
@@ -503,6 +505,12 @@ public class ReactorCoreRenderer implements BlockEntityRenderer<ReactorCoreBlock
             }
         }
 
+        // The bending laser: its beam curves in, wraps round the black hole and falls in.
+        BlockPos laser = core.getFiringLaser();
+        if (laser != null && horizon > 0.05F && state.generates()) {
+            renderLaser(core, pose, glow, laser, horizon, time);
+        }
+
         // Faulted emitters glow: red when out of line, white when their mass flashed off, flickering orange when cracked.
         if (state.isFault() && fault != ReactorCoreBlockEntity.Fault.SINGULARITY_REBOUND) {
             for (Direction dir : Direction.Plane.HORIZONTAL) {
@@ -836,6 +844,106 @@ public class ReactorCoreRenderer implements BlockEntityRenderer<ReactorCoreBlock
             beamPlane(p, vc, start, end, axis, width, coreColor);
             beamPlane(p, vc, start, end, axis, width * 3.5F, glowColor);
         }
+    }
+
+    // ------------------------------------------------------------------ the bending laser
+
+    private static final float[] LASER_AMBER = {1.0F, 0.62F, 0.18F}, LASER_GOLD = {1.0F, 0.85F, 0.45F};
+    private static final int LASER_APPROACH_STEPS = 24, LASER_ORBIT_STEPS = 64;
+
+    /**
+     * The bending laser's beam, the way light behaves near a black hole: it bends round the core and comes back
+     * stronger. It leaves the nozzle aimed a little wide of the black hole, is pulled in on a curve that meets the
+     * photon sphere at a tangent, swings once round the black hole (the way the disc spins), shifting from amber
+     * to white-hot, and comes back out on the mirror-image curve, brighter and thicker, into the laser.
+     * Coordinates are from the black hole's center.
+     */
+    private static void renderLaser(ReactorCoreBlockEntity core, PoseStack pose, VertexConsumer vc, BlockPos laserPos,
+                                    float horizon, float time) {
+        if (core.getLevel() == null) return;
+        BlockState laserState = core.getLevel().getBlockState(laserPos);
+        if (!laserState.is(ModBlocks.BENDING_LASER.get())) return;
+        // The laser sits in the ring's north-east port tunnel: the beam comes out of the port's inner lens, on the
+        // inside face of the ring, at core height.
+        BlockPos rel = laserPos.subtract(core.getBlockPos());
+        Vector3f start = new Vector3f(rel.getX(), 0, rel.getZ()).normalize().mul((float) ReactorStructure.RING_INNER_RADIUS - 0.3F);
+        float dist = start.length();
+        float photon = horizon * 1.6F + 0.6F;             // where the beam starts going round
+        if (dist < photon + 1) return;                     // too close to bend round anything
+
+        // The plane the beam bends in: through the black hole and the laser, tipped 15 degrees off the disc so the
+        // two read apart. It goes round the same way as the disc spins.
+        Vector3f u = new Vector3f(start).div(dist);
+        Vector3f w = new Vector3f(0, 1, 0).cross(u);
+        if (w.lengthSquared() < 1e-4F) w.set(1, 0, 0);
+        w.normalize().rotateAxis((float) Math.toRadians(15), u.x, u.y, u.z);
+        if (core.getClientSpin() < 0) w.negate();
+        Vector3f normal = new Vector3f(u).cross(w).normalize();
+
+        // Approach: a cubic curve from the nozzle to the tangent point on the photon sphere.
+        float alpha = (float) Math.acos(photon / dist);
+        Vector3f tangentPoint = onPlane(u, w, photon, alpha);
+        Vector3f tangentDir = new Vector3f(u).mul(-Mth.sin(alpha)).add(new Vector3f(w).mul(Mth.cos(alpha)));
+        Vector3f straight = new Vector3f(tangentPoint).sub(start);
+        float span = straight.length();
+        Vector3f aimWide = new Vector3f(straight).normalize().rotateAxis((float) Math.toRadians(-28), normal.x, normal.y, normal.z);
+        Vector3f c1 = new Vector3f(start).add(aimWide.mul(span / 3));
+        Vector3f c2 = new Vector3f(tangentPoint).sub(new Vector3f(tangentDir).mul(span / 3));
+
+        java.util.List<Vector3f> approach = new java.util.ArrayList<>();
+        for (int i = 0; i <= LASER_APPROACH_STEPS; i++) {
+            float t = i / (float) LASER_APPROACH_STEPS, s = 1 - t;
+            approach.add(new Vector3f(start).mul(s * s * s).add(new Vector3f(c1).mul(3 * s * s * t))
+                    .add(new Vector3f(c2).mul(3 * s * t * t)).add(new Vector3f(tangentPoint).mul(t * t * t)));
+        }
+        java.util.List<Vector3f> path = new java.util.ArrayList<>(approach);
+        // Once round, from the tangent point on the way in to its mirror image on the way out, dipping a little.
+        for (int i = 1; i <= LASER_ORBIT_STEPS; i++) {
+            float t = i / (float) LASER_ORBIT_STEPS;
+            float r = photon * (1 - 0.08F * Mth.sin(t * Mth.PI));
+            path.add(onPlane(u, w, r, alpha + t * (Mth.TWO_PI - 2 * alpha)));
+        }
+        // Back out: the approach mirrored across the line from the black hole to the laser.
+        for (int i = LASER_APPROACH_STEPS - 1; i >= 0; i--) {
+            Vector3f q = approach.get(i);
+            float along = q.dot(u), side = q.dot(w);
+            path.add(new Vector3f(u).mul(along).sub(new Vector3f(w).mul(side)));
+        }
+
+        float power = 0.5F + 0.5F * core.getLaserPower() / 100F;
+        int orbitEnd = LASER_APPROACH_STEPS + LASER_ORBIT_STEPS;
+        PoseStack.Pose p = pose.last();
+        float travelled = 0;
+        int n = path.size() - 1;
+        for (int i = 0; i < n; i++) {
+            Vector3f a = path.get(i), b = path.get(i + 1);
+            Vector3f along = new Vector3f(b).sub(a);
+            float len = along.length();
+            if (len < 1e-4F) continue;
+            travelled += len;
+            float k = i / (float) n;
+            // 0 on the way in, 0..1 round the black hole, 1 on the way back: amber in, white-hot round it, gold out.
+            float leg = Mth.clamp((i - LASER_APPROACH_STEPS) / (float) LASER_ORBIT_STEPS, 0, 1);
+            boolean out = i >= orbitEnd;
+            float[] color = out ? LASER_GOLD : lerp(LASER_AMBER, Look.WHITE_HOT, Mth.sin(leg * Mth.PI) * 0.8F + leg * 0.2F);
+            // Pulses run along the beam in the direction it travels.
+            float pulse = 0.75F + 0.25F * Mth.sin(travelled * 1.6F - time * 0.9F);
+            float a0 = Math.min(Mth.clamp(k * 8, 0, 1), Mth.clamp((1 - k) * 8, 0, 1)) * pulse; // fades at the nozzle
+            float width = 0.2F * power * (out ? 1.35F : 1 + 0.35F * leg); // it comes back stronger
+            int coreColor = argb(a0, 1.0F, 0.95F, 0.85F);
+            int glowColor = argb(a0 * 0.35F, color[0], color[1], color[2]);
+            Vector3f across = new Vector3f(along).cross(normal).normalize();
+            for (Vector3f axis : new Vector3f[] {normal, across}) {
+                beamPlane(p, vc, a, b, axis, width, coreColor);
+                beamPlane(p, vc, a, b, axis, width * 4F, glowColor);
+            }
+        }
+        renderFlare(pose, vc, start, 0.6F * power, LASER_AMBER, 0.8F + 0.2F * Mth.sin(time * 1.1F));
+    }
+
+    /** The point at {@code radius} and {@code angle} in the plane spanned by {@code u} (angle 0) and {@code w}. */
+    private static Vector3f onPlane(Vector3f u, Vector3f w, float radius, float angle) {
+        return new Vector3f(u).mul(radius * Mth.cos(angle)).add(new Vector3f(w).mul(radius * Mth.sin(angle)));
     }
 
     /** A beam from an axial emitter to the edge of the black hole, as two crossed planes plus a soft outer glow. */

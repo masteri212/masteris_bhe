@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Four barrels lying on their side, $(num)5 x 5$() across and $(num)7$() long, each pointing straight at the core. Their centers are $(num)24$() blocks from the core, so the end facing it is $(num)21$() out. Their bottom layer is level with the bottom of the ring.$(br2)Each one takes $(num)175$() blocks.$(br2)Two more, smaller ones hang over the ring: see $(l:building/axial_stabilizers)Axial Stabilizers$()."
+      "text": "Four barrels lying on their side, $(num)5 x 5$() across and $(num)7$() long, each pointing straight at the core. Their centers are $(num)24$() blocks from the core, so the end facing it is $(num)21$() out. Their bottom layer is level with the bottom of the ring.$(br2)Each one takes $(num)175$() blocks. While the reactor runs, every stabilizer (the axial ones too) draws $(num)2,000 RF/t$() from the core; any it can't power costs stability.$(br2)Two more, smaller ones hang over the ring: see $(l:building/axial_stabilizers)Axial Stabilizers$()."
     },
     {
       "type": "patchouli:multiblock",

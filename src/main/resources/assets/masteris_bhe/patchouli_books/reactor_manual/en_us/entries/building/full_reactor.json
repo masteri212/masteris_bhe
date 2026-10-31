@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "All together: the core, the ring and four stabilizers. $(num)2,640$() blocks in total.$(br2)The next page shows the full structure. Project it into your world with the eye button and build it piece by piece.$(br2)Each finished piece (the ring, each stabilizer, each axial stabilizer, the Venting Lance) $(thing)assembles$() into one machine on its own. Break any of its blocks and it falls back into blocks."
+      "text": "All together: the core, the ring and four stabilizers (with the Bending Laser in the north-east port). $(num)2,640$() blocks in total.$(br2)The next page shows the full structure. Project it into your world with the eye button and build it piece by piece.$(br2)Each finished piece (the ring, each stabilizer, each axial stabilizer, the Venting Lance) $(thing)assembles$() into one machine on its own. Break any of its blocks and it falls back into blocks."
     },
     {
       "type": "patchouli:multiblock",
@@ -30,7 +30,8 @@
           "3": "masteris_bhe:stabilizer_console[facing=south]",
           "7": "masteris_bhe:breaker_panel[facing=south]",
           "4": "masteris_bhe:stabilizer_console[facing=west]",
-          "8": "masteris_bhe:breaker_panel[facing=west]"
+          "8": "masteris_bhe:breaker_panel[facing=west]",
+          "L": "masteris_bhe:bending_laser"
         },
         "pattern": [
           [
@@ -163,7 +164,7 @@
             "                  FFFFFFFFPPPFFFFFFFF                  ",
             "                 FFFFFFFFFPPPFFFFFFFFF                 ",
             "                FFFFFFFFFFPPPFFFFFFFFFF                ",
-            "               FFFFFFFFF       FFFFFFFPP               ",
+            "               FFFFFFFFF       FFFFFFFPL               ",
             "              FFFFFFFF           FFFFPPPF              ",
             "             FFFFFFF               FPPPFFF             ",
             "            FFFFFFF                 PPFFFFF            ",
