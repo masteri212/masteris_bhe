@@ -115,6 +115,10 @@ public class ConsoleMonitorRenderer implements BlockEntityRenderer<ControlConsol
                     ? Component.translatable("gui.masteris_bhe.monitor.pending_more", what, r.pendingCount() - 1)
                     : Component.translatable("gui.masteris_bhe.monitor.pending", what);
             color = 0xFFFF9050;
+        } else if (r.unpoweredStabilizers() > 0) {
+            // Stability is draining toward 0 until the stabilizers get power.
+            line = Component.translatable("gui.masteris_bhe.unpowered", r.unpoweredStabilizers());
+            color = 0xFFFF6060;
         } else if (r.state() == ReactorState.DISC_STALL) {
             line = Component.translatable("gui.masteris_bhe.monitor.stall_hint");
         } else if (!r.axialFormed()) {

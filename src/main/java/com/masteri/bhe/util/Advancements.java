@@ -10,19 +10,27 @@ import net.minecraft.world.phys.AABB;
 
 /**
  * Awards the advancements that no vanilla trigger can detect (their only criterion is "done", an impossible
- * trigger): igniting a reactor, saving one from pre-meltdown, being there when one collapses.
+ * trigger): igniting a reactor, saving one from pre-meltdown, being there when one collapses, and being there when
+ * the Echo of the Core falls and its zone closes (whoever lands the last hit).
  */
 public final class Advancements {
-    public static final String IGNITION = "main/ignition", CLOSE_CALL = "main/close_call", GROUND_ZERO = "main/ground_zero";
+    public static final String IGNITION = "main/ignition", CLOSE_CALL = "main/close_call", GROUND_ZERO = "main/ground_zero",
+            LAID_TO_REST = "main/laid_to_rest";
 
     /** Awards {@code name} to every player within {@code radius} blocks of {@code pos}. */
     public static void awardNearby(ServerLevel level, BlockPos pos, double radius, String name) {
-        AdvancementHolder advancement = level.getServer().getAdvancements()
-                .get(ResourceLocation.fromNamespaceAndPath(MasteriBHE.MODID, name));
-        if (advancement == null) return;
         for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, new AABB(pos).inflate(radius))) {
-            player.getAdvancements().award(advancement, "done");
+            award(player, name);
         }
+    }
+
+    /** Awards {@code name} to one player; false if there's no such advancement. */
+    public static boolean award(ServerPlayer player, String name) {
+        AdvancementHolder advancement = player.server.getAdvancements()
+                .get(ResourceLocation.fromNamespaceAndPath(MasteriBHE.MODID, name));
+        if (advancement == null) return false;
+        player.getAdvancements().award(advancement, "done");
+        return true;
     }
 
     private Advancements() {}

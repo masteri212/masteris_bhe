@@ -7,7 +7,7 @@
     {
       "type": "patchouli:spotlight",
       "item": "masteris_bhe:axial_emitter",
-      "text": "Two small stabilizers hung over the ring, firing down into the black hole. They hold the disc's spin steady enough to $(thing)turn into power$().$(br2)Optional: the reactor runs without them, but its spin makes no RF."
+      "text": "Two small stabilizers hung over the ring, firing down into the black hole. They hold the disc's spin steady enough to $(thing)turn into power$().$(br2)$(warn)Build them before you ignite.$() Without them the spin makes no RF, and the stabilizers run on the core's power: after the first $(num)30$() seconds they lose power, and stability drains to 0. Without axials, only the $(l:operation/bending_laser)Bending Laser$() or RF fed in through a $(l:operation/reactor_ports)Reactor Port$() can keep them running."
     },
     {
       "type": "patchouli:multiblock",

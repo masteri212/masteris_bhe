@@ -47,6 +47,24 @@ public final class ModRenderTypes {
                     .setWriteMaskState(RenderStateShard.COLOR_WRITE)
                     .createCompositeState(false));
 
+    /**
+     * The dark energy zone's wall for shader packs: see-through and full-bright like the plain version (translucent,
+     * both sides, no depth), but as entity vertices with a texture and light, which packs know how to draw. It uses
+     * the plain entity-translucent shader: Iris treats the emissive one like glowing eyes and blends it additively,
+     * which made the dark wall all but vanish.
+     */
+    private static final RenderType ZONE_WALL_LIT = RenderType.create("masteris_bhe_zone_wall_lit", DefaultVertexFormat.NEW_ENTITY,
+            VertexFormat.Mode.QUADS, 1536, false, true,
+            RenderType.CompositeState.builder()
+                    .setShaderState(RenderStateShard.RENDERTYPE_ENTITY_TRANSLUCENT_SHADER)
+                    .setTextureState(new RenderStateShard.TextureStateShard(WHITE, false, false))
+                    .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+                    .setCullState(RenderStateShard.NO_CULL)
+                    .setLightmapState(RenderStateShard.LIGHTMAP)
+                    .setOverlayState(RenderStateShard.OVERLAY)
+                    .setWriteMaskState(RenderStateShard.COLOR_WRITE)
+                    .createCompositeState(false));
+
     private static RenderType glowLit(String name, RenderStateShard.CullStateShard cull) {
         return RenderType.create(name, DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, false, true,
                 RenderType.CompositeState.builder()
@@ -73,6 +91,10 @@ public final class ModRenderTypes {
 
     static RenderType glowLit() {
         return GLOW_LIT;
+    }
+
+    static RenderType zoneWallLit() {
+        return ZONE_WALL_LIT;
     }
 
     static RenderType skyGlow() {

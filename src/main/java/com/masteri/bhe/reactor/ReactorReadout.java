@@ -16,7 +16,8 @@ public interface ReactorReadout {
 
     default ReactorState state() { return ReactorState.byId(get(0)); }
     default double stability() { return get(1) / 10.0; }
-    default int rpm() { return (short) get(2); } // signed: negative is spinning backwards
+    /** Signed: negative is spinning backwards. */
+    default int rpm() { return wide(2, 30); }
     default double stress() { return get(3) / 10.0; }
     default int offset() { return (short) get(4); }
     default int targetOffset() { return (short) get(5); }
@@ -40,7 +41,7 @@ public interface ReactorReadout {
     /** Both axial stabilizers are built, so spin makes power. */
     default boolean axialFormed() { return get(21) == 1; }
     /** Where the resonance band is centered, in rpm. */
-    default int resonanceRpm() { return get(22) & 0xFFFF; }
+    default int resonanceRpm() { return wide(22, 31); }
     /** Spin-to-RF efficiency right now, 0..100 (0 without the axial stabilizers). */
     default int efficiency() { return get(23); }
     /** -100..100: the disc's lean, negative toward the north-west. */
@@ -57,4 +58,6 @@ public interface ReactorReadout {
         return i >= 0 && i < all.length ? all[i] : ReactorCoreBlockEntity.Fault.NONE;
     }
     default int pendingFaultMask() { return get(29); }
+    /** How many stabilizers the core's power couldn't run last tick (0 while not running). */
+    default int unpoweredStabilizers() { return get(32); }
 }

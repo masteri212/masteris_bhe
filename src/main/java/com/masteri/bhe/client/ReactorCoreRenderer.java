@@ -28,7 +28,8 @@ import org.joml.Vector3f;
  * Event horizon: a black sphere about 3 blocks across at the ignition minimum, growing with mass and in meltdowns.
  * Photon ring: a glowing ring around the horizon that always faces the camera (the lensed back of the disc).
  * Accretion disc: flat, filling the ring's hole from the horizon out to the ring; spins with the reactor's rpm.
- * Stabilizer beams: from each emitter to the core while the reactor runs; the stabilizer offset pushes them sideways.
+ * Stabilizer beams: from each emitter to the core while the reactor runs, straight to the inside of the ring and from
+ * there bent sideways by the stabilizer offset.
  *
  * Failures: the disc shudders and a green jump-start window shows during a stall, the ring's inner wall glows with
  * stress, starved beams sputter, pre-meltdown throbs like a heartbeat, dark-energy arcs strike the terrain, phase 1
@@ -827,22 +828,43 @@ public class ReactorCoreRenderer implements BlockEntityRenderer<ReactorCoreBlock
         pose.popPose();
     }
 
-    /** A beam from the emitter on the {@code dir} side to the core, as two crossed planes plus a soft outer glow. */
+    /** Where the stabilizer beams bend: the inside face of the containment ring. */
+    private static final float BEAM_BEND = (float) ReactorStructure.RING_INNER_RADIUS;
+
+    /**
+     * A beam from the emitter on the {@code dir} side to the core, as two crossed planes plus a soft outer glow. It
+     * runs straight down the port tunnel to the inside of the ring, and only there turns toward its offset point
+     * beside the black hole. {@code reach} (0..1) is how far along that path it has grown from the emitter.
+     */
     private static void renderBeam(PoseStack pose, VertexConsumer vc, Direction dir, float lateral, Look look, float time,
                                    float reach, float widthScale) {
         Direction side = dir.getClockWise();
         Vector3f start = new Vector3f(dir.getStepX(), 0, dir.getStepZ()).mul(BEAM_START);
+        Vector3f bend = new Vector3f(dir.getStepX(), 0, dir.getStepZ()).mul(BEAM_BEND);
         Vector3f end = new Vector3f(side.getStepX(), 0, side.getStepZ()).mul(lateral);
-        end = new Vector3f(start).lerp(end, reach); // grows from the emitter toward the core
-        Vector3f across = new Vector3f(side.getStepX(), 0, side.getStepZ());
-        Vector3f up = new Vector3f(0, 1, 0);
+        float straight = start.distance(bend), angled = bend.distance(end);
+        float grown = reach * (straight + angled);
         float width = look.beamWidth * widthScale * (0.85F + 0.15F * Mth.sin(time * 0.4F));
         int coreColor = argb(look.alpha, 0.85F, 0.75F, 1.0F);
         int glowColor = argb(look.alpha * 0.3F, look.outer[0], look.outer[1], look.outer[2]);
         PoseStack.Pose p = pose.last();
+        beamSegment(p, vc, start, bend, Math.min(1, grown / straight), width, coreColor, glowColor);
+        if (grown > straight && angled > 1e-3F) {
+            beamSegment(p, vc, bend, end, Math.min(1, (grown - straight) / angled), width, coreColor, glowColor);
+        }
+    }
+
+    /** One straight piece of a stabilizer beam, {@code fraction} of the way from {@code a} to {@code b}. */
+    private static void beamSegment(PoseStack.Pose p, VertexConsumer vc, Vector3f a, Vector3f b, float fraction, float width,
+                                    int coreColor, int glowColor) {
+        Vector3f to = new Vector3f(a).lerp(b, fraction);
+        Vector3f along = new Vector3f(b).sub(a);
+        if (along.lengthSquared() < 1e-6F) return;
+        Vector3f up = new Vector3f(0, 1, 0);
+        Vector3f across = new Vector3f(along).cross(up).normalize();
         for (Vector3f axis : new Vector3f[] {up, across}) {
-            beamPlane(p, vc, start, end, axis, width, coreColor);
-            beamPlane(p, vc, start, end, axis, width * 3.5F, glowColor);
+            beamPlane(p, vc, a, to, axis, width, coreColor);
+            beamPlane(p, vc, a, to, axis, width * 3.5F, glowColor);
         }
     }
 

@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Mass and Spin",
-      "text": "$(thing)More mass steadies the spin.$() At the ignition minimum, spin shakes the core normally. Double that mass and spinning costs half the stability and builds ring stress half as fast.$(br2)Run low on mass and the same spin shakes it up to twice as hard."
+      "text": "$(thing)More mass steadies the spin.$() At the ignition minimum, spin shakes the core normally. Double that mass and spinning costs about a third of the stability, builds ring stress a third as fast, and the disc wobbles a third as hard. Five times the mass and it barely shakes at all.$(br2)Run low on mass and the same spin shakes it up to twice as hard."
     },
     {
       "type": "patchouli:text",

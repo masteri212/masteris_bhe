@@ -1,5 +1,28 @@
 # Changelog
 
+## Unreleased
+
+### Changes
+- **Unpowered stabilizers now drain stability all the way to 0** (into pre-meltdown), instead of bottoming out
+  around 52%. Each unpowered stabilizer costs its share. For the first 30 seconds after ignition they run on the
+  ignition charge. Without the axial stabilizers spin makes no power, so power them with the Bending Laser or RF
+  fed in through a Reactor Port, or build the axials. Server config: `unpoweredStabilityLoss`,
+  `stabilizerGraceSeconds`.
+- **More mass steadies the spin more**, and now calms the disc's wobble too. Server config: `massSteadiness`,
+  `minSpinShake`, `maxSpinShake`.
+- The stabilizer beams run straight down their port to the inside of the ring before bending toward the core.
+- Ring stress sounds like a pressure hiss instead of a metal groan.
+- "Laid to Rest" goes to everyone near the Echo of the Core when its zone closes, not just whoever lands the last hit.
+
+### Added
+- Client config with volume sliders for the hum, alarms, consoles and effects (also in the mod's config screen).
+- The console, its monitor and computers (`getUnpoweredStabilizers()`) show how many stabilizers are unpowered.
+
+### Fixed
+- The dark energy zone's wall turned black or vanished with Iris shader packs.
+- The console and computers showed spin and the resonance band wrong past 32,767 rpm.
+- Glows drawn in GUIs (Ponder scenes and the like) with shaders on could appear a frame late in the world.
+
 ## 1.0.0 (first release)
 
 For Minecraft 1.21.1, NeoForge 21.1.262 or newer. Needs Patchouli.

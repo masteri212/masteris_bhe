@@ -16,18 +16,13 @@
     "hidden": false
   },
   "criteria": {
-    "killed": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": {
-          "type": "masteris_bhe:echo_of_the_core"
-        }
-      }
+    "done": {
+      "trigger": "minecraft:impossible"
     }
   },
   "requirements": [
     [
-      "killed"
+      "done"
     ]
   ]
 }

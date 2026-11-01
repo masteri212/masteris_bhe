@@ -1,99 +1,107 @@
 # Masteri's Black Hole Energy
 
-**Build a reactor around a black hole. Run it for absurd amounts of power. Try not to fall in.**
+**So you want a black hole as a power plant. Cool. Try not to fall in.**
 
-A tech mod for NeoForge 1.21.1. You build a huge containment ring, catch a black hole in the middle, and keep it
-alive with four stabilizers while it spins out more RF than anything else you own. It's a reactor you have to
-*operate*: it stalls, overspins, starves and breaches, every failure can be saved, and the ones you don't save
-leave a crater and a hole in the world.
-
-Everything is explained in the **Reactor Manual**, which you get on your first join. Its multiblock pages project a
-ghost of the structure into your world for you to build over.
+This is a tech mod for NeoForge 1.21.1. You build a giant ring, trap a black hole in the middle, and keep it from
+eating you while it spits out more RF than anything else in your base. It's not a "place it and forget it" generator
+though. It stalls, it overspins, it gets hungry, and sometimes it just wants out. You can save it every time, but if
+you don't, you get a crater and a very weird new neighborhood.
 
 ---
 
-## ⚛️ The Reactor
+## The reactor
 
-- A **55 x 55 multiblock**: the Reactor Core, a Containment Ring, four Stabilizers and a monitor-wall Control
-  Console that shows every gauge and has buttons you press in the world.
-- **Feed it mass.** Every block is fuel. Pipe it in, hopper it in, or throw it at the black hole, which tears loose
-  and eats the blocks around it.
-- **Spin it up for power.** Angle the stabilizers and the disc spins faster and faster: about 200,000 RF/t at
-  4,000 rpm. Or fire the Bending Laser round the core and get more out than you put in, paid for in mass.
-- Keep it in the **resonance band**, trim its wobble, and watch stability and ring stress.
+- It's big. **55 by 55 blocks**: the Reactor Core, a Containment Ring, four Stabilizers, and a Control Console.
+- **It eats blocks.** Any block is fuel. Pipe it in, or just throw stuff at the black hole (careful, it
+  likes to rip loose and grab the blocks around it too).
+- **Spin it up and it pays you back.** Tilt the stabilizers and the disc goes faster and faster, around 200,000 RF/t
+  at 4,000 rpm. Or shoot the Bending Laser around the black hole and get more power back than you put in. It costs
+  you mass though.
+- Keep it in the sweet spot, stop it wobbling, and keep an eye on stability and ring stress.
 
-## 🚨 When It Goes Wrong
+## When it goes wrong (it will)
 
-Disc stalls. Overspin. Starvation. Ignition faults, desyncs, cracked lenses, singularity rebounds. Each one has a
-clever fix, a safe but costly fix, and a countdown. Failures stack, so a second problem doesn't wipe the first.
+Disc stalls, overspin, running out of mass, ignition faults, stabilizers falling out of sync, cracked lenses, the
+black hole bouncing back... Every problem has a clever fix, a safe-but-pricey fix, and a timer. They can pile up on
+each other, so stay calm.
 
-Miss the countdown and you're in **pre-meltdown**, then a two-phase **meltdown** where the black hole takes your
-reactor apart block by block. The only way out then is the **Venting Lance**, a beam that dumps the core's charge
-straight up through everything above it.
+Miss the timer and you hit **pre-meltdown**, then a two-stage **meltdown** where the black hole starts pulling your
+reactor apart block by block. At that point your only way out is the **Venting Lance**, a giant beam that dumps all
+that energy straight up into the sky.
 
-Lose it entirely and the core **collapses**: a crater, and a **Dark Energy Zone** hundreds of blocks across.
+Lose it completely and it **collapses** ccreating a Crater plus a **Dark Energy Zone** hundreds of blocks wide.
 
-## 🌌 Dark Energy Zones
+## Dark Energy Zones
 
-- Low gravity, corrupted ground, corrupted mobs and **Unstable Dark Ore**, the only source of some rare materials.
-- **Drifters**, jellyfish that float through the zone. **Lensing Stalkers**, which only move while nobody is
-  looking at them.
-- Stabilize the zone's nodes to shrink it, and face the **Echo of the Core**, the ghost of your dead reactor, for
-  the last one.
+- Low gravity, corrupted ground, buffed-up corrupted mobs, and **Unstable Dark Ore**, which is the only place to get
+  some of the rare stuff.
+- **Drifters** float around like jellyfish. **Lensing Stalkers** only move when nobody's looking. Yeah.
+- Calm down the zone's nodes to shrink it, and for the last one you'll have to fight the **Echo of the Core**, the
+  ghost of the reactor you blew up.
 
-## 🔬 Research and the Bomb
+## Research and the bomb
 
-- Capture a tiny black hole and run experiments on it in the **Research Chamber** to record reactor failures.
-  The Recordings are what the late-game parts are made from.
-- Or feed it mass and turn it into a **Black Hole Bomb**. It's exactly what it sounds like.
+- Catch a tiny black hole and run experiments on it in the **Research Chamber** to record how reactors fail. Those
+  Recordings are what the late-game parts are made from.
+- Or stuff it full of mass and make a **Black Hole Bomb**. It does exactly what you think.
 
-## 🕳️ The Event Horizon
+## The Event Horizon
 
-Build a **Horizon Ring**, charge it, and watch its frames light up one by one before it bursts open. On the other
-side is the world inside a black hole:
+Build a **Horizon Ring**, charge it up, and watch the frames light up one by one until it rips open. On the other
+side is the world *inside* a black hole:
 
-- **Floating islands** over a bottomless dark, under a sky filled by a black hole and its accretion disc.
-- **Gravity that changes with depth.** You float near the top and weigh twice as much near the bottom. Time runs
-  faster in the deep. Below the spaghettification line, nothing comes back.
-- **Neutronium**, so dense one ingot is worth 200 blocks of mass. Mass Shards, Graviton Wells, mobs frozen
-  mid-fall, and the **Hawking Cell**, which makes power on its own forever.
-- **Spaghettifiers** that grab you and drag you down. **Hawking Wisps** that evaporate if you don't catch them.
-- **The Singularity.** Weapons pass straight through it. To beat it, you feed it unstable matter until it
-  collapses.
+- **Floating islands** over an endless void, with a huge black hole and its glowing disc filling the sky.
+- **Gravity changes the deeper you go.** You float near the top and feel twice as heavy near the bottom. Time speeds
+  up down there too. And below the spaghettification line? You're not coming back.
+- **Neutronium**, so heavy one ingot counts as 200 blocks of mass. Also Mass Shards, Graviton Wells, mobs frozen
+  mid-fall, and the **Hawking Cell**, which just makes power on its own forever.
+- **Spaghettifiers** that grab you and drag you down, and **Hawking Wisps** that fade away if you don't catch them
+  fast.
+- **The Singularity.** You can't hit it. Seriously, weapons go right through it. To win you have to feed it unstable
+  stuff until it falls apart.
 
 ### Ruins
-Nine kinds, every one built differently:
 
-- **Swallowed Chunks**: slices of the overworld torn off and floating, sometimes with a farm, a dungeon or a mineshaft.
-- **Expedition Camp**: where the first explorers camped and never left.
-- **Observatory**: fix the telescope's lens and it shows you the way to the nearest Frozen Reactor.
-- **Frozen Reactors**: reactors stuck mid-collapse, each guarded by an Echo that drops a Reactor Key.
-- **Recording Archive**: a tower of shelves full of Recordings, and the Lensing Stalkers between them.
-- **Light Trap**: inside, you see yourself from five seconds ago, and your past self can help you open the vault.
-- **Hawking Garden**: islands that evaporate under your feet.
-- **Debris Ring**: rubble platforms orbiting in the void. Ride them.
-- **The Citadel**: bring all three Reactor Keys and call up the Singularity.
+Nine kinds, all different:
+
+- **Swallowed Chunks**: bits of the overworld that got torn off and are just floating there, sometimes with a farm,
+  a dungeon or a mineshaft still attached.
+- **Expedition Camp**: where the first explorers set up camp. They didn't make it home.
+- **Observatory**: fix the telescope and it points you to the nearest Frozen Reactor.
+- **Frozen Reactors**: reactors stuck mid-collapse, each one guarded by an Echo that drops a Reactor Key.
+- **Recording Archive**: a tower full of Recordings... and Lensing Stalkers between the shelves.
+- **Light Trap**: in here you see yourself from five seconds ago, and your past self can help you open the vault.
+- **Hawking Garden**: islands that literally evaporate under you.
+- **Debris Ring**: chunks of rubble orbiting in the void. Hop on and ride them.
+- **The Citadel**: bring all three Reactor Keys and summon the Singularity.
 
 ---
 
-## 🔌 Compatibility
+## Works with
 
-- **CC: Tweaked** *(optional)*: run the reactor from a computer. Every gauge, every button.
-- **Sable** *(optional)*: the black hole eats Sable contraptions too, and they float in low gravity.
-- **JEI** *(optional)*: recipes and info pages for everything.
-- **Iris shaders**: the glows and the Event Horizon's sky stay visible with shader packs on.
+- **CC: Tweaked** (optional): run the whole reactor from a computer. Every gauge, every button.
+- **Sable** (optional): the black hole eats Sable contraptions too, and they float in low gravity.
+- **JEI** (optional): recipes and info pages for everything.
+- **Iris shaders**: the glows and the Event Horizon sky still show up with shader packs on.
 
-## 📦 Requirements
+## Requirements
 
-- Minecraft **1.21.1**, NeoForge **21.1.262+**
+- NeoForge **21.1.262** or newer
 - **Patchouli** (required)
 - Install on both client and server.
 
-## ⚙️ Configuration
+## Config
 
-Almost every number is in the server config, each with a description: costs, timers, power, whether collapses
-destroy blocks, zone size, and the Event Horizon's gravity, time dilation and boss.
+Pretty much every number is in the server config with a description: costs, timers, power, whether collapses
+break blocks, zone size, and the Event Horizon's gravity, time speed and boss. That makes it great for modpacks:
+balance the costs and power against the rest of your pack however you like.
 
 ---
 
-*Made by Masteri. Inspired by jona23's DEM.*
+## Heads up: this mod is vibe coded
+
+I made this with a lot of help from AI (Claude Code). I came up with the ideas, tested everything in game and
+decided what stays, and the AI wrote most of the code. It's been tested a lot, but if something breaks or acts
+weird, please open an issue on GitHub.
+
+*Made by Masteri. Inspired by [jona23](https://www.youtube.com/@jona2395)'s [DEM](https://www.youtube.com/watch?v=C904h0VJX0Y), and [Matter Overdrive](https://www.curseforge.com/minecraft/mc-mods/matteroverdrive-17-edition)*

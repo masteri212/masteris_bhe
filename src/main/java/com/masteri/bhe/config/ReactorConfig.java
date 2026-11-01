@@ -24,6 +24,12 @@ public final class ReactorConfig {
     public static final ModConfigSpec.IntValue STABILIZER_RF = B.comment("RF/t each stabilizer (the four around the ring and both axial ones) draws from the core's buffer while",
                     "the reactor runs. Every stabilizer the buffer can't power costs stability. 0 turns it off.")
             .defineInRange("stabilizerPower", 2_000, 0, 1_000_000);
+    public static final ModConfigSpec.IntValue UNPOWERED_STABILITY_LOSS = B.comment("Stability (%) the reactor heads down by when none of its stabilizers has power; each unpowered one",
+                    "costs its share (one of six costs a sixth). 100: with no power at all, stability drains to 0.")
+            .defineInRange("unpoweredStabilityLoss", 100, 0, 100);
+    public static final ModConfigSpec.IntValue STABILIZER_GRACE_SECONDS = B.comment("After ignition, the stabilizers run this many seconds on the ignition charge before they need",
+                    "the core's power, so the disc has time to spin up. 0: they need it right away.")
+            .defineInRange("stabilizerGraceSeconds", 30, 0, 600);
     public static final ModConfigSpec.IntValue PORT_PUSH_RF = B.comment("Most RF/t a Reactor Port pushes into each neighbouring machine or cable.")
             .defineInRange("portPushPerSide", 2_000_000, 0, Integer.MAX_VALUE);
     static { B.pop().push("mass"); }
@@ -62,6 +68,14 @@ public final class ReactorConfig {
     public static final ModConfigSpec.DoubleValue MASS_POWER_EXPONENT = B.comment("How much more RF the spin makes with more mass: output (and how much energy the spin holds) is",
                     "multiplied by (mass / ignition minimum) ^ this. 1: four times the mass, four times the power. 0: mass doesn't matter.")
             .defineInRange("massPowerExponent", 1.0, 0.0, 3.0);
+    public static final ModConfigSpec.DoubleValue MASS_STEADINESS = B.comment("How much more mass steadies the spin. Spin shake (what the offset and overspin cost in stability, how fast",
+                    "ring stress builds and how hard the disc wobbles) is (ignition minimum of mass / mass) ^ this.",
+                    "1: twice the mass, half the shake. 1.5: twice the mass, about a third. 0: mass doesn't matter.")
+            .defineInRange("massSteadiness", 1.5, 0.0, 5.0);
+    public static final ModConfigSpec.DoubleValue MIN_SPIN_SHAKE = B.comment("The least spin shake any amount of mass brings it down to (1 is the ignition minimum's).")
+            .defineInRange("minSpinShake", 0.1, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue MAX_SPIN_SHAKE = B.comment("The most spin shake too little mass can cause.")
+            .defineInRange("maxSpinShake", 2.0, 1.0, 10.0);
     public static final ModConfigSpec.IntValue RESONANCE_RPM = B.comment("Center of the resonance band (where spin turns into RF at full efficiency) at the ignition minimum of mass.",
                     "It rises with the square root of the mass, stays under 95% of the safe spin, and drifts on its own.")
             .defineInRange("resonanceRpm", 2500, 100, 1_000_000);

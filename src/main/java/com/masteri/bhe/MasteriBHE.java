@@ -2,6 +2,7 @@ package com.masteri.bhe;
 
 import com.masteri.bhe.compat.cc.CCCompat;
 import com.masteri.bhe.compat.sable.SableCompat;
+import com.masteri.bhe.config.ClientConfig;
 import com.masteri.bhe.config.ReactorConfig;
 import com.masteri.bhe.network.StabilizerTerminal;
 import com.masteri.bhe.reactor.DarkZones;
@@ -49,6 +50,7 @@ public class MasteriBHE {
         if (ModList.get().isLoaded(CCCompat.MOD_ID)) modEventBus.addListener(CCCompat::register); // optional
         if (ModList.get().isLoaded(SableCompat.MOD_ID)) SableCompat.init(); // optional
         modContainer.registerConfig(ModConfig.Type.SERVER, ReactorConfig.SPEC);
+        modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
         LOGGER.info("Masteri's Black Hole Energy loaded. Don't aim the lance at the sun.");
     }
 }

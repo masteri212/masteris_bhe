@@ -72,10 +72,9 @@ public class ReactorCoreBlockEntity extends BlockEntity {
     public static final int BUTTON_IGNITE = 0, BUTTON_SHUTDOWN = 1, BUTTON_SCRAM = 2, BUTTON_OFFSET_DOWN = 3,
             BUTTON_OFFSET_UP = 4, BUTTON_LASER_DOWN = 5, BUTTON_LASER_UP = 6, BUTTON_JUMP_START = 7, BUTTON_VENT = 8,
             BUTTON_TRIM_NW = 9, BUTTON_TRIM_SE = 10;
-    public static final int DATA_SIZE = 30;
+    public static final int DATA_SIZE = 33;
 
     private static final int RECHECK_INTERVAL = 40;
-    private static final double MIN_SPIN_SHAKE = 0.2, MAX_SPIN_SHAKE = 2.0;
     private static final double MIN_PULL_SCALE = 0.5, MAX_PULL_SCALE = 3.0;
 
     private final ReactorEnergy energy = new ReactorEnergy();
@@ -104,8 +103,10 @@ public class ReactorCoreBlockEntity extends BlockEntity {
     private boolean laserFiring;
     /** How many stabilizers the core's buffer couldn't power last tick (see powerStabilizers). */
     private int unpoweredStabilizers;
-    /** Stability target lost per unpowered stabilizer. */
-    private static final double UNPOWERED_STABILITY = 8;
+    /** Ticks left after ignition while the stabilizers still run on the ignition charge (see powerStabilizers). */
+    private int stabilizerGrace;
+    /** How many stabilizers there are to power: the four around the ring and the two axial ones once built. */
+    private int stabilizerCount = 4;
     /** Ticks the beam stays drawn after the laser last fired, so a laser fed in bursts doesn't flicker. */
     private int laserGlowTicks;
     private static final int LASER_GLOW_TICKS = 20;
@@ -199,10 +200,13 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         @Override
         public int get(int i) {
             int mass = (int) Math.min(totalMass, Integer.MAX_VALUE);
+            // Slots go over the wire as 16 bits, so wide numbers are split in two (see ReactorReadout).
+            int spin = (int) Mth.clamp(Math.round(rpm), Integer.MIN_VALUE, Integer.MAX_VALUE);
+            int band = (int) Math.min(Math.round(resonanceRpm()), Integer.MAX_VALUE);
             return switch (i) {
                 case 0 -> state.ordinal();
                 case 1 -> (int) Math.round(stability * 10);
-                case 2 -> (int) Mth.clamp(Math.round(rpm), Short.MIN_VALUE, Short.MAX_VALUE); // signed 16-bit on the wire
+                case 2 -> spin & 0xFFFF;
                 case 3 -> (int) Math.round(stress * 10);
                 case 4 -> offset;
                 case 5 -> targetOffset;
@@ -222,7 +226,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
                 case 19 -> ventArmed() ? 1 : 0;
                 case 20 -> faultFixed ? 1 : 0;
                 case 21 -> axialFormed ? 1 : 0;
-                case 22 -> (int) Math.round(resonanceRpm());
+                case 22 -> band & 0xFFFF;
                 case 23 -> (int) Math.round(lastEfficiency * 100);
                 case 24 -> (int) Math.round(wobble);
                 case 25 -> axialTrim;
@@ -230,6 +234,9 @@ public class ReactorCoreBlockEntity extends BlockEntity {
                 case 27 -> suspended.isEmpty() ? 0 : suspended.peek().state().ordinal();
                 case 28 -> suspended.isEmpty() ? 0 : suspended.peek().fault().ordinal();
                 case 29 -> suspended.isEmpty() ? 0 : suspended.peek().faultMask();
+                case 30 -> spin >>> 16;
+                case 31 -> band >>> 16;
+                case 32 -> state.generates() ? unpoweredStabilizers : 0;
                 default -> 0;
             };
         }
@@ -714,7 +721,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
                 - (speed > safeRpm ? (speed - safeRpm) / 100.0 * spinShake : 0)
                 - (totalMass < ReactorConfig.WARNING_MASS.get() ? 20 : 0)
                 - Math.max(0, Math.abs(wobble) - WOBBLE_SAFE) * 0.3
-                - unpoweredStabilizers * UNPOWERED_STABILITY;
+                - ReactorConfig.UNPOWERED_STABILITY_LOSS.get() * unpoweredStabilizers / (double) stabilizerCount;
         stability = Mth.clamp(stability + Mth.clamp(target - stability, -0.2, 0.2), 0, 100);
     }
 
@@ -770,8 +777,9 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         long max = Math.max(Math.max(masses[0], masses[1]), Math.max(masses[2], masses[3]));
         long min = Math.min(Math.min(masses[0], masses[1]), Math.min(masses[2], masses[3]));
         double uneven = max <= 0 ? 0 : (max - min) / (double) max;
+        // More mass steadies the disc too (spin shake), so heavy cores wobble less.
         double drive = speed / ReactorConfig.SAFE_RPM.get() * 0.5 * precession * (1 + uneven * 2)
-                * ReactorConfig.PRECESSION_STRENGTH.get();
+                * ReactorConfig.PRECESSION_STRENGTH.get() * spinShake();
         wobble = (wobble + drive + axialTrim * TRIM_STEP) * WOBBLE_DAMPING;
     }
 
@@ -783,12 +791,14 @@ public class ReactorCoreBlockEntity extends BlockEntity {
 
     /**
      * How much the spin shakes the core: 1 at the ignition minimum (all four stabilizers at their minimum),
-     * smaller with more mass, bigger with less. 80,000 mass halves it; it never drops below 0.2 or goes above 2.
+     * smaller with more mass, bigger with less: (minimum / mass) ^ massSteadiness, kept between minSpinShake and
+     * maxSpinShake. It scales what the offset and overspin cost in stability, ring stress and the disc's wobble.
      */
     private double spinShake() {
         double reference = 4.0 * ReactorConfig.MIN_MASS_PER_STABILIZER.get();
         if (reference <= 0) return 1;
-        return Mth.clamp(reference / Math.max(1, totalMass), MIN_SPIN_SHAKE, MAX_SPIN_SHAKE);
+        double shake = Math.pow(reference / Math.max(1, totalMass), ReactorConfig.MASS_STEADINESS.get());
+        return Mth.clamp(shake, ReactorConfig.MIN_SPIN_SHAKE.get(), Math.max(ReactorConfig.MIN_SPIN_SHAKE.get(), ReactorConfig.MAX_SPIN_SHAKE.get()));
     }
 
     /**
@@ -799,7 +809,9 @@ public class ReactorCoreBlockEntity extends BlockEntity {
     private void powerStabilizers() {
         int each = ReactorConfig.STABILIZER_RF.get();
         int count = 4 + (axialFormed ? 2 : 0);
-        if (each <= 0) {
+        stabilizerCount = count;
+        if (stabilizerGrace > 0) stabilizerGrace--;
+        if (each <= 0 || stabilizerGrace > 0) { // free while still running on the ignition charge
             unpoweredStabilizers = 0;
             return;
         }
@@ -1031,6 +1043,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         rpm = 0;
         scrammed = false;
         enterState(ReactorState.STABLE, 0);
+        stabilizerGrace = ReactorConfig.STABILIZER_GRACE_SECONDS.get() * 20;
         startupEffects();
         tell(player, "ignite.success", ChatFormatting.GREEN);
         if (level instanceof ServerLevel server) Advancements.awardNearby(server, worldPosition, 64, Advancements.IGNITION);
@@ -1119,7 +1132,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         RandomSource rand = level.random;
         Vec3 center = Vec3.atCenterOf(worldPosition);
 
-        // Overspin: the ring glows (client) and sheds hot debris and creaks.
+        // Overspin: the ring glows (client), sheds hot debris and hisses.
         double load = stress / 100.0;
         if (state != ReactorState.OFFLINE && load > 0.3 && ticks % 3 == 0) {
             List<BlockPos> ring = ReactorStructure.ringOffsets();
@@ -1370,6 +1383,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
             case STABILIZER_DESYNC, MASS_FLASH -> {
                 stability = Math.max(stability, 70);
                 enterState(ReactorState.STABLE, 0);
+                stabilizerGrace = ReactorConfig.STABILIZER_GRACE_SECONDS.get() * 20;
                 startupEffects();
                 broadcast(Component.translatable("message.masteris_bhe.fault.fixed.ignition").withStyle(ChatFormatting.GREEN));
             }
@@ -2300,6 +2314,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
         tag.put("Suspended", stack);
         tag.putDouble("Stress", stress);
         tag.putDouble("MassDebt", massDebt);
+        tag.putInt("StabilizerGrace", stabilizerGrace);
         tag.putInt("Offset", offset);
         tag.putInt("TargetOffset", targetOffset);
         tag.putInt("LaserPower", laserPower);
@@ -2352,6 +2367,7 @@ public class ReactorCoreBlockEntity extends BlockEntity {
             }
         }
         stress = tag.getDouble("Stress");
+        stabilizerGrace = tag.getInt("StabilizerGrace");
         massDebt = tag.getDouble("MassDebt");
         offset = tag.getInt("Offset");
         targetOffset = tag.getInt("TargetOffset");

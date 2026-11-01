@@ -101,7 +101,7 @@ public final class ReactorHum {
             pitch = Mth.clamp(pitch + (wantPitch - pitch) * 0.1F, 0.5F, 2.0F);
             double dist = mc.player == null ? RANGE : Math.sqrt(mc.player.distanceToSqr(x, y, z));
             float near = (float) Math.pow(Mth.clamp(1 - dist / RANGE, 0, 1), 1.6);
-            volume = Math.max(0.001F, level * near);
+            volume = Math.max(0.001F, level * near * SoundVolumes.volumeFor("reactor.hum"));
             if (!on && level < 0.01F) stop();
         }
     }

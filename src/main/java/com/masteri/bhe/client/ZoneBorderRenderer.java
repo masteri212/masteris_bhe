@@ -78,7 +78,7 @@ public final class ZoneBorderRenderer {
             pose.translate(center.x - camera.x, center.y - camera.y, center.z - camera.z);
             Vec3 cameraLocal = camera.subtract(center);
             if (zone.radius() > 0.5F && look.wallAlpha > 0) {
-                renderSphere(pose, buffers.getBuffer(wallType), zone.radius(), cameraLocal, time, look, false);
+                renderSphere(pose, ShaderCompat.zoneWall(buffers, wallType), zone.radius(), cameraLocal, time, look, false);
             }
             if (look.shell > 0 && zone.radius() > 0.5F) {
                 renderSphere(pose, ModRenderTypes.glow(buffers), zone.radius() * 1.004F, cameraLocal, time, look, true);

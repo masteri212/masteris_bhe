@@ -203,6 +203,12 @@ public final class ReactorPeripheral implements IPeripheral {
         return read().axialFormed();
     }
 
+    /** How many stabilizers the core's power couldn't run last tick: each drags stability toward 0. */
+    @LuaFunction(mainThread = true)
+    public final int getUnpoweredStabilizers() throws LuaException {
+        return read().unpoweredStabilizers();
+    }
+
     @LuaFunction(mainThread = true)
     public final boolean isLanceFormed() throws LuaException {
         return read().lanceFormed();
@@ -240,6 +246,7 @@ public final class ReactorPeripheral implements IPeripheral {
         status.put("wobble", r.wobble());
         status.put("axialTrim", r.axialTrim());
         status.put("axialFormed", r.axialFormed());
+        status.put("unpoweredStabilizers", r.unpoweredStabilizers());
         status.put("lanceFormed", r.lanceFormed());
         status.put("ventArmed", r.ventArmed());
         return status;

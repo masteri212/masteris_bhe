@@ -11,6 +11,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RenderFrameEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 
 import java.lang.reflect.Method;
@@ -24,7 +25,8 @@ import java.lang.reflect.Method;
  * instead, with a full-bright lightmap, and are drawn after the lighting pass (after particles), where the pack adds
  * them to the finished image as they are. Without a shader pack, nothing changes.
  *
- * The Event Horizon's sky is drawn here too under a shader pack (see EventHorizonEffects#renderUnderShaders).
+ * The Event Horizon's sky and the dark energy zones' walls are drawn here too under a shader pack (see
+ * EventHorizonEffects#renderUnderShaders and ZoneBorderRenderer), for the same reason.
  *
  * Iris is an optional mod: it's only reached through its public API, by reflection.
  */
@@ -34,6 +36,12 @@ public final class ShaderCompat {
     private static boolean looked;
     private static Object api;
     private static Method inUse, shadowPass;
+    /**
+     * True from the start of each frame until the late buffer is drawn (after particles): the world is being drawn.
+     * Glows drawn outside it (in GUIs, Ponder scenes and the like) take the plain path, so none wait in the late
+     * buffer for a world render that has already passed.
+     */
+    private static boolean inWorld;
 
     /** True while an Iris shader pack is in use. */
     public static boolean shadersOn() {
@@ -75,9 +83,19 @@ public final class ShaderCompat {
 
     /** Where to draw glow quads this frame (see {@link ModRenderTypes#glow(MultiBufferSource)}). */
     static VertexConsumer glow(MultiBufferSource buffers) {
-        if (!shadersOn()) return buffers.getBuffer(ModRenderTypes.glow());
+        if (!inWorld || !shadersOn()) return buffers.getBuffer(ModRenderTypes.glow());
         if (shadowPass()) return NOWHERE;
         return new FullBright(LATE.getBuffer(ModRenderTypes.glowLit()));
+    }
+
+    /**
+     * Where to draw the dark energy zone's wall (translucent position + color quads, drawn after particles): the
+     * plain translucent type, or with a shader pack on, a full-bright entity version packs draw as it is.
+     */
+    static VertexConsumer zoneWall(MultiBufferSource buffers, net.minecraft.client.renderer.RenderType plain) {
+        if (!inWorld || !shadersOn()) return buffers.getBuffer(plain);
+        if (shadowPass()) return NOWHERE;
+        return new FullBright(LATE.getBuffer(ModRenderTypes.zoneWallLit()));
     }
 
     /** Draws the glows collected this frame, after the shader pack's lighting pass. Last, after everyone else's. */
@@ -91,7 +109,14 @@ public final class ShaderCompat {
             }
         } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
             LATE.endBatch();
+            inWorld = false;
         }
+    }
+
+    @SubscribeEvent
+    public static void onFrameStart(RenderFrameEvent.Pre event) {
+        LATE.endBatch(); // anything left over from a world render that never reached its particles: draw and clear it
+        inWorld = true;
     }
 
     /**

@@ -351,6 +351,9 @@ public class EchoOfTheCoreEntity extends Monster {
         if (!key.isEmpty()) spawnAtLocation(key);
         BlockPos at = home != null ? home : blockPosition();
         DarkZones.Stabilized result = DarkZones.get(server).stabilize(server, at);
+        if (result != null && result.zone() == null) { // its zone is gone: everyone who was there laid it to rest
+            com.masteri.bhe.util.Advancements.awardNearby(server, blockPosition(), 128, com.masteri.bhe.util.Advancements.LAID_TO_REST);
+        }
         Component text = result == null
                 ? Component.translatable("message.masteris_bhe.echo.defeated").withStyle(ChatFormatting.LIGHT_PURPLE)
                 : result.zone() == null

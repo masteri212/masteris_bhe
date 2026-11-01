@@ -101,6 +101,10 @@ public class ConsoleScreen extends AbstractContainerScreen<ConsoleMenu> {
         line(g, 124, y + 12, Component.translatable("gui.masteris_bhe.laser", menu.laserPower()));
         line(g, 12, y + 24, Component.translatable("gui.masteris_bhe.energy", String.format("%,d", menu.energy())));
         line(g, 12, y + 36, Component.translatable("gui.masteris_bhe.output", String.format("%,d", menu.output())));
+        if (menu.unpoweredStabilizers() > 0) {
+            // Stability is draining toward 0 until the stabilizers get power.
+            g.drawString(font, Component.translatable("gui.masteris_bhe.unpowered.short", menu.unpoweredStabilizers()), 124, y + 24, 0xFFFF6060, false);
+        }
 
         if (state == ReactorState.DISC_STALL) {
             // Under the countdown, clear of the VENT button in the bottom right of the panel.
