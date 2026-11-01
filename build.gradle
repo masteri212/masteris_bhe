@@ -223,7 +223,9 @@ idea {
     }
 }
 
-// Ship the license texts (GPL and the LGPL on top of it) inside the jar.
+// Ship the license texts (GPL and the LGPL on top of it) inside the jar. The GameTests (and their arena) are for
+// `gradlew runGameTestServer` only, not the release jar.
 tasks.named("jar", Jar) {
     from(rootProject.file("COPYING"), rootProject.file("COPYING.LESSER"))
+    exclude("com/masteri/bhe/gametest/**", "data/masteris_bhe/structure/gametest/**")
 }
