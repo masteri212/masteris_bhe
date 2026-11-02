@@ -35,8 +35,8 @@ import java.util.UUID;
 @GameTestHolder(MasteriBHE.MODID)
 @PrefixGameTestTemplate(false)
 public class ReactorGameTests {
-    private static final String ARENA = "gametest/reactor_arena";
-    private static final BlockPos CORE = new BlockPos(32, 4, 32);
+    static final String ARENA = "gametest/reactor_arena";
+    static final BlockPos CORE = new BlockPos(32, 4, 32);
     /** Slots of the reactor's synced stats (see ReactorCoreBlockEntity's ContainerData). */
     private static final int SLOT_UNPOWERED = 32;
 
@@ -130,7 +130,7 @@ public class ReactorGameTests {
     // ------------------------------------------------------------------ helpers
 
     /** A complete reactor (axial stabilizers if asked) with plenty of mass on every stabilizer, not yet running. */
-    private static ReactorCoreBlockEntity build(GameTestHelper helper, boolean axial) {
+    static ReactorCoreBlockEntity build(GameTestHelper helper, boolean axial) {
         ServerLevel level = helper.getLevel();
         BlockPos pos = helper.absolutePos(CORE);
         level.setBlock(pos, ModBlocks.REACTOR_CORE.get().defaultBlockState(), Block.UPDATE_ALL);
@@ -144,7 +144,7 @@ public class ReactorGameTests {
     }
 
     /** Builds a reactor and ignites it. Ignition can still fault at random: then it's put straight into running. */
-    private static ReactorCoreBlockEntity ignite(GameTestHelper helper, boolean axial) {
+    static ReactorCoreBlockEntity ignite(GameTestHelper helper, boolean axial) {
         ReactorCoreBlockEntity core = build(helper, axial);
         core.fillForTesting(); // the ignition charge
         core.handleButton(null, ReactorCoreBlockEntity.BUTTON_IGNITE);
@@ -158,13 +158,63 @@ public class ReactorGameTests {
         return core;
     }
 
-    private static void set(Object target, String field, Object value) {
+    /** Sets a private field (the tests reach into the reactor to set up a situation fast). */
+    static void set(Object target, String field, Object value) {
         try {
-            Field f = target.getClass().getDeclaredField(field);
-            f.setAccessible(true);
-            f.set(target, value);
+            field(target.getClass(), field).set(target, value);
         } catch (ReflectiveOperationException e) {
             throw new IllegalStateException("can't set " + field, e);
         }
+    }
+
+    /** Reads a private field. */
+    @SuppressWarnings("unchecked")
+    static <T> T get(Object target, String field) {
+        try {
+            return (T) field(target.getClass(), field).get(target);
+        } catch (ReflectiveOperationException e) {
+            throw new IllegalStateException("can't read " + field, e);
+        }
+    }
+
+    /** Calls a private method by name (the first one with that many parameters). */
+    static <T> T call(Object target, String method, Object... args) {
+        return invoke(target.getClass(), target, method, args);
+    }
+
+    /** Calls a private static method by name. */
+    static <T> T callStatic(Class<?> type, String method, Object... args) {
+        return invoke(type, null, method, args);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> T invoke(Class<?> type, Object target, String method, Object... args) {
+        for (Class<?> c = type; c != null; c = c.getSuperclass()) {
+            for (java.lang.reflect.Method m : c.getDeclaredMethods()) {
+                if (!m.getName().equals(method) || m.getParameterCount() != args.length) continue;
+                try {
+                    m.setAccessible(true);
+                    return (T) m.invoke(target, args);
+                } catch (java.lang.reflect.InvocationTargetException e) {
+                    throw new IllegalStateException(method + " threw", e.getCause());
+                } catch (ReflectiveOperationException e) {
+                    throw new IllegalStateException("can't call " + method, e);
+                }
+            }
+        }
+        throw new IllegalStateException("no method " + method);
+    }
+
+    private static Field field(Class<?> type, String name) throws NoSuchFieldException {
+        for (Class<?> c = type; c != null; c = c.getSuperclass()) {
+            try {
+                Field f = c.getDeclaredField(name);
+                f.setAccessible(true);
+                return f;
+            } catch (NoSuchFieldException e) {
+                // try the superclass
+            }
+        }
+        throw new NoSuchFieldException(name);
     }
 }
