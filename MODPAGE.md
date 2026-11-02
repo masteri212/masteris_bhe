@@ -7,6 +7,8 @@ eating you while it spits out more RF than anything else in your base. It's not 
 though. It stalls, it overspins, it gets hungry, and sometimes it just wants out. You can save it every time, but if
 you don't, you get a crater and a very weird new neighborhood.
 
+![A running reactor at sunset, its Bending Laser firing past the black hole](https://raw.githubusercontent.com/masteri212/masteris_bhe/master/docs/images/reactor.jpg)
+
 ---
 
 ## The reactor
@@ -19,17 +21,25 @@ you don't, you get a crater and a very weird new neighborhood.
   you mass though.
 - Keep it in the sweet spot, stop it wobbling, and keep an eye on stability and ring stress.
 
+![Stabilizer beams locking onto the black hole](https://raw.githubusercontent.com/masteri212/masteris_bhe/master/docs/images/stabilizer_beams.jpg)
+
+![The Control Console in the middle of a run](https://raw.githubusercontent.com/masteri212/masteris_bhe/master/docs/images/console.jpg)
+
 ## When it goes wrong (it will)
 
 Disc stalls, overspin, running out of mass, ignition faults, stabilizers falling out of sync, cracked lenses, the
 black hole bouncing back... Every problem has a clever fix, a safe-but-pricey fix, and a timer. They can pile up on
 each other, so stay calm.
 
+![The black hole glowing red as the reactor strains](https://raw.githubusercontent.com/masteri212/masteris_bhe/master/docs/images/under_strain.jpg)
+
 Miss the timer and you hit **pre-meltdown**, then a two-stage **meltdown** where the black hole starts pulling your
 reactor apart block by block. At that point your only way out is the **Venting Lance**, a giant beam that dumps all
 that energy straight up into the sky.
 
-Lose it completely and it **collapses** ccreating a Crater plus a **Dark Energy Zone** hundreds of blocks wide.
+![The Venting Lance dumping the core into the sky](https://raw.githubusercontent.com/masteri212/masteris_bhe/master/docs/images/venting_lance.jpg)
+
+Lose it completely and it **collapses**, creating a crater and a **Dark Energy Zone** hundreds of blocks wide.
 
 ## Dark Energy Zones
 
@@ -38,6 +48,10 @@ Lose it completely and it **collapses** ccreating a Crater plus a **Dark Energy 
 - **Drifters** float around like jellyfish. **Lensing Stalkers** only move when nobody's looking. Yeah.
 - Calm down the zone's nodes to shrink it, and for the last one you'll have to fight the **Echo of the Core**, the
   ghost of the reactor you blew up.
+
+![Inside a dark energy zone: the view bends like you are inside a black hole](https://raw.githubusercontent.com/masteri212/masteris_bhe/master/docs/images/inside_zone.jpg)
+
+![A Drifter floating over a collapse crater](https://raw.githubusercontent.com/masteri212/masteris_bhe/master/docs/images/drifter.jpg)
 
 ## Research and the bomb
 
