@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## 1.0.0
+
+For Minecraft 1.21.1, NeoForge 21.1.262 or newer. Needs Patchouli.
 
 ### Changes
 - **Unpowered stabilizers now drain stability all the way to 0** (into pre-meltdown), instead of bottoming out
@@ -23,7 +25,7 @@
 - The console and computers showed spin and the resonance band wrong past 32,767 rpm.
 - Glows drawn in GUIs (Ponder scenes and the like) with shaders on could appear a frame late in the world.
 
-## 1.0.0 (first release)
+## 0.1.0 (first release)
 
 For Minecraft 1.21.1, NeoForge 21.1.262 or newer. Needs Patchouli.
 
