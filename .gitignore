@@ -44,3 +44,6 @@ __pycache__/
 
 ### Local generator scripts ###
 tools/
+
+# The CurseForge page text, kept locally (pasted into CurseForge, not part of the repo)
+MODPAGE.md
